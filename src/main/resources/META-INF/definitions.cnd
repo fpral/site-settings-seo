@@ -1,0 +1,4 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+
+[jnt:seoSiteSettings] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent, reactmix:reactComponent
+
