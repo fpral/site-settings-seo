@@ -6,7 +6,6 @@
   "dependencies": {
     "@jahia/apollo-dx": "^1.0.0",
     "@jahia/react-dxcomponents": "^1.0.0",
-    "babel-preset-stage-2": "^6.24.1",
     "graphql-tag": "^2.6.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.20.0",
@@ -20,6 +19,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.8",
     "style-loader": "^0.19.1",
     "webpack": "^3.10.0",
