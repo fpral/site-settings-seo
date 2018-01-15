@@ -15,11 +15,25 @@
     graphql-tag "^2.6.1"
     lodash "^4.17.4"
 
-"@jahia/react-dxcomponents@^1.0.0":
+"@jahia/apollo-dx@git+ssh://git@github.com:Jahia/apollo-dx.git":
   version "1.0.0"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-dxcomponents/-/react-dxcomponents-1.0.0.tgz#79bf23a82fe1407ddb016667b8089f3104b73338"
+  resolved "git+ssh://git@github.com:Jahia/apollo-dx.git#469c01990c64f2b95336fc4bd4be11f276c588fe"
+  dependencies:
+    apollo-cache-inmemory "^1.1.5"
+    apollo-client "^2.2.0"
+    apollo-link-context "^1.0.3"
+    apollo-link-http "^1.3.2"
+    apollo-utilities "^1.0.4"
+    graphql "^0.12.3"
+    graphql-tag "^2.6.1"
+    lodash "^4.17.4"
+
+"@jahia/react-dxcomponents@git+ssh://git@github.com:Jahia/react-dxcomponents.git":
+  version "1.0.0"
+  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#be33a45594b0480d5538f900cb5474711b653bd9"
   dependencies:
     "@jahia/apollo-dx" "^1.0.0"
+    apollo-client "^2.2.0"
     graphql "^0.12.3"
     graphql-tag "^2.6.1"
     history "^4.7.2"

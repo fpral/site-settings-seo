@@ -18,6 +18,8 @@ class VanityUrlsTableData extends React.Component {
                             totalCount
                         }
                         nodes {
+                            uuid
+                            path
                             parent {
                                 displayName(language:$lang)
                                 uuid
@@ -25,6 +27,8 @@ class VanityUrlsTableData extends React.Component {
                             }
                             children {
                                 nodes {
+                                    uuid
+                                    path
                                     url:property(name:"j:url") {
                                         value
                                     } 

@@ -4,8 +4,8 @@
   "main": "src/javascript/index.js",
   "license": "MIT",
   "dependencies": {
-    "@jahia/apollo-dx": "^1.0.0",
-    "@jahia/react-dxcomponents": "^1.0.0",
+    "@jahia/apollo-dx": "git+ssh://git@github.com:Jahia/apollo-dx.git",
+    "@jahia/react-dxcomponents": "git+ssh://git@github.com:Jahia/react-dxcomponents.git",
     "graphql-tag": "^2.6.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.20.0",
