@@ -49,7 +49,9 @@
                                                  jcr:primaryType="jnt:template">
                         <seo-settings-panel-jahia-anthracite j:applyOn="jnt:virtualsite" jcr:primaryType="jnt:contentTemplate">
                             <pagecontent jcr:primaryType="jnt:contentList">
-                                <seo jcr:primaryType="jnt:seoSiteSettings">
+                                <seo j:view="app"
+                                     jcr:mixinTypes="jmix:renderable"
+                                     jcr:primaryType="jnt:seoSiteSettings">
                                     <j:translation_en jcr:language="en"
                                           jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
