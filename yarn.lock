@@ -4,7 +4,7 @@
 
 "@jahia/apollo-dx@git+ssh://git@github.com:Jahia/apollo-dx.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:Jahia/apollo-dx.git#469c01990c64f2b95336fc4bd4be11f276c588fe"
+  resolved "git+ssh://git@github.com:Jahia/apollo-dx.git#f297f549165f1b8bac4d33ec2425aa4a7be4ae42"
   dependencies:
     apollo-cache-inmemory "^1.1.5"
     apollo-client "^2.2.0"
@@ -17,7 +17,7 @@
 
 "@jahia/react-dxcomponents@git+ssh://git@github.com:Jahia/react-dxcomponents.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#aeb22fb3860bc453c1f5e3b7009d64eee4f7f8db"
+  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#3badc6dadd555a680e60fd347a0af3f05d8478d4"
   dependencies:
     "@jahia/apollo-dx" "git+ssh://git@github.com:Jahia/apollo-dx.git"
     apollo-client "^2.2.0"
@@ -1748,8 +1748,8 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
 flexboxgrid2@^7.0.0-alpha7:
-  version "7.0.0-alpha9"
-  resolved "https://registry.yarnpkg.com/flexboxgrid2/-/flexboxgrid2-7.0.0-alpha9.tgz#f4025e67ef36b2a1e0700af77c94ca3f5eee2ec9"
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/flexboxgrid2/-/flexboxgrid2-7.0.1.tgz#86e4c03f609a9623648006d2403b6800832bdb1a"
   dependencies:
     normalize.css "^7.0.0"
 
@@ -2298,15 +2298,15 @@ jss-compose@^5.0.0:
   dependencies:
     warning "^3.0.0"
 
-jss-default-unit@^8.0.0, jss-default-unit@^8.0.2:
+jss-default-unit@^8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/jss-default-unit/-/jss-default-unit-8.0.2.tgz#cc1e889bae4c0b9419327b314ab1c8e2826890e6"
 
-jss-expand@^5.0.0:
+jss-expand@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/jss-expand/-/jss-expand-5.1.0.tgz#b1ad74ec18631f34f65a2124fcfceb6400610e3d"
 
-jss-extend@^6.0.1:
+jss-extend@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/jss-extend/-/jss-extend-6.1.0.tgz#85f3d39944018e8f44b322c14fa316068aa7bb0b"
   dependencies:
@@ -2323,27 +2323,27 @@ jss-nested@^6.0.1:
     warning "^3.0.0"
 
 jss-preset-default@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/jss-preset-default/-/jss-preset-default-4.0.1.tgz#822cecb87c27ff91633774422f4c221d61486b65"
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/jss-preset-default/-/jss-preset-default-4.1.0.tgz#8a07d8de92cb0c55b70dc1919b802aed9cc4ebe9"
   dependencies:
     jss-camel-case "^6.0.0"
     jss-compose "^5.0.0"
-    jss-default-unit "^8.0.0"
-    jss-expand "^5.0.0"
-    jss-extend "^6.0.1"
+    jss-default-unit "^8.0.2"
+    jss-expand "^5.1.0"
+    jss-extend "^6.1.0"
     jss-global "^3.0.0"
     jss-nested "^6.0.1"
     jss-props-sort "^6.0.0"
-    jss-template "^1.0.0"
+    jss-template "^1.0.1"
     jss-vendor-prefixer "^7.0.0"
 
 jss-props-sort@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/jss-props-sort/-/jss-props-sort-6.0.0.tgz#9105101a3b5071fab61e2d85ea74cc22e9b16323"
 
-jss-template@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/jss-template/-/jss-template-1.0.0.tgz#4b874608706ddceecacdb5567e254aecb6ea69b3"
+jss-template@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jss-template/-/jss-template-1.0.1.tgz#09aed9d86cc547b07f53ef355d7e1777f7da430a"
   dependencies:
     warning "^3.0.0"
 
