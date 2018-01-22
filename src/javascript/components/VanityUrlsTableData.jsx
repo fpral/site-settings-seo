@@ -3,7 +3,7 @@ import {VanityUrlsTableView} from './VanityUrlsTableView'
 import {ApolloProvider, graphql} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
-import {client, replaceFragmentsInDocument} from "@jahia/apollo-dx";
+import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
 
 let mapResultsToProps = ({data, ownProps}) => {
     let jcr = data.jcr;

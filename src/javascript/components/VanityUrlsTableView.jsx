@@ -13,6 +13,7 @@ import {
 
 import {PickerViewMaterial, withPickerModel} from '@jahia/react-dxcomponents';
 import * as _ from "lodash";
+import { translate } from 'react-i18next';
 
 class VanityUrlsTableView extends React.Component {
 
@@ -62,7 +63,7 @@ class VanityUrlsTableView extends React.Component {
                                                     <TableCell>{url.language}</TableCell>
                                                     <TableCell>{url.active}</TableCell>
                                                     <TableCell>{url.default}</TableCell>
-                                                    <TableCell><Button onClick={() => this.handleOpen(row.path)}>Select</Button></TableCell>
+                                                    <TableCell><Button onClick={() => this.handleOpen(row.path)}>{this.props.t('label.select')}</Button></TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
@@ -98,5 +99,8 @@ class VanityUrlsTableView extends React.Component {
         )
     }
 };
+
+
+VanityUrlsTableView = translate('seoSettings')(VanityUrlsTableView);
 
 export {VanityUrlsTableView};
