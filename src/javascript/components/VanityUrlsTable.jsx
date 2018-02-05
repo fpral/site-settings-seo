@@ -11,19 +11,26 @@ class VanityUrlsTable extends React.Component {
 
     mapStateToProps(state, ownProps) {
         return {
-            pageSize: 5,
+            pageSize: state["pageSize"] ? state["pageSize"] : 5,
             currentPage: state["currentPage"] ? state["currentPage"] : 0
         }
     };
 
     mapDispatchToProps(dispatch, ownProps) {
         return {
-            onSelectPage(page) {
+            onChangePage(page) {
                 dispatch({
                     type: 'SELECT_PAGE',
                     page: page
                 })
-            }
+            },
+            onChangeRowsPerPage(pageSize) {
+                dispatch({
+                    type: 'CHANGE_PAGE_SIZE',
+                    pageSize: pageSize
+                })
+            },
+
         }
     };
 
@@ -33,11 +40,18 @@ class VanityUrlsTable extends React.Component {
                 return action.page
             }
             return state;
-        }
+        };
+        reducers["pageSize"] = (state = 0, action) => {
+            if (action.type === 'CHANGE_PAGE_SIZE') {
+                return action.pageSize
+            }
+            return state;
+        };
     }
 
     componentWillUnmount() {
         reducers["currentPage"] = resetStateReducer;
+        reducers["pageSize"] = resetStateReducer;
         store.dispatch({type:"RESET_STATE"});
         delete reducers["currentPage"];
     }

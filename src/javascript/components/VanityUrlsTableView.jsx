@@ -1,19 +1,43 @@
 import React from 'react';
 import {
     Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogTitle,
+    Grid,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Paper,
     Table,
     TableBody,
     TableCell,
-    TableHead,
-    TableRow
+    TableRow,
+    Typography,
+    withStyles
 } from 'material-ui';
 
+
+import {Check, ExpandLess, ExpandMore, Star} from 'material-ui-icons'
+import {Pagination} from "./Pagination";
 import {PickerViewMaterial, withPickerModel} from '@jahia/react-dxcomponents';
-import * as _ from "lodash";
-import { translate } from 'react-i18next';
+import {translate} from 'react-i18next';
+
+
+const styles = theme => ({
+    root: {
+        margin: theme.spacing.unit,
+        backgroundColor: "white"
+    },
+
+    nested: {
+        paddingLeft: 64,
+        padding: 16
+    }
+
+});
 
 class VanityUrlsTableView extends React.Component {
 
@@ -21,76 +45,94 @@ class VanityUrlsTableView extends React.Component {
         super(props);
         this.state = {
             open: false,
+            openedItems: {}
         };
 
     }
 
-    handleOpen = (path) => {
+    handleOpenDialog = (path) => {
         this.setState({open: true, path: path});
     };
 
-    handleClose = () => {
+    handleCloseDialog = () => {
         this.setState({open: false});
     };
 
+    handleItemClick = (uuid) => {
+        let st = this.state.openedItems;
+        st[uuid] = !st[uuid];
+        this.setState({openedItems: st})
+    };
+
     render() {
+        const {rows, t, classes} = this.props;
+
         let Picker = withPickerModel(["displayName"], "pageSelector")(PickerViewMaterial);
         return (
             <div>
-                <div>
-                    {_.range(this.props.numberOfPages).map(i => (
-                        <Button key={i + 1}
-                                onClick={() => this.props.onSelectPage(i)}>{i + 1}</Button>))}
-                </div>
+                <List>
+                    {rows.map(row => (
+                        <div key={row.uuid} className={classes.root}>
+                            <ListItem button onClick={() => this.handleItemClick(row.uuid)} >
+                                <ListItemIcon>{this.state.openedItems[row.uuid] ? <ExpandLess/> :
+                                    <ExpandMore/>}</ListItemIcon>
+                                <ListItemText inset primary={row.displayName}  secondary={row.path}/>
+                            </ListItem>
+                            <Collapse in={this.state.openedItems[row.uuid]} timeout="auto" unmountOnExit>
+                                <div >
+                                    <Grid container spacing={24} className={classes.nested}>
+                                        <Grid item xs={12} lg={6}>
+                                            <Typography variant="title" >
+                                                Default
+                                            </Typography>
+                                            <Paper elevation={4}>
+                                                <Table>
+                                                    <TableBody>
+                                                        {row.urls.map(url => (
+                                                            <TableRow key={url.url}>
+                                                                <TableCell>{url.url}</TableCell>
+                                                                <TableCell>{url.language}</TableCell>
+                                                                <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
+                                                                <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
+                                                                <TableCell><Button
+                                                                    onClick={() => this.handleOpenDialog(row.path)}>{t('label.select')}</Button></TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </Paper>
+                                        </Grid>
+                                        <Grid item xs={12} lg={6}>
+                                            <Typography variant="title" >
+                                                Live
+                                            </Typography>
 
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Page</TableCell>
-                            <TableCell>Mappings</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody >
-                        {this.props.rows.map(row => (
-                            <TableRow key={row.uuid}>
-                                <TableCell>{row.displayName} {row.path}</TableCell>
-                                <TableCell>
-                                    <Table>
-                                        <TableBody>
-                                            {row.urls.map(url => (
-                                                <TableRow key={url.url}>
-                                                    <TableCell>{url.url}</TableCell>
-                                                    <TableCell>{url.language}</TableCell>
-                                                    <TableCell>{url.active}</TableCell>
-                                                    <TableCell>{url.default}</TableCell>
-                                                    <TableCell><Button onClick={() => this.handleOpen(row.path)}>{this.props.t('label.select')}</Button></TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-
+                                            <Paper elevation={4}>Live</Paper>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Collapse>
+                        </div>))
+                    }
+                </List>
+                <Pagination {...this.props} />
                 <Dialog
                     fullScreen
                     open={this.state.open}
-                    onClose={this.handleClose}
+                    onClose={this.handleCloseDialog}
                 >
                     <DialogTitle>Select page</DialogTitle>
                     <Picker rootPaths={["/sites"]}
-                            openPaths={["/sites",this.state.path]}
+                            openPaths={["/sites", this.state.path]}
                             selectedPaths={[this.state.path]}
-                            openableTypes={['jnt:page','jnt:virtualsite','jnt:virtualsitesFolder','jnt:content']}
-                            selectableTypes={['jnt:page','jnt:content']}
-                            queryVariables={{lang:contextJsParameters.uilang}}
+                            openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:virtualsitesFolder', 'jnt:content']}
+                            selectableTypes={['jnt:page', 'jnt:content']}
+                            queryVariables={{lang: contextJsParameters.uilang}}
                             textRenderer={(entry) => entry.node.displayName}
                     />
                     <DialogActions>
-                        <Button onClick={this.handleClose}>Cancel</Button>
-                        <Button onClick={this.handleClose}>Submit</Button>
+                        <Button onClick={this.handleCloseDialog}>Cancel</Button>
+                        <Button onClick={this.handleCloseDialog}>Submit</Button>
                     </DialogActions>
                 </Dialog>
 
@@ -101,6 +143,6 @@ class VanityUrlsTableView extends React.Component {
 };
 
 
-VanityUrlsTableView = translate('seoSettings')(VanityUrlsTableView);
+VanityUrlsTableView = withStyles(styles)(translate('seoSettings')(VanityUrlsTableView));
 
 export {VanityUrlsTableView};

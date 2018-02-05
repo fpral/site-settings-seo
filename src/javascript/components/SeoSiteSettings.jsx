@@ -3,11 +3,11 @@ import {AppBar, Paper, Toolbar, Typography, withStyles} from 'material-ui';
 import {DxContextProvider, LanguageSwitcher, store, theme} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
 import {VanityUrlsTable} from "./VanityUrlsTable";
+import {grey} from 'material-ui/colors'
 
 const styles = theme => ({
     root: theme.mixins.gutters({
-        padding: 16,
-        margin: theme.spacing.unit * 3,
+        backgroundColor: grey[100]
     }),
 });
 
