@@ -121,15 +121,8 @@
                         <goals>
                             <goal>webpack</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>webpack-app</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>webpack</goal>
-                        </goals>
                         <configuration>
-                            <arguments>--config webpack-apps.config.js</arguments>
+                            <arguments>--config webpack.config.js</arguments>
                         </configuration>
                     </execution>                    
                 </executions>

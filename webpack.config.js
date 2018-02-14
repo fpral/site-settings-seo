@@ -1,25 +1,28 @@
-let SystemJSPlugin = require('webpack-systemjs-bundle-plugin/');
-let webpack = require('webpack');
-let nodeExternals = require('webpack-node-externals');
-
 let config = {
         entry: {
-            'seo-settings': ['.']
+            'seoSiteSettings': './src/javascript/seoSiteSettings-app.jsx'
         },
 
-        externals: [
-            nodeExternals({importType: 'amd', whitelist:["material-ui-pagination"]})
-        ],
-
         output: {
-            path: __dirname + '/src/main/resources/javascript/bundles/',
+            path: __dirname + '/src/main/resources/javascript/apps/',
             filename: "[name].js",
-            libraryTarget: "amd",
-            library: "[name]_[hash]"
         },
 
         module: {
-            loaders: [
+            rules: [
+                {
+                    test: /\.css$/,
+                    use: [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                modules: true,
+                            }
+                        },
+                    ]
+                },
+
                 {
                     test: /\.jsx?$/,
                     exclude: /node_modules/,
@@ -37,13 +40,10 @@ let config = {
         },
 
         plugins: [
-            new SystemJSPlugin({
-                path: __dirname + "/src/main/resources/javascript/bundles/[name].config.json",
-                name: "[name]_[hash]"
-            }),
         ],
 
-        devtool: 'source-map'
+        devtool: 'source-map',
+        watch: false
 
     }
 ;

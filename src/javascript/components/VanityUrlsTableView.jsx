@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Button,
     Collapse,
     Dialog,
     DialogActions,
@@ -90,12 +89,10 @@ class VanityUrlsTableView extends React.Component {
                                                     <TableBody>
                                                         {row.urls.map(url => (
                                                             <TableRow key={url.url}>
-                                                                <TableCell>{url.url}</TableCell>
+                                                                <TableCell>{url.url} AAAA</TableCell>
                                                                 <TableCell>{url.language}</TableCell>
                                                                 <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
                                                                 <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
-                                                                <TableCell><Button
-                                                                    onClick={() => this.handleOpenDialog(row.path)}>{t('label.select')}</Button></TableCell>
                                                             </TableRow>
                                                         ))}
                                                     </TableBody>
@@ -116,27 +113,6 @@ class VanityUrlsTableView extends React.Component {
                     }
                 </List>
                 <Pagination {...this.props} />
-                <Dialog
-                    fullScreen
-                    open={this.state.open}
-                    onClose={this.handleCloseDialog}
-                >
-                    <DialogTitle>Select page</DialogTitle>
-                    <Picker rootPaths={["/sites"]}
-                            openPaths={["/sites", this.state.path]}
-                            selectedPaths={[this.state.path]}
-                            openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:virtualsitesFolder', 'jnt:content']}
-                            selectableTypes={['jnt:page', 'jnt:content']}
-                            queryVariables={{lang: contextJsParameters.uilang}}
-                            textRenderer={(entry) => entry.node.displayName}
-                    />
-                    <DialogActions>
-                        <Button onClick={this.handleCloseDialog}>Cancel</Button>
-                        <Button onClick={this.handleCloseDialog}>Submit</Button>
-                    </DialogActions>
-                </Dialog>
-
-
             </div>
         )
     }
