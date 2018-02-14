@@ -1,9 +1,6 @@
 import React from 'react';
 import {
     Collapse,
-    Dialog,
-    DialogActions,
-    DialogTitle,
     Grid,
     List,
     ListItem,
@@ -66,7 +63,6 @@ class VanityUrlsTableView extends React.Component {
     render() {
         const {rows, t, classes} = this.props;
 
-        let Picker = withPickerModel(["displayName"], "pageSelector")(PickerViewMaterial);
         return (
             <div>
                 <List>
@@ -89,7 +85,7 @@ class VanityUrlsTableView extends React.Component {
                                                     <TableBody>
                                                         {row.urls.map(url => (
                                                             <TableRow key={url.url}>
-                                                                <TableCell>{url.url} AAAA</TableCell>
+                                                                <TableCell>{url.url}</TableCell>
                                                                 <TableCell>{url.language}</TableCell>
                                                                 <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
                                                                 <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
@@ -116,8 +112,7 @@ class VanityUrlsTableView extends React.Component {
             </div>
         )
     }
-};
-
+}
 
 VanityUrlsTableView = withStyles(styles)(translate('seoSettings')(VanityUrlsTableView));
 

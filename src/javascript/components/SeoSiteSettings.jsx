@@ -25,7 +25,7 @@ let SeoSiteSettingsApp = function (props) {
             </AppBar>
 
             <Paper elevation={1} className={props.classes.root}>
-                <VanityUrlsTable></VanityUrlsTable>
+                <VanityUrlsTable path={contextJsParameters.mainResourcePath}></VanityUrlsTable>
             </Paper>
         </div>
     )

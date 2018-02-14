@@ -12,7 +12,8 @@ class VanityUrlsTable extends React.Component {
     mapStateToProps(state, ownProps) {
         return {
             pageSize: state["pageSize"] ? state["pageSize"] : 5,
-            currentPage: state["currentPage"] ? state["currentPage"] : 0
+            currentPage: state["currentPage"] ? state["currentPage"] : 0,
+            path: ownProps.path
         }
     };
 

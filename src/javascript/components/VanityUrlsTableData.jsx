@@ -18,10 +18,10 @@ let mapResultsToProps = ({data, ownProps}) => {
                 uuid:n.parent.uuid,
                 displayName:n.parent.displayName,
                 urls: _.map(n.children.nodes, u => ({
-                    url: u.url.value,
-                    language: u.language.value,
-                    active: u.active.value,
-                    default: u.default.value
+                    url: u.url,
+                    language: u.language,
+                    active: u.active,
+                    default: u.default
                 }))
             }))
         }
@@ -39,7 +39,8 @@ let mapPropsToOptions = (props) => {
     let vars = {
         lang:contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
-        limit: props.pageSize
+        limit: props.pageSize,
+        query: "select * from [jnt:vanityUrls] where isDescendantNode('" + props.path + "')"
     };
 
     return {
@@ -48,9 +49,9 @@ let mapPropsToOptions = (props) => {
 };
 
 let query = gql`
-    query NodesQuery($lang:String!, $offset: Int, $limit:Int) {
+    query NodesQuery($lang:String!, $offset: Int, $limit:Int, $query:String!) {
         jcr {
-            vanityUrls:nodesByQuery(query :"select * from [jnt:vanityUrls]", limit: $limit, offset: $offset) {
+            vanityUrls:nodesByQuery(query : $query, limit: $limit, offset: $offset) {
                 pageInfo {
                     totalCount
                 }
@@ -61,23 +62,18 @@ let query = gql`
                         displayName(language:$lang)
                         uuid
                         path
+                        
                     }
                     children {
                         nodes {
-                            uuid
-                            path
-                            url:property(name:"j:url") {
-                                value
-                            } 
-                            language:property(name:"jcr:language") {
-                                value
-                            }
-                            active:property(name:"j:active") {
-                                value
-                            }
-                            default:property(name:"j:default") {
-                                value
-                            }
+                            ... on VanityUrl {
+                                active
+                                default
+                                url
+                                language
+                                uuid
+                                path
+                            }   
                         }
                     }
                 }
