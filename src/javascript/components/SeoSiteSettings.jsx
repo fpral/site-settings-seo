@@ -5,6 +5,7 @@ import {client} from '@jahia/apollo-dx';
 import {VanityUrlsTable} from "./VanityUrlsTable";
 import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
+import {SiteName} from './SiteName';
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -18,7 +19,7 @@ let SeoSiteSettingsApp = function (props) {
             <AppBar position="static">
                 <Toolbar>
                     <Typography type="title" color="inherit">
-                        {props.t('label.title')} - props.
+                        {props.t('label.title')} - <SiteName path={contextJsParameters.mainResourcePath}/>
                     </Typography>
                 </Toolbar>
             </AppBar>
