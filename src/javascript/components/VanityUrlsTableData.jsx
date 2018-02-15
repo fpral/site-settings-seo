@@ -14,10 +14,10 @@ let mapResultsToProps = ({data, ownProps}) => {
             totalCount : data.jcr.vanityUrls.pageInfo.totalCount,
             numberOfPages: (data.jcr.vanityUrls.pageInfo.totalCount / ownProps.pageSize),
             rows: _.map(data.jcr.vanityUrls.nodes, n => ({
-                path:n.parent.path,
-                uuid:n.parent.uuid,
-                displayName:n.parent.displayName,
-                urls: _.map(n.children.nodes, u => ({
+                path:n.path,
+                uuid:n.uuid,
+                displayName:n.displayName,
+                urls: _.map(n.vanityUrls, u => ({
                     url: u.url,
                     language: u.language,
                     active: u.active,
@@ -40,7 +40,7 @@ let mapPropsToOptions = (props) => {
         lang:contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
-        query: "select * from [jnt:vanityUrls] where isDescendantNode('" + props.path + "')"
+        query: "select * from [" + props.type + "] where isDescendantNode('" + props.path + "')"
     };
 
     return {
@@ -51,7 +51,7 @@ let mapPropsToOptions = (props) => {
 let query = gql`
     query NodesQuery($lang:String!, $offset: Int, $limit:Int, $query:String!) {
         jcr {
-            vanityUrls:nodesByQuery(query : $query, limit: $limit, offset: $offset) {
+            nodesByQuery(query : $query, limit: $limit, offset: $offset) {
                 pageInfo {
                     totalCount
                 }
@@ -62,7 +62,7 @@ let query = gql`
                         displayName(language:$lang)
                         uuid
                         path
-                        
+
                     }
                     children {
                         nodes {
@@ -73,11 +73,33 @@ let query = gql`
                                 language
                                 uuid
                                 path
-                            }   
+                            }
                         }
                     }
                 }
-                        
+
+            }
+            vanityUrls:nodesByQuery(
+                query : $query,
+                limit: $limit,
+                offset: $offset,
+                fieldFilter: {filters: [{fieldName: "vanityUrls", evaluation: NOT_EMPTY}]}) {
+                pageInfo {
+                    totalCount
+                }
+                nodes {
+                    uuid
+                    path
+                    displayName(language:$lang)
+                    vanityUrls {
+                        active
+                        default
+                        url
+                        language
+                        uuid
+                        path
+                    }
+                }
             }
         }
     }`;
