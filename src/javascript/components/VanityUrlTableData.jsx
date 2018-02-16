@@ -1,5 +1,5 @@
 import React from 'react';
-import {VanityUrlsTableView} from './VanityUrlsTableView'
+import {VanityUrlTableView} from './VanityUrlTableView'
 import {ApolloProvider, graphql} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
@@ -90,9 +90,9 @@ let query = gql`
     }
 `;
 
-let VanityUrlsTableData = graphql(query, {
+let VanityUrlTableData = graphql(query, {
     props: mapResultsToProps,
     options: mapPropsToOptions
-})(VanityUrlsTableView);
+})(VanityUrlTableView);
 
-export {VanityUrlsTableData};
+export {VanityUrlTableData};

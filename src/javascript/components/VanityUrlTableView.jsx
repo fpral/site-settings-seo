@@ -35,7 +35,7 @@ const styles = theme => ({
 
 });
 
-class VanityUrlsTableView extends React.Component {
+class VanityUrlTableView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -127,6 +127,6 @@ class VanityUrlsTableView extends React.Component {
     }
 }
 
-VanityUrlsTableView = withStyles(styles)(translate('seoSettings')(VanityUrlsTableView));
+VanityUrlTableView = withStyles(styles)(translate('site-settings-seo')(VanityUrlTableView));
 
-export {VanityUrlsTableView};
+export {VanityUrlTableView};

@@ -2,7 +2,7 @@ import React from 'react';
 import {AppBar, Paper, Toolbar, Typography, withStyles} from 'material-ui';
 import {DxContextProvider, LanguageSwitcher, store, theme} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
-import {VanityUrlsTable} from "./VanityUrlsTable";
+import {VanityUrlTable} from "./VanityUrlTable";
 import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
 import {SiteName} from './SiteName';
@@ -13,7 +13,7 @@ const styles = theme => ({
     }),
 });
 
-let SeoSiteSettingsApp = function (props) {
+let SiteSettingsSeoApp = function (props) {
     return (
         <div>
             <AppBar position="static">
@@ -25,21 +25,21 @@ let SeoSiteSettingsApp = function (props) {
             </AppBar>
 
             <Paper elevation={1} className={props.classes.root}>
-                <VanityUrlsTable path={props.dxContext.mainResourcePath} type={'jmix:vanityUrlMapped'}></VanityUrlsTable>
+                <VanityUrlTable path={props.dxContext.mainResourcePath} type={'jmix:vanityUrlMapped'}></VanityUrlTable>
             </Paper>
         </div>
     )
 }
 
 
-SeoSiteSettingsApp = withStyles(styles)(translate('seoSettings')(SeoSiteSettingsApp));
+SiteSettingsSeoApp = withStyles(styles)(translate('site-settings-seo')(SiteSettingsSeoApp));
 
 
-let SeoSiteSettings = function (props) {
+let SiteSettingsSeo = function (props) {
     return (<DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-                <SeoSiteSettingsApp {...props} />
+                <SiteSettingsSeoApp {...props} />
             </DxContextProvider>
     )
 };
 
-export {SeoSiteSettings};
+export {SiteSettingsSeo};

@@ -1,6 +1,6 @@
 let config = {
         entry: {
-            'seoSiteSettings': './src/javascript/seoSiteSettings-app.jsx'
+            'siteSettingsSeo': './src/javascript/siteSettingsSeo-app.jsx'
         },
 
         output: {

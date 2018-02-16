@@ -1,12 +1,12 @@
 import React from 'react';
 import {connect, Provider} from 'react-redux'
-import {VanityUrlsTableData} from './VanityUrlsTableData'
+import {VanityUrlTableData} from './VanityUrlTableData'
 import {reducers, store, resetStateReducer} from "@jahia/react-dxcomponents";
 
-class VanityUrlsTable extends React.Component {
+class VanityUrlTable extends React.Component {
     constructor(props) {
         super(props);
-        this.Component = connect(this.mapStateToProps, this.mapDispatchToProps)(VanityUrlsTableData);
+        this.Component = connect(this.mapStateToProps, this.mapDispatchToProps)(VanityUrlTableData);
     }
 
     mapStateToProps(state, ownProps) {
@@ -63,4 +63,4 @@ class VanityUrlsTable extends React.Component {
     }
 }
 
-export { VanityUrlsTable };
+export { VanityUrlTable };
