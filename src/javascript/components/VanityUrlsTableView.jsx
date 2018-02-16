@@ -83,7 +83,7 @@ class VanityUrlsTableView extends React.Component {
                                             <Paper elevation={4}>
                                                 <Table>
                                                     <TableBody>
-                                                        {row.urls.map(url => (
+                                                        {row.defaultUrls.map(url => (
                                                             <TableRow key={url.url}>
                                                                 <TableCell>{url.url}</TableCell>
                                                                 <TableCell>{url.language}</TableCell>
@@ -100,7 +100,20 @@ class VanityUrlsTableView extends React.Component {
                                                 Live
                                             </Typography>
 
-                                            <Paper elevation={4}>Live</Paper>
+                                            <Paper elevation={4}>
+                                                <Table>
+                                                    <TableBody>
+                                                        {row.liveUrls.map(url => (
+                                                            <TableRow key={url.url}>
+                                                                <TableCell>{url.url}</TableCell>
+                                                                <TableCell>{url.language}</TableCell>
+                                                                <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
+                                                                <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </Paper>
                                         </Grid>
                                     </Grid>
                                 </div>

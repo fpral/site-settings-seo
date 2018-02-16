@@ -11,33 +11,40 @@ let mapResultsToProps = ({data, ownProps}) => {
     if (jcr) {
         return {
             ...ownProps,
-            totalCount : data.jcr.vanityUrls.pageInfo.totalCount,
-            numberOfPages: (data.jcr.vanityUrls.pageInfo.totalCount / ownProps.pageSize),
-            rows: _.map(data.jcr.vanityUrls.nodes, n => ({
-                path:n.path,
-                uuid:n.uuid,
-                displayName:n.displayName,
-                urls: _.map(n.vanityUrls, u => ({
+            totalCount: data.jcr.nodesByQuery.pageInfo.totalCount,
+            numberOfPages: (data.jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
+            rows: _.map(data.jcr.nodesByQuery.nodes, n => ({
+                path: n.path,
+                uuid: n.uuid,
+                displayName: n.displayName,
+                defaultUrls: _.map(n.vanityUrls, u => ({
+                    url: u.url,
+                    language: u.language,
+                    active: u.active,
+                    default: u.default
+                })),
+                liveUrls: _.map(n.nodeInWorkspace.vanityUrls, u => ({
                     url: u.url,
                     language: u.language,
                     active: u.active,
                     default: u.default
                 }))
+
             }))
         }
     }
 
     return {
         ...ownProps,
-        totalCount:0,
+        totalCount: 0,
         numberOfPages: 0,
-        rows:[]
+        rows: []
     }
 };
 
 let mapPropsToOptions = (props) => {
     let vars = {
-        lang:contextJsParameters.uilang,
+        lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
         query: "select * from [" + props.type + "] where isDescendantNode('" + props.path + "')"
@@ -49,48 +56,16 @@ let mapPropsToOptions = (props) => {
 };
 
 let query = gql`
-    query NodesQuery($lang:String!, $offset: Int, $limit:Int, $query:String!) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!) {
         jcr {
-            nodesByQuery(query : $query, limit: $limit, offset: $offset) {
+            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: {filters: [{fieldName: "vanityUrls", evaluation: NOT_EMPTY}]}) {
                 pageInfo {
                     totalCount
                 }
                 nodes {
                     uuid
                     path
-                    parent {
-                        displayName(language:$lang)
-                        uuid
-                        path
-
-                    }
-                    children {
-                        nodes {
-                            ... on VanityUrl {
-                                active
-                                default
-                                url
-                                language
-                                uuid
-                                path
-                            }
-                        }
-                    }
-                }
-
-            }
-            vanityUrls:nodesByQuery(
-                query : $query,
-                limit: $limit,
-                offset: $offset,
-                fieldFilter: {filters: [{fieldName: "vanityUrls", evaluation: NOT_EMPTY}]}) {
-                pageInfo {
-                    totalCount
-                }
-                nodes {
-                    uuid
-                    path
-                    displayName(language:$lang)
+                    displayName(language: $lang)
                     vanityUrls {
                         active
                         default
@@ -99,10 +74,21 @@ let query = gql`
                         uuid
                         path
                     }
+                    nodeInWorkspace(workspace: LIVE) {
+                        vanityUrls {
+                            active
+                            default
+                            url
+                            language
+                            uuid
+                            path
+                        }
+                    }
                 }
             }
         }
-    }`;
+    }
+`;
 
 let VanityUrlsTableData = graphql(query, {
     props: mapResultsToProps,

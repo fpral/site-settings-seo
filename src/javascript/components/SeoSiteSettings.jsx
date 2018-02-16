@@ -19,13 +19,13 @@ let SeoSiteSettingsApp = function (props) {
             <AppBar position="static">
                 <Toolbar>
                     <Typography type="title" color="inherit">
-                        {props.t('label.title')} - <SiteName path={contextJsParameters.mainResourcePath}/>
+                        {props.t('label.title')} - <SiteName path={props.dxContext.mainResourcePath}/>
                     </Typography>
                 </Toolbar>
             </AppBar>
 
             <Paper elevation={1} className={props.classes.root}>
-                <VanityUrlsTable path={contextJsParameters.mainResourcePath} type={'jnt:page'}></VanityUrlsTable>
+                <VanityUrlsTable path={props.dxContext.mainResourcePath} type={'jmix:vanityUrlMapped'}></VanityUrlsTable>
             </Paper>
         </div>
     )
