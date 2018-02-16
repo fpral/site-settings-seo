@@ -23,7 +23,7 @@
                                    jcr:mixinTypes="jmix:rbTitle"
                                    j:titleKey="siteSettingsSeo.title">
                             <pagecontent jcr:primaryType="jnt:contentList">
-                                <seo j:view="app" jcr:mixinTypes="jmix:renderable" jcr:primaryType="jnt:siteSettingsSeo"/>
+                                <seo jcr:primaryType="jnt:siteSettingsSeo"/>
                             </pagecontent>
                         </vanity-url-dashboard>
                     </site-settings-base>
