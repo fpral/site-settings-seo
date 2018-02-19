@@ -1,19 +1,13 @@
 import React from 'react';
 import {translate} from 'react-i18next';
+import {VanityUrl} from './VanityUrl';
 
 import {
     Paper,
     Table,
     TableBody,
-    TableCell,
-    TableRow,
-    Typography,
+    Typography
 } from 'material-ui';
-
-import {
-    Check,
-    Star
-} from 'material-ui-icons';
 
 class VanityUrlList extends React.Component {
 
@@ -30,14 +24,7 @@ class VanityUrlList extends React.Component {
                 <Paper elevation={4}>
                     <Table>
                         <TableBody>
-                            {this.props.vanityUrls.map(url => (
-                                <TableRow key={url.url}>
-                                    <TableCell>{url.url}</TableCell>
-                                    <TableCell>{url.language}</TableCell>
-                                    <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
-                                    <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
-                                </TableRow>
-                            ))}
+                            {this.props.vanityUrls.map(url => (<VanityUrl url={url}/>))}
                         </TableBody>
                     </Table>
                 </Paper>
