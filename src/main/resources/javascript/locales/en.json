@@ -1,5 +1,9 @@
 {
   "label": {
-    "title": "Vanity URL Dashboard"
+    "title": "Vanity URL Dashboard",
+    "mappings": {
+        "default": "Default mappings",
+        "live": "Live mappings"
+    }
   }
 }
