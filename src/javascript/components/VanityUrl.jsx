@@ -18,14 +18,18 @@ class VanityUrl extends React.Component {
 
     render() {
         let url = this.props.url;
-        return (
-            <TableRow key={url.url}>
-                <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
-                <TableCell>{url.url}</TableCell>
-                <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
-                <TableCell>{url.language}</TableCell>
-            </TableRow>
-        );
+        if (url) {
+            return (
+                <TableRow>
+                    <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
+                    <TableCell>{url.url}</TableCell>
+                    <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
+                    <TableCell>{url.language}</TableCell>
+                </TableRow>
+            );
+        } else {
+            return <TableRow><TableCell colSpan={4}>{/*Not there anymore (deleted or moved)*/}</TableCell></TableRow>
+        }
     }
 }
 

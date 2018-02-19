@@ -24,7 +24,7 @@ class VanityUrlList extends React.Component {
                 <Paper elevation={4}>
                     <Table>
                         <TableBody>
-                            {this.props.vanityUrls.map(url => (<VanityUrl url={url}/>))}
+                            {this.props.vanityUrls.map(url => (<VanityUrl key={url.uuid} url={url[this.props.workspace]}/>))}
                         </TableBody>
                     </Table>
                 </Paper>

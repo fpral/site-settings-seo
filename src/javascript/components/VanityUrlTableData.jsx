@@ -13,24 +13,18 @@ let mapResultsToProps = ({data, ownProps}) => {
             ...ownProps,
             totalCount: data.jcr.nodesByQuery.pageInfo.totalCount,
             numberOfPages: (data.jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
-            rows: _.map(data.jcr.nodesByQuery.nodes, n => ({
-                path: n.path,
-                uuid: n.uuid,
-                displayName: n.displayName,
-                defaultUrls: _.map(n.vanityUrls, u => ({
-                    url: u.url,
-                    language: u.language,
-                    active: u.active,
-                    default: u.default
-                })),
-                liveUrls: _.map(n.nodeInWorkspace.vanityUrls, u => ({
-                    url: u.url,
-                    language: u.language,
-                    active: u.active,
-                    default: u.default
-                }))
+            rows: _.map(data.jcr.nodesByQuery.nodes, n => {
+                let defaultUrls = _.keyBy(_.map(n.vanityUrls, o=> ({uuid:o.uuid, default:o})), 'uuid');
+                let liveUrls = _.keyBy(_.map(n.nodeInWorkspace.vanityUrls, o=> ({uuid:o.uuid, live:o})), 'uuid');
+                let urls = _.merge(defaultUrls, liveUrls);
 
-            }))
+                return {
+                    path: n.path,
+                    uuid: n.uuid,
+                    displayName: n.displayName,
+                    urls: _.values(urls)
+                }
+            })
         }
     }
 

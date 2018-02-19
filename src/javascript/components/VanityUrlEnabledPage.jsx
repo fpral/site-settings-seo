@@ -39,10 +39,10 @@ class VanityUrlEnabledPage extends React.Component {
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <Grid container spacing={24} className={this.props.classes.nested}>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlList workspace="default" vanityUrls={page.defaultUrls}/>
+                            <VanityUrlList workspace="default" vanityUrls={page.urls}/>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlList workspace="live" vanityUrls={page.liveUrls}/>
+                            <VanityUrlList workspace="live" vanityUrls={page.urls}/>
                         </Grid>
                     </Grid>
                 </Collapse>
