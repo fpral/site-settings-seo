@@ -1,19 +1,28 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 
-import {
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Typography
-} from 'material-ui';
+import {Paper, Switch, Table, TableBody, TableCell, TableRow, Typography, withStyles} from 'material-ui';
 
-import {
-    Check,
-    Star
-} from 'material-ui-icons';
+import {CheckBoxOutlineBlank, Star} from 'material-ui-icons';
+
+const styles = (theme) => ({
+    root: {
+        '&:hover $hiddenOnHover': {
+            transition: ["opacity","0.25s"],
+            opacity:1
+        }
+    },
+    hiddenOnHover: {
+        opacity:0,
+        transition: ["opacity","0.25s"],
+    },
+    checkboxLeft: {
+        marginLeft: '-48px',
+        marginTop: '12px',
+        position: 'absolute',
+        border: '0'
+    }
+});
 
 class VanityUrlListDefault extends React.Component {
 
@@ -22,29 +31,31 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
+        let { vanityUrls, classes, t } = this.props;
         return (
             <div>
                 <Typography variant="title" >
-                    {this.props.t('label.mappings.default')}
+                    {t('label.mappings.default')}
                 </Typography>
                 <Paper elevation={4}>
                     <Table>
                         <TableBody>
-                            {this.props.vanityUrls.map(urlPair => {
+                            {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
                                 if (url) {
                                     return (
-                                        <TableRow>
-                                            <TableCell>{url.active ? <Check/> : <div/>}</TableCell>
-                                            <TableCell>{url.url}</TableCell>
-                                            <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
-                                            <TableCell>{url.language}</TableCell>
+                                        <TableRow hover classes={{root:classes.root}}>
+                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft],' ')}><CheckBoxOutlineBlank/></TableCell>
+                                            <TableCell padding={'none'}><Switch checked={url.active} color="primary"></Switch>{url.url}</TableCell>
+                                            <TableCell padding={'none'} className={classes.hiddenOnHover}>[Actions]</TableCell>
+                                            <TableCell padding={'none'}>{url.default ? <Star/> : <div/>}</TableCell>
+                                            <TableCell padding={'none'}>{url.language}</TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
                                         <TableRow>
-                                            <TableCell colSpan={4}>{/*Not there anymore (deleted or moved)*/}</TableCell>
+                                            <TableCell colSpan={6}>{/*Not there anymore (deleted or moved)*/}</TableCell>
                                         </TableRow>
                                     );
                                 }
@@ -77,15 +88,15 @@ class VanityUrlListLive extends React.Component {
                                 if (url) {
                                     return (
                                         <TableRow>
-                                            <TableCell>{url.url}</TableCell>
-                                            <TableCell>{url.default ? <Star/> : <div/>}</TableCell>
-                                            <TableCell>{url.language}</TableCell>
+                                            <TableCell padding={'dense'}>{url.url}</TableCell>
+                                            <TableCell padding={'none'}>{url.default ? <Star/> : <div/>}</TableCell>
+                                            <TableCell padding={'none'}>{url.language}</TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
                                         <TableRow>
-                                            <TableCell colSpan={4}>{/*Not there anymore (deleted or moved)*/}</TableCell>
+                                            <TableCell colSpan={3}>{/*Not published yet */}</TableCell>
                                         </TableRow>
                                     );
                                 }
@@ -98,7 +109,7 @@ class VanityUrlListLive extends React.Component {
     }
 }
 
-VanityUrlListDefault = translate('site-settings-seo')(VanityUrlListDefault);
+VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
 VanityUrlListLive = translate('site-settings-seo')(VanityUrlListLive);
 
 export {VanityUrlListLive};
