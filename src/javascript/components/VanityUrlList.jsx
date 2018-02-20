@@ -21,6 +21,9 @@ const styles = (theme) => ({
         marginTop: '12px',
         position: 'absolute',
         border: '0'
+    },
+    boxTitle: {
+        padding: theme.spacing.unit
     }
 });
 
@@ -34,7 +37,7 @@ class VanityUrlListDefault extends React.Component {
         let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography variant="title" >
+                <Typography type="caption" className={classes.boxTitle} >
                     {t('label.mappings.default')}
                 </Typography>
                 <Paper elevation={4}>
@@ -44,7 +47,7 @@ class VanityUrlListDefault extends React.Component {
                                 let url = urlPair.default;
                                 if (url) {
                                     return (
-                                        <TableRow hover classes={{root:classes.root}}>
+                                        <TableRow key={urlPair.uuid} hover classes={{root:classes.root}}>
                                             <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft],' ')}><CheckBoxOutlineBlank/></TableCell>
                                             <TableCell padding={'none'}><Switch checked={url.active} color="primary"></Switch>{url.url}</TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover}>[Actions]</TableCell>
@@ -54,7 +57,7 @@ class VanityUrlListDefault extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <TableRow>
+                                        <TableRow key={urlPair.uuid}>
                                             <TableCell colSpan={6}>{/*Not there anymore (deleted or moved)*/}</TableCell>
                                         </TableRow>
                                     );
@@ -75,19 +78,20 @@ class VanityUrlListLive extends React.Component {
     }
 
     render() {
+        let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography variant="title" >
-                    {this.props.t('label.mappings.live')}
+                <Typography type="caption" className={classes.boxTitle} >
+                    {t('label.mappings.live')}
                 </Typography>
                 <Paper elevation={4}>
                     <Table>
                         <TableBody>
-                            {this.props.vanityUrls.map(urlPair => {
+                            {vanityUrls.map(urlPair => {
                                 let url = urlPair.live;
                                 if (url) {
                                     return (
-                                        <TableRow>
+                                        <TableRow key={urlPair.uuid}>
                                             <TableCell padding={'dense'}>{url.url}</TableCell>
                                             <TableCell padding={'none'}>{url.default ? <Star/> : <div/>}</TableCell>
                                             <TableCell padding={'none'}>{url.language}</TableCell>
@@ -95,7 +99,7 @@ class VanityUrlListLive extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <TableRow>
+                                        <TableRow key={urlPair.uuid} >
                                             <TableCell colSpan={3}>{/*Not published yet */}</TableCell>
                                         </TableRow>
                                     );
@@ -110,7 +114,7 @@ class VanityUrlListLive extends React.Component {
 }
 
 VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
-VanityUrlListLive = translate('site-settings-seo')(VanityUrlListLive);
+VanityUrlListLive = withStyles(styles)(translate('site-settings-seo')(VanityUrlListLive));
 
 export {VanityUrlListLive};
 export {VanityUrlListDefault};
