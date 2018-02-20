@@ -1,5 +1,9 @@
 import React from 'react';
-import {VanityUrlList} from './VanityUrlList';
+
+import {
+    VanityUrlListDefault,
+    VanityUrlListLive,
+} from './VanityUrlList';
 
 import {
     Collapse,
@@ -39,10 +43,10 @@ class VanityUrlEnabledPage extends React.Component {
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <Grid container spacing={24} className={this.props.classes.nested}>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlList workspace="default" vanityUrls={page.urls}/>
+                            <VanityUrlListDefault vanityUrls={page.urls}/>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlList workspace="live" vanityUrls={page.urls}/>
+                            <VanityUrlListLive vanityUrls={page.urls}/>
                         </Grid>
                     </Grid>
                 </Collapse>
