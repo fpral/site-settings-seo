@@ -19,7 +19,7 @@ import {
     ExpandMore
 } from 'material-ui-icons';
 
-class VanityUrlEnabledPage extends React.Component {
+class VanityUrlEnabledContent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,20 +33,20 @@ class VanityUrlEnabledPage extends React.Component {
     };
 
     render() {
-        let page = this.props.page;
+        let content = this.props.content;
         return (
             <div className={this.props.classes.root}>
                 <ListItem button onClick={() => this.handleItemClick()} >
                     <ListItemIcon>{this.state.open ? <ExpandLess/> : <ExpandMore/>}</ListItemIcon>
-                    <ListItemText inset primary={page.displayName} secondary={page.path}/>
+                    <ListItemText inset primary={content.displayName} secondary={content.path}/>
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <Grid container spacing={24} className={this.props.classes.nested}>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlListDefault vanityUrls={page.urls}/>
+                            <VanityUrlListDefault vanityUrls={content.urls}/>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <VanityUrlListLive vanityUrls={page.urls}/>
+                            <VanityUrlListLive vanityUrls={content.urls}/>
                         </Grid>
                     </Grid>
                 </Collapse>
@@ -55,4 +55,4 @@ class VanityUrlEnabledPage extends React.Component {
     }
 }
 
-export {VanityUrlEnabledPage};
+export {VanityUrlEnabledContent};

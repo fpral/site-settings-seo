@@ -1,5 +1,5 @@
 import React from 'react';
-import {VanityUrlEnabledPage} from './VanityUrlEnabledPage';
+import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 
 import {
     List,
@@ -43,7 +43,7 @@ class VanityUrlTableView extends React.Component {
         return (
             <div>
                 <List>
-                    {this.props.rows.map(row => (<VanityUrlEnabledPage key={row.uuid} page={row} classes={this.props.classes}/>))}
+                    {this.props.rows.map(row => (<VanityUrlEnabledContent key={row.uuid} content={row} classes={this.props.classes}/>))}
                 </List>
                 <Pagination {...this.props} />
             </div>
