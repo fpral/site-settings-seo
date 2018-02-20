@@ -37,11 +37,20 @@ let mapResultsToProps = ({data, ownProps}) => {
 };
 
 let mapPropsToOptions = (props) => {
+    let properties = ["jcr:title", "name"];
+    let filteredText = "";
+    if (props.filteredText) {
+        properties.forEach(
+            function(property, index) {
+                filteredText += (index > 0 ? " or " : " and ") + " LOWER(content.['" + property + "']) LIKE '%" + props.filteredText.toLowerCase() + "%'"
+            });
+    }
+
     let vars = {
         lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
-        query: "select * from [" + props.type + "] where isDescendantNode('" + props.path + "')"
+        query: "select * from [" + props.type + "] as content where isDescendantNode('" + props.path + "')" + (filteredText ? filteredText : "")
     };
 
     return {
@@ -52,7 +61,7 @@ let mapPropsToOptions = (props) => {
 let query = gql`
     query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!) {
         jcr {
-            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: {filters: [{fieldName: "vanityUrls", evaluation: NOT_EMPTY}]}) {
+            nodesByQuery(query: $query, limit: $limit, offset: $offset) {
                 pageInfo {
                     totalCount
                 }

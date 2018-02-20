@@ -2,32 +2,63 @@ import React from 'react';
 import {AppBar, Paper, Toolbar, Typography, withStyles} from 'material-ui';
 import {DxContextProvider, LanguageSwitcher, store, theme} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
-import {VanityUrlTable} from "./VanityUrlTable";
+import {VanityUrlTableData} from "./VanityUrlTableData";
 import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
-
+import {SearchField} from "./SearchField";
 const styles = theme => ({
     root: theme.mixins.gutters({
         backgroundColor: grey[100]
     }),
+    flexGrow: 1,
 });
 
-let SiteSettingsSeoApp = function (props) {
-    return (
-        <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography type="title" color="inherit">
-                        {props.t('label.title')} - {props.dxContext.siteTitle}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+class SiteSettingsSeoApp extends React.Component {
 
-            <Paper elevation={1} className={props.classes.root}>
-                <VanityUrlTable path={props.dxContext.mainResourcePath} type={'jmix:vanityUrlMapped'}></VanityUrlTable>
-            </Paper>
-        </div>
-    )
+    constructor(props) {
+        super(props);
+        this.state = {filteredText:'', currentPage:0, pageSize:5};
+        this.onChangePage.bind(this);
+        this.onChangeRowsPerPage.bind(this);
+        this.handleFilterChange.bind(this);
+    }
+
+    handleFilterChange = (filteredText) => {
+        this.setState({filteredText: filteredText});
+    }
+
+    onChangePage = (newPage) => {
+        this.setState({currentPage: newPage});
+    }
+    onChangeRowsPerPage = (newRowsPerPage) => {
+        this.setState({pageSize: newRowsPerPage})
+    }
+
+    render() {
+        return (
+            <div>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography type="title" color="inherit">
+                            {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
+                        </Typography>
+                        <SearchField handleFilterChange={this.handleFilterChange}/>
+                    </Toolbar>
+                </AppBar>
+
+                <Paper elevation={1} className={this.props.classes.root}>
+                    <VanityUrlTableData
+                        {...this.props}
+                        {...this.state}
+                        onChangePage={this.onChangePage}
+                        onChangeRowsPerPage={this.onChangeRowsPerPage}
+                        path={this.props.dxContext.mainResourcePath}
+                        type={'jmix:vanityUrlMapped'}
+                        filteredText={this.state.filteredText} />
+                </Paper>
+            </div>
+        )
+    }
 }
 
 
