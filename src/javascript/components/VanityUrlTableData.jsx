@@ -47,20 +47,21 @@ let mapPropsToOptions = (props) => {
         lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
-        query: "select * from [" + props.type + "] as content where isDescendantNode('" + props.path + "')",
-        filteredText: ".*(?i)" + props.filteredText + "(?-i).*",
-        vanityFilter: {filters: props.filteredText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}] : []}
+        query: "select * from [" + props.type + "] as content where isDescendantNode('" + props.path + "')" ,
+        vanityFilter: ".*(?i)" + props.filteredText + "(?-i).*",
+        queryFilter: {filters: props.filteredText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}] : []}
     };
 
     return {
         variables: vars,
+        fetchPolicy: props.filteredText ? 'network-only' : 'cache-first'
     }
 };
 
 let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filteredText: String, $vanityFilter: InputFieldFiltersInput) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $vanityFilter: String, $queryFilter: InputFieldFiltersInput) {
         jcr {
-            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $vanityFilter) {
+            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
                     totalCount
                 }
@@ -68,7 +69,7 @@ let query = gql`
                     uuid
                     path
                     displayName(language: $lang)
-                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $filteredText}]}) {
+                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $vanityFilter}]}) {
                         active
                         default
                         url
@@ -77,7 +78,7 @@ let query = gql`
                         path
                     }
                     nodeInWorkspace(workspace: LIVE) {
-                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $filteredText}]}) {
+                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $vanityFilter}]}) {
                             active
                             default
                             url
