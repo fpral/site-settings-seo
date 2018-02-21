@@ -27,6 +27,12 @@ const styles = (theme) => ({
     },
     inactive: {
         color: theme.palette.text.disabled
+    },
+    missingDefault: {
+        color: theme.palette.text.secondary
+    },
+    missingDefaultCounterpart: {
+        backgroundColor: theme.palette.error.light
     }
 });
 
@@ -51,7 +57,7 @@ class VanityUrlListDefault extends React.Component {
                                 if (url) {
                                     return (
                                         <TableRow key={urlPair.uuid} hover classes={{root:classes.root}}>
-                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft],' ')}>
+                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft], ' ')}>
                                                 <CheckBoxOutlineBlank/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
@@ -74,8 +80,8 @@ class VanityUrlListDefault extends React.Component {
                                 } else {
                                     return (
                                         <TableRow key={urlPair.uuid}>
-                                            <TableCell colSpan={6}>
-                                                {/*Not there anymore (deleted or moved)*/}
+                                            <TableCell colSpan={6} className={classes.missingDefault}>
+                                                {t('label.missingDefault', {vanityUrl: urlPair.live.url})}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -109,7 +115,7 @@ class VanityUrlListLive extends React.Component {
                                 let url = urlPair.live;
                                 if (url) {
                                     return (
-                                        <TableRow key={urlPair.uuid}>
+                                        <TableRow key={urlPair.uuid} className={urlPair.default ? '' : classes.missingDefaultCounterpart}>
                                             <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
                                                 {url.url}
                                             </TableCell>
