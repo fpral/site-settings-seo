@@ -6,11 +6,15 @@ import {Paper, Switch, Table, TableBody, TableCell, TableRow, Typography, withSt
 import {CheckBoxOutlineBlank, Star} from 'material-ui-icons';
 
 const styles = (theme) => ({
-    root: {
+    boxTitle: {
+        padding: theme.spacing.unit
+    },
+    vanityUrl: {
         '&:hover $hiddenOnHover': {
             transition: ["opacity","0.25s"],
             opacity:1
-        }
+        },
+        height: '52px'
     },
     hiddenOnHover: {
         opacity:0,
@@ -21,9 +25,6 @@ const styles = (theme) => ({
         marginTop: '12px',
         position: 'absolute',
         border: '0'
-    },
-    boxTitle: {
-        padding: theme.spacing.unit
     },
     inactive: {
         color: theme.palette.text.disabled
@@ -56,8 +57,8 @@ class VanityUrlListDefault extends React.Component {
                                 let url = urlPair.default;
                                 if (url) {
                                     return (
-                                        <TableRow key={urlPair.uuid} hover classes={{root:classes.root}}>
-                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft], ' ')}>
+                                        <TableRow key={urlPair.uuid} hover classes={{root: classes.vanityUrl}}>
+                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover, classes.checkboxLeft], ' ')}>
                                                 <CheckBoxOutlineBlank/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
@@ -79,8 +80,8 @@ class VanityUrlListDefault extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <TableRow key={urlPair.uuid}>
-                                            <TableCell colSpan={6} className={classes.missingDefault}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
+                                            <TableCell colSpan={6} padding={'dense'} className={classes.missingDefault}>
                                                 {t('label.missingDefault', {vanityUrl: urlPair.live.url})}
                                             </TableCell>
                                         </TableRow>
@@ -115,7 +116,7 @@ class VanityUrlListLive extends React.Component {
                                 let url = urlPair.live;
                                 if (url) {
                                     return (
-                                        <TableRow key={urlPair.uuid} className={urlPair.default ? '' : classes.missingDefaultCounterpart}>
+                                        <TableRow key={urlPair.uuid} className={_.join([classes.vanityUrl, (urlPair.default ? '' : classes.missingDefaultCounterpart)], ' ')}>
                                             <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
                                                 {url.url}
                                             </TableCell>
@@ -129,8 +130,8 @@ class VanityUrlListLive extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <TableRow key={urlPair.uuid} >
-                                            <TableCell colSpan={3}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
+                                            <TableCell colSpan={3} padding={'none'}>
                                                 {/*Not published yet */}
                                             </TableCell>
                                         </TableRow>
