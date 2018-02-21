@@ -6,23 +6,29 @@ import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
 
 let mapResultsToProps = ({data, ownProps}) => {
+
     let jcr = data.jcr;
 
     if (jcr) {
+
         return {
+
             ...ownProps,
             totalCount: data.jcr.nodesByQuery.pageInfo.totalCount,
             numberOfPages: (data.jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
-            rows: _.map(data.jcr.nodesByQuery.nodes, n => {
-                let defaultUrls = _.keyBy(_.map(n.vanityUrls, o=> ({uuid:o.uuid, default:o})), 'uuid');
-                let liveUrls = _.keyBy(_.map(n.nodeInWorkspace.vanityUrls, o=> ({uuid:o.uuid, live:o})), 'uuid');
-                let urls = _.merge(defaultUrls, liveUrls);
+
+            rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+
+                let defaultUrls = _.keyBy(_.map(contentNode.vanityUrls, vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
+                let liveUrls = _.keyBy(_.map(contentNode.nodeInWorkspace.vanityUrls, vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid');
+                let urlPairs = _.merge(defaultUrls, liveUrls);
+                urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
 
                 return {
-                    path: n.path,
-                    uuid: n.uuid,
-                    displayName: n.displayName,
-                    urls: _.values(urls)
+                    path: contentNode.path,
+                    uuid: contentNode.uuid,
+                    displayName: contentNode.displayName,
+                    urls: _.values(urlPairs)
                 }
             })
         }
