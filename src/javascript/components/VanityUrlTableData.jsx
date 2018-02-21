@@ -1,6 +1,6 @@
 import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
-import {ApolloProvider, graphql} from 'react-apollo';
+import {graphql} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
@@ -37,20 +37,13 @@ let mapResultsToProps = ({data, ownProps}) => {
 };
 
 let mapPropsToOptions = (props) => {
-    let properties = ["jcr:title", "name"];
-    let filteredText = "";
-    if (props.filteredText) {
-        properties.forEach(
-            function(property, index) {
-                filteredText += (index > 0 ? " or " : " and ") + " LOWER(content.['" + property + "']) LIKE '%" + props.filteredText.toLowerCase() + "%'"
-            });
-    }
-
     let vars = {
         lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
-        query: "select * from [" + props.type + "] as content where isDescendantNode('" + props.path + "')" + (filteredText ? filteredText : "")
+        query: "select * from [" + props.type + "] as content where isDescendantNode('" + props.path + "')",
+        filteredText: ".*(?i)" + props.filteredText + "(?-i).*",
+        vanityFilter: {filters: props.filteredText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}] : []}
     };
 
     return {
@@ -59,9 +52,9 @@ let mapPropsToOptions = (props) => {
 };
 
 let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filteredText: String, $vanityFilter: InputFieldFiltersInput) {
         jcr {
-            nodesByQuery(query: $query, limit: $limit, offset: $offset) {
+            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $vanityFilter) {
                 pageInfo {
                     totalCount
                 }
@@ -69,7 +62,7 @@ let query = gql`
                     uuid
                     path
                     displayName(language: $lang)
-                    vanityUrls {
+                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $filteredText}]}) {
                         active
                         default
                         url
@@ -78,7 +71,7 @@ let query = gql`
                         path
                     }
                     nodeInWorkspace(workspace: LIVE) {
-                        vanityUrls {
+                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $filteredText}]}) {
                             active
                             default
                             url
