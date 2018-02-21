@@ -24,6 +24,9 @@ const styles = (theme) => ({
     },
     boxTitle: {
         padding: theme.spacing.unit
+    },
+    inactive: {
+        color: theme.palette.text.disabled
     }
 });
 
@@ -48,17 +51,32 @@ class VanityUrlListDefault extends React.Component {
                                 if (url) {
                                     return (
                                         <TableRow key={urlPair.uuid} hover classes={{root:classes.root}}>
-                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft],' ')}><CheckBoxOutlineBlank/></TableCell>
-                                            <TableCell padding={'none'}><Switch checked={url.active} color="primary"></Switch>{url.url}</TableCell>
-                                            <TableCell padding={'none'} className={classes.hiddenOnHover}>[Actions]</TableCell>
-                                            <TableCell padding={'none'}>{url.default ? <Star/> : <div/>}</TableCell>
-                                            <TableCell padding={'none'}>{url.language}</TableCell>
+                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover,classes.checkboxLeft],' ')}>
+                                                <CheckBoxOutlineBlank/>
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                <Switch checked={url.active} color="primary"/>
+                                            </TableCell>
+                                            <TableCell padding={'none'} className={url.active ? '' : classes.inactive}>
+                                                {url.url}
+                                            </TableCell>
+                                            <TableCell padding={'none'} className={classes.hiddenOnHover}>
+                                                [Actions]
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                {url.default ? <Star/> : <div/>}
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                {url.language}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
                                         <TableRow key={urlPair.uuid}>
-                                            <TableCell colSpan={6}>{/*Not there anymore (deleted or moved)*/}</TableCell>
+                                            <TableCell colSpan={6}>
+                                                {/*Not there anymore (deleted or moved)*/}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 }
@@ -92,15 +110,23 @@ class VanityUrlListLive extends React.Component {
                                 if (url) {
                                     return (
                                         <TableRow key={urlPair.uuid}>
-                                            <TableCell padding={'dense'}>{url.url}</TableCell>
-                                            <TableCell padding={'none'}>{url.default ? <Star/> : <div/>}</TableCell>
-                                            <TableCell padding={'none'}>{url.language}</TableCell>
+                                            <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
+                                                {url.url}
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                {url.default ? <Star/> : <div/>}
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                {url.language}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
                                         <TableRow key={urlPair.uuid} >
-                                            <TableCell colSpan={3}>{/*Not published yet */}</TableCell>
+                                            <TableCell colSpan={3}>
+                                                {/*Not published yet */}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 }
