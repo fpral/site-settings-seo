@@ -7,14 +7,23 @@ const styles = theme => ({
     root: {
         position: 'absolute',
         'right': '20px',
+        'color': 'inherit',
+        'bottom': '10px',
     },
-    searchInput: {
-        color: 'white',
-        transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-        '& :focus':  {
-            width: '300px'
-        },
+    input: {
+        transitionProperty: 'width',
+        transitionDuration: '300ms',
+        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        transitionDelay: '0ms',
+        width: '200px',
+        '&:focus': {
+            width: '300px',
+        }
     },
+    searchIcon: {
+        'marginTop': 'auto',
+        'marginBottom': 'auto'
+    }
 });
 
 class SearchField extends React.Component {
@@ -33,11 +42,11 @@ class SearchField extends React.Component {
         const { classes } = this.props;
 
         return (
-            <div className={classes.root}>
-                <Input className={classes.searchInput}
+            <div>
+                <Input classes={{root: classes.root, input: classes.input}}
                        onChange={this.handleChange}
                        type="text"
-                       startAdornment={<InputAdornment position="start"><Search/></InputAdornment>}
+                       startAdornment={<InputAdornment classes={{root: classes.searchIcon}} position="start"><Search/></InputAdornment>}
                 />
             </div>
         )
