@@ -53,7 +53,6 @@ class SiteSettingsSeoApp extends React.Component {
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={this.onChangeRowsPerPage}
                         path={this.props.dxContext.mainResourcePath}
-                        type={'jmix:vanityUrlMapped'}
                         filteredText={this.state.filteredText} />
                 </Paper>
             </div>
