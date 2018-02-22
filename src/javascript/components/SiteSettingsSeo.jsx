@@ -6,6 +6,7 @@ import {VanityUrlTableData} from "./VanityUrlTableData";
 import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
 import {SearchField} from "./SearchField";
+
 const styles = theme => ({
     root: theme.mixins.gutters({
         backgroundColor: grey[100]
@@ -20,18 +21,19 @@ class SiteSettingsSeoApp extends React.Component {
         this.state = {filteredText:'', currentPage:0, pageSize:5};
         this.onChangePage.bind(this);
         this.onChangeRowsPerPage.bind(this);
-        this.handleFilterChange.bind(this);
+        this.onChangeFilter.bind(this);
     }
 
-    handleFilterChange = (filteredText) => {
+    onChangeFilter = (filteredText) => {
         this.setState({filteredText: filteredText});
     }
 
     onChangePage = (newPage) => {
         this.setState({currentPage: newPage});
     }
+
     onChangeRowsPerPage = (newRowsPerPage) => {
-        this.setState({pageSize: newRowsPerPage})
+        this.setState({pageSize: newRowsPerPage});
     }
 
     render() {
@@ -42,7 +44,7 @@ class SiteSettingsSeoApp extends React.Component {
                         <Typography type="title" color="inherit">
                             {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
                         </Typography>
-                        <SearchField handleFilterChange={this.handleFilterChange}/>
+                        <SearchField onChangeFilter={this.onChangeFilter}/>
                     </Toolbar>
                 </AppBar>
 
@@ -60,9 +62,7 @@ class SiteSettingsSeoApp extends React.Component {
     }
 }
 
-
 SiteSettingsSeoApp = withStyles(styles)(translate('site-settings-seo')(SiteSettingsSeoApp));
-
 
 let SiteSettingsSeo = function (props) {
     return (<DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>

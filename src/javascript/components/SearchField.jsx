@@ -1,11 +1,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Input, { InputAdornment } from 'material-ui/Input';
-
-import {
-    Search
-} from 'material-ui-icons';
-
+import { Search } from 'material-ui-icons';
 
 const styles = theme => ({
     root: {
@@ -19,7 +15,6 @@ const styles = theme => ({
             width: '300px'
         },
     },
-
 });
 
 class SearchField extends React.Component {
@@ -30,7 +25,7 @@ class SearchField extends React.Component {
     }
 
     handleChange(event) {
-        this.props.handleFilterChange(event.target.value);
+        this.props.onChangeFilter(event.target.value);
     };
 
     render() {
