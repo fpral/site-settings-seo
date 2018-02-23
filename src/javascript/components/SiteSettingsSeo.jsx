@@ -1,11 +1,17 @@
 import React from 'react';
-import {AppBar, Paper, Toolbar, Typography, withStyles} from 'material-ui';
-import {DxContextProvider, LanguageSwitcher, store, theme} from '@jahia/react-dxcomponents';
+import {AppBar, Paper, Toolbar, Typography, withStyles, createMuiTheme, MuiThemeProvider} from 'material-ui';
+import {DxContextProvider, LanguageSwitcher, store} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
 import {SearchField} from "./SearchField";
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#546E7A' },
+    },
+});
 
 const styles = theme => ({
     body: theme.mixins.gutters({
@@ -74,7 +80,9 @@ SiteSettingsSeoApp = withStyles(styles)(translate('site-settings-seo')(SiteSetti
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <SiteSettingsSeoApp {...props} />
+            <MuiThemeProvider theme={theme}>
+                <SiteSettingsSeoApp {...props} />
+            </MuiThemeProvider>
         </DxContextProvider>
     );
 };

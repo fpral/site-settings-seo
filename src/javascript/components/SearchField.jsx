@@ -7,7 +7,8 @@ const styles = theme => ({
     root: {
         position: 'absolute',
         'right': '20px',
-        'color': 'inherit',
+        'color' : 'inherit',
+        backgroundColor : 'rgba(114, 139, 150, 1.00)',
         'bottom': '10px',
     },
     input: {
