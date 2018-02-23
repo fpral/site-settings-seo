@@ -1,5 +1,10 @@
 {
   "label": {
-    "title": "URL personnalisées"
+    "title": "URL personnalisées",
+    "mappings": {
+      "default": "Default mappings",
+      "live": "Live mappings"
+    },
+    "missingDefault": "{{vanityUrl}} supprimées"
   }
 }

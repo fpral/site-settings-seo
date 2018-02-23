@@ -1,5 +1,10 @@
 {
   "label": {
-    "title": "URL-Mappings"
+    "title": "URL-Mappings",
+    "mappings": {
+      "default": "Default mappings",
+      "live": "Live mappings"
+    },
+    "missingDefault": "{{vanityUrl}} gelöscht"
   }
 }

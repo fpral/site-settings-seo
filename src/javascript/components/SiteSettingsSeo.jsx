@@ -14,8 +14,7 @@ const styles = theme => ({
     footer: {
         backgroundColor: grey[100],
         padding: theme.spacing.unit
-    },
-    flexGrow: 1
+    }
 });
 
 class SiteSettingsSeoApp extends React.Component {
@@ -58,7 +57,7 @@ class SiteSettingsSeoApp extends React.Component {
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={this.onChangeRowsPerPage}
                         path={this.props.dxContext.mainResourcePath}
-                        filteredText={this.state.filteredText} />
+                    />
                 </Paper>
                 <Paper elevation={1} className={this.props.classes.footer}>
                     <Typography type="caption" align="center">

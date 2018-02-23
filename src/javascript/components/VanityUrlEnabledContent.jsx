@@ -1,18 +1,26 @@
 import React from 'react';
 
-import {
-    VanityUrlListDefault,
-    VanityUrlListLive,
-} from './VanityUrlList';
+import { VanityUrlListDefault, VanityUrlListLive, } from './VanityUrlList';
 
 import {
     Collapse,
     Grid,
-    List,
     ListItem,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    Paper,
+    withStyles
 } from 'material-ui';
+
+const styles = theme => ({
+    root: {
+        margin: theme.spacing.unit,
+    },
+    nested: {
+        paddingLeft: 64,
+        padding: 16,
+    },
+});
 
 import {
     ExpandLess,
@@ -33,26 +41,30 @@ class VanityUrlEnabledContent extends React.Component {
     };
 
     render() {
-        let content = this.props.content;
+        const {content, classes} = this.props;
         return (
             <div className={this.props.classes.root}>
-                <ListItem button onClick={() => this.handleItemClick()} >
-                    <ListItemIcon>{this.state.open ? <ExpandLess/> : <ExpandMore/>}</ListItemIcon>
-                    <ListItemText inset primary={content.displayName} secondary={content.path}/>
-                </ListItem>
-                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    <Grid container spacing={24} className={this.props.classes.nested}>
-                        <Grid item xs={12} lg={6}>
-                            <VanityUrlListDefault vanityUrls={content.urls}/>
+                <Paper elevation={1}>
+                    <ListItem button onClick={() => this.handleItemClick()} >
+                        <ListItemIcon>{this.state.open ? <ExpandLess/> : <ExpandMore/>}</ListItemIcon>
+                        <ListItemText inset primary={content.displayName} secondary={content.path}/>
+                    </ListItem>
+                    <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                        <Grid container spacing={24}  className={classes.nested}>
+                            <Grid item xs={12} lg={6}>
+                                <VanityUrlListDefault vanityUrls={content.urls}/>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <VanityUrlListLive vanityUrls={content.urls}/>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <VanityUrlListLive vanityUrls={content.urls}/>
-                        </Grid>
-                    </Grid>
-                </Collapse>
+                    </Collapse>
+                </Paper>
             </div>
         );
     }
 }
+
+VanityUrlEnabledContent = withStyles(styles)(VanityUrlEnabledContent);
 
 export {VanityUrlEnabledContent};

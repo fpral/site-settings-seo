@@ -47,7 +47,7 @@ class VanityUrlListDefault extends React.Component {
         let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography type="caption" className={classes.boxTitle} >
+                <Typography type="caption" classes={{caption: classes.boxTitle}} >
                     {t('label.mappings.default')}
                 </Typography>
                 <Paper elevation={4}>
@@ -71,7 +71,7 @@ class VanityUrlListDefault extends React.Component {
                                                 [Actions]
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                {url.default ? <Star/> : <div/>}
+                                                {url.default ? <Star color={'primary'}/> : ''}
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 {url.language}
@@ -121,7 +121,7 @@ class VanityUrlListLive extends React.Component {
                                                 {url.url}
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                {url.default ? <Star/> : <div/>}
+                                                {url.default ? <Star color={'primary'}/> : ''}
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 {url.language}
