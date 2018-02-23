@@ -65,10 +65,11 @@ class SiteSettingsSeoApp extends React.Component {
 SiteSettingsSeoApp = withStyles(styles)(translate('site-settings-seo')(SiteSettingsSeoApp));
 
 let SiteSettingsSeo = function (props) {
-    return (<DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-                <SiteSettingsSeoApp {...props} />
-            </DxContextProvider>
-    )
+    return (
+        <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
+            <SiteSettingsSeoApp {...props} />
+        </DxContextProvider>
+    );
 };
 
 export {SiteSettingsSeo};
