@@ -61,7 +61,7 @@ class SiteSettingsSeoApp extends React.Component {
                         filteredText={this.state.filteredText} />
                 </Paper>
                 <Paper elevation={1} className={this.props.classes.footer}>
-                    <Typography type="caption" align="center" className="">
+                    <Typography type="caption" align="center">
                         {this.props.t('label.copyright')}
                     </Typography>
                 </Paper>
