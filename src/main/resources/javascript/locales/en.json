@@ -5,6 +5,7 @@
         "default": "Default mappings",
         "live": "Live mappings"
     },
-    "missingDefault": "Deleted {{vanityUrl}}"
+    "missingDefault": "Deleted {{vanityUrl}}",
+    "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
   }
 }
