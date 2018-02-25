@@ -48,18 +48,18 @@ let mapPropsToOptions = (props) => {
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
         query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
-        vanityFilter: ".*(?i)" + props.filteredText + "(?-i).*",
-        queryFilter: {filters: props.filteredText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}] : []}
+        filterText: props.filterText,
+        queryFilter: {filters: props.filterText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}] : []} // todo: this test is necessary until BACKLOG-7698 is fixed
     };
 
     return {
         variables: vars,
-        fetchPolicy: props.filteredText ? 'network-only' : 'cache-first'
+        fetchPolicy: props.filterText ? 'network-only' : 'cache-first'
     }
 };
 
 let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $vanityFilter: String, $queryFilter: InputFieldFiltersInput) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $queryFilter: InputFieldFiltersInput) {
         jcr {
             nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
@@ -69,7 +69,7 @@ let query = gql`
                     uuid
                     path
                     displayName(language: $lang)
-                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $vanityFilter}]}) {
+                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
                         active
                         default
                         url
@@ -78,7 +78,7 @@ let query = gql`
                         path
                     }
                     liveNode: nodeInWorkspace(workspace: LIVE) {
-                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: MATCHES, value: $vanityFilter}]}) {
+                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
                             active
                             default
                             url

@@ -27,14 +27,14 @@ class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {filteredText:'', currentPage:0, pageSize:5};
+        this.state = {filterText:'', currentPage:0, pageSize:5};
         this.onChangePage.bind(this);
         this.onChangeRowsPerPage.bind(this);
         this.onChangeFilter.bind(this);
     }
 
-    onChangeFilter = (filteredText) => {
-        this.setState({filteredText: filteredText});
+    onChangeFilter = (filterText) => {
+        this.setState({filterText: filterText});
     }
 
     onChangePage = (newPage) => {

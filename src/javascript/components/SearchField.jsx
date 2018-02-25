@@ -9,7 +9,7 @@ const styles = theme => ({
         'right': '20px',
         'color' : 'inherit',
         backgroundColor : 'rgba(114, 139, 150, 1.00)',
-        'bottom': '10px',
+        'bottom': '16px',
     },
     input: {
         transitionProperty: 'width',
@@ -23,7 +23,8 @@ const styles = theme => ({
     },
     searchIcon: {
         'marginTop': 'auto',
-        'marginBottom': 'auto'
+        'marginBottom': 'auto',
+        'paddingLeft': '6px'
     }
 });
 
@@ -32,11 +33,20 @@ class SearchField extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.doSearch = true;
     }
 
     handleChange(event) {
-        this.props.onChangeFilter(event.target.value);
-    };
+        if (!this.doSearch || event.target.value.length < 2) {
+            return;
+        }
+        this.props.onChangeFilter(event.target.value)
+        this.doSearch = false;
+        // wait for 200 ms before next search
+        setTimeout(function() {
+            this.doSearch = true;
+        }.bind(this), 200);
+    }
 
     render() {
 
