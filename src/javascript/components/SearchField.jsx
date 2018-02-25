@@ -37,7 +37,7 @@ class SearchField extends React.Component {
     }
 
     handleChange(event) {
-        if (!this.doSearch || event.target.value.length < 2) {
+        if (!this.doSearch) {
             return;
         }
         this.props.onChangeFilter(event.target.value)

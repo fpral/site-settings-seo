@@ -34,6 +34,10 @@ const styles = (theme) => ({
     },
     missingDefaultCounterpart: {
         backgroundColor: theme.palette.error.light
+    },
+    highlightText: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
     }
 });
 
@@ -65,7 +69,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Switch checked={url.active} color="primary"/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={url.active ? '' : classes.inactive}>
-                                                {url.url}
+                                                {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover}>
                                                 [Actions]
@@ -118,7 +122,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={_.join([classes.vanityUrl, (urlPair.default ? '' : classes.missingDefaultCounterpart)], ' ')}>
                                             <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
-                                                {url.url}
+                                                {this.props.filterText ?  <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 {url.default ? <Star color={'primary'}/> : ''}
@@ -146,8 +150,21 @@ class VanityUrlListLive extends React.Component {
     }
 }
 
+let HighlightText = function (props) {
+    let parts = props.text.split(new RegExp(`(${props.higlight})`, 'gi'));
+    return (
+        <span> { parts.map((part, i) =>
+            <span key={i} className={part.toLowerCase() === props.higlight.toLowerCase() ? props.classes.highlightText : {} }>
+            { part }
+            </span>)
+        }
+        </span>
+    )
+}
+
 VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
 VanityUrlListLive = withStyles(styles)(translate('site-settings-seo')(VanityUrlListLive));
+HighlightText = withStyles(styles)(HighlightText);
 
 export {VanityUrlListLive};
 export {VanityUrlListDefault};

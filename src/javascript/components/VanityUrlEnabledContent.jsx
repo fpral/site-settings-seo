@@ -41,7 +41,7 @@ class VanityUrlEnabledContent extends React.Component {
     };
 
     render() {
-        const {content, classes} = this.props;
+        const {content, filterText, classes} = this.props;
         return (
             <div className={this.props.classes.root}>
                 <Paper elevation={1}>
@@ -52,10 +52,10 @@ class VanityUrlEnabledContent extends React.Component {
                     <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                         <Grid container spacing={24}  className={classes.nested}>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListDefault vanityUrls={content.urls}/>
+                                <VanityUrlListDefault vanityUrls={content.urls} filterText={filterText}/>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListLive vanityUrls={content.urls}/>
+                                <VanityUrlListLive vanityUrls={content.urls} filterText={filterText}/>
                             </Grid>
                         </Grid>
                     </Collapse>
