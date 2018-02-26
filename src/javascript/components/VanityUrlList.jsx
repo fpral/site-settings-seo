@@ -122,7 +122,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={_.join([classes.vanityUrl, (urlPair.default ? '' : classes.missingDefaultCounterpart)], ' ')}>
                                             <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
-                                                {this.props.filterText ?  <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
+                                                {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 {url.default ? <Star color={'primary'}/> : ''}
@@ -153,11 +153,12 @@ class VanityUrlListLive extends React.Component {
 let HighlightText = function (props) {
     let parts = props.text.split(new RegExp(`(${props.higlight})`, 'gi'));
     return (
-        <span> { parts.map((part, i) =>
-            <span key={i} className={part.toLowerCase() === props.higlight.toLowerCase() ? props.classes.highlightText : {} }>
-            { part }
-            </span>)
-        }
+        <span>
+            {parts.map((part, i) =>
+                <span key={i} className={part.toLowerCase() === props.higlight.toLowerCase() ? props.classes.highlightText : ''}>
+                    {part}
+                </span>
+            )}
         </span>
     )
 }
