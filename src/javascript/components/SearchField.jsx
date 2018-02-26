@@ -37,13 +37,14 @@ class SearchField extends React.Component {
     }
 
     handleChange(event) {
+        event.persist();
         if (!this.doSearch) {
             return;
         }
-        this.props.onChangeFilter(event.target.value)
         this.doSearch = false;
         // wait for 200 ms before next search
         setTimeout(function() {
+            this.props.onChangeFilter(event.target.value)
             this.doSearch = true;
         }.bind(this), 200);
     }
