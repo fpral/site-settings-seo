@@ -19,7 +19,7 @@ let mapResultsToProps = ({data, ownProps}) => {
 
             rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
-                let defaultUrls = contentNode.vanityUrls ? _.keyBy(_.map(contentNode.vanityUrls, vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid') : {};
+                let defaultUrls = _.keyBy(_.map(contentNode.vanityUrls, vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
                 let liveUrls = contentNode.liveNode ? _.keyBy(_.map(contentNode.liveNode.vanityUrls, vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
                 let urlPairs = _.merge(defaultUrls, liveUrls);
                 urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
