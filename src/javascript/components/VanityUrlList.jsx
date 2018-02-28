@@ -60,24 +60,25 @@ class VanityUrlListDefault extends React.Component {
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
                                 if (url) {
+                                    let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} hover classes={{root: classes.vanityUrl}}>
-                                            <TableCell padding={'none'} className={_.join([classes.hiddenOnHover, classes.checkboxLeft], ' ')}>
+                                        <TableRow key={urlPair.uuid} hover className={classes.vanityUrl}>
+                                            <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classes.checkboxLeft}>
                                                 <CheckBoxOutlineBlank/>
                                             </TableCell>
-                                            <TableCell padding={'none'}>
+                                            <TableCell padding={'none'} className={classInactive}>
                                                 <Switch checked={url.active} color="primary"/>
                                             </TableCell>
-                                            <TableCell padding={'none'} className={url.active ? '' : classes.inactive}>
+                                            <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classes.hiddenOnHover}>
+                                            <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 [Actions]
                                             </TableCell>
-                                            <TableCell padding={'none'}>
-                                                {url.default ? <Star color={'primary'}/> : ''}
+                                            <TableCell padding={'none'} className={classInactive}>
+                                                {url.default ? <Star color={url.active ? 'primary' : 'disabled'}/> : ''}
                                             </TableCell>
-                                            <TableCell padding={'none'}>
+                                            <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
                                             </TableCell>
                                         </TableRow>
@@ -119,15 +120,16 @@ class VanityUrlListLive extends React.Component {
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.live;
                                 if (url) {
+                                    let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} className={_.join([classes.vanityUrl, (urlPair.default ? '' : classes.missingDefaultCounterpart)], ' ')}>
-                                            <TableCell padding={'dense'} className={url.active ? '' : classes.inactive}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + (urlPair.default ? '' : classes.missingDefaultCounterpart)}>
+                                            <TableCell padding={'dense'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
-                                            <TableCell padding={'none'}>
-                                                {url.default ? <Star color={'primary'}/> : ''}
+                                            <TableCell padding={'none'} className={classInactive}>
+                                                {url.default ? <Star color={url.active ? 'primary' : 'disabled'}/> : ''}
                                             </TableCell>
-                                            <TableCell padding={'none'}>
+                                            <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
                                             </TableCell>
                                         </TableRow>
