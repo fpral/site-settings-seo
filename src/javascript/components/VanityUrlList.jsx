@@ -153,9 +153,8 @@ class VanityUrlListLive extends React.Component {
 }
 
 let HighlightText = function (props) {
-    // escape regex symbols
-    let searchValue = props.higlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-    let parts = props.text.split(new RegExp(`(${searchValue})`, 'gi'));
+    let highlightEscaped = props.higlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    let parts = props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
     return (
         <span>
             {parts.map((part, i) =>
