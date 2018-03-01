@@ -33,20 +33,17 @@ class SearchField extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.doSearch = true;
     }
 
     handleChange(event) {
+        // Let the handler deal with the change only when the user has paused changing the filter text for a second.
         event.persist();
-        if (!this.doSearch) {
-            return;
+        if (this.timeout) {
+            clearTimeout(this.timeout);
         }
-        this.doSearch = false;
-        // wait for 200 ms before next search
-        setTimeout(function() {
+        this.timeout = setTimeout(function() {
             this.props.onChangeFilter(event.target.value)
-            this.doSearch = true;
-        }.bind(this), 200);
+        }.bind(this), 1000);
     }
 
     render() {

@@ -34,7 +34,10 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     onChangeFilter = (filterText) => {
-        this.setState({filterText: filterText});
+        this.setState({
+            filterText: filterText,
+            currentPage: 0
+        });
     }
 
     onChangePage = (newPage) => {
