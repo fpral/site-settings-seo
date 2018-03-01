@@ -152,18 +152,26 @@ class VanityUrlListLive extends React.Component {
     }
 }
 
-let HighlightText = function (props) {
-    let highlightEscaped = props.higlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-    let parts = props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
-    return (
-        <span>
-            {parts.map((part, i) =>
-                <span key={i} className={part.toLowerCase() === props.higlight.toLowerCase() ? props.classes.highlightText : ''}>
-                    {part}
-                </span>
-            )}
-        </span>
-    )
+class HighlightText extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let highlight = this.props.higlight;
+        let highlightEscaped = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        let parts = this.props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
+        return (
+            <span>
+                {parts.map((part, i) =>
+                    <span key={i} className={part.toLowerCase() === highlight.toLowerCase() ? this.props.classes.highlightText : ''}>
+                        {part}
+                    </span>
+                )}
+            </span>
+        )
+    }
 }
 
 VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
