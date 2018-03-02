@@ -55,7 +55,7 @@ class VanityUrlEnabledContent extends React.Component {
         });
     };
 
-    propsToOptions = (props) => {
+    beforeQueryingAllVanityUrls = (props) => {
         return {
             variables: {
                 uuid: this.props.content.uuid
@@ -64,7 +64,7 @@ class VanityUrlEnabledContent extends React.Component {
         };
     }
 
-    resultsToProps = ({data, ownProps}) => {
+    afterQueryingAllVanityUrls = ({data, ownProps}) => {
 
         if (!data.jcr) {
             return {
@@ -79,13 +79,19 @@ class VanityUrlEnabledContent extends React.Component {
         let urlPairs = _.merge(defaultUrls, liveUrls);
         urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
 
+        this.allVanityUrls = _.values(urlPairs);
+
         return {
             ...ownProps,
-            vanityUrls: _.values(urlPairs)
+            vanityUrls: this.allVanityUrls
         };
     }
 
     getLocalFilteringDisabledVanityUrlLists(VanityUrlLists) {
+
+        if (this.allVanityUrls) {
+            return <VanityUrlLists vanityUrls={this.allVanityUrls} filterText={this.props.filterText}/>
+        }
 
         let query = gql`
             query NodesQuery($uuid: String!) {
@@ -115,8 +121,8 @@ class VanityUrlEnabledContent extends React.Component {
         `;
 
         VanityUrlLists = graphql(query, {
-            options: this.propsToOptions,
-            props: this.resultsToProps
+            options: this.beforeQueryingAllVanityUrls,
+            props: this.afterQueryingAllVanityUrls
         })(VanityUrlLists);
 
         return <VanityUrlLists filterText={this.props.filterText}/>
