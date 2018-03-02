@@ -80,7 +80,7 @@ class VanityUrlEnabledContent extends React.Component {
         };
     }
 
-    getLocalFilteringDisabledVanityUrlList(VanityUrlList) {
+    getLocalFilteringDisabledVanityUrlLists(VanityUrlLists) {
 
         let query = gql`
             query NodesQuery($uuid: String!) {
@@ -109,12 +109,12 @@ class VanityUrlEnabledContent extends React.Component {
             }
         `;
 
-        VanityUrlList = graphql(query, {
+        VanityUrlLists = graphql(query, {
             options: this.propsToOptions,
             props: this.resultsToProps
-        })(VanityUrlList);
+        })(VanityUrlLists);
 
-        return <VanityUrlList/>
+        return <VanityUrlLists/>
     }
 
     handleFilterSwitchClick = (e) => {
@@ -137,14 +137,11 @@ class VanityUrlEnabledContent extends React.Component {
             }
         }
 
-        let vanityUrlListDefault = null;
-        let vanityUrlListLive = null;
+        let vanityUrlLists = null;
         if (this.state.localFilteringEnabled) {
-            vanityUrlListDefault = <VanityUrlListDefault vanityUrls={content.urls} filterText={filterText}/>;
-            vanityUrlListLive = <VanityUrlListLive vanityUrls={content.urls} filterText={filterText}/>;
+            vanityUrlLists = <VanityUrlLists vanityUrls={content.urls} filterText={filterText}/>;
         } else {
-            vanityUrlListDefault = this.getLocalFilteringDisabledVanityUrlList(VanityUrlListDefault);
-            vanityUrlListLive = this.getLocalFilteringDisabledVanityUrlList(VanityUrlListLive);
+            vanityUrlLists = this.getLocalFilteringDisabledVanityUrlLists(VanityUrlLists);
         }
 
         return (
@@ -156,14 +153,7 @@ class VanityUrlEnabledContent extends React.Component {
                         {filterSwitchButtonLabel ? <Button onClick={(e) => this.handleFilterSwitchClick(e)}>{filterSwitchButtonLabel}</Button> : ''}
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                        <Grid container spacing={24}  className={classes.nested}>
-                            <Grid item xs={12} lg={6}>
-                                {vanityUrlListDefault}
-                            </Grid>
-                            <Grid item xs={12} lg={6}>
-                                {vanityUrlListLive}
-                            </Grid>
-                        </Grid>
+                        {vanityUrlLists}
                     </Collapse>
                 </Paper>
             </div>
@@ -171,6 +161,30 @@ class VanityUrlEnabledContent extends React.Component {
     }
 }
 
+class VanityUrlLists extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+
+        const { vanityUrls, filterText, classes} = this.props;
+
+        return (
+            <Grid container spacing={24}  className={classes.nested}>
+                <Grid item xs={12} lg={6}>
+                    <VanityUrlListDefault vanityUrls={vanityUrls} filterText={filterText}/>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                    <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText}/>
+                </Grid>
+            </Grid>
+        );
+    }
+}
+
+VanityUrlLists = withStyles(styles)(VanityUrlLists);
 VanityUrlEnabledContent = withStyles(styles)(translate('site-settings-seo')(VanityUrlEnabledContent));
 
 export {VanityUrlEnabledContent};
