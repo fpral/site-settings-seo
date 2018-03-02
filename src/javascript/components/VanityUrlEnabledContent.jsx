@@ -35,27 +35,34 @@ const styles = theme => ({
 class VanityUrlEnabledContent extends React.Component {
 
     constructor(props) {
+
         super(props);
+
         this.state = {
             expanded: false,
             localFilteringEnabled: true
         };
+
+        this.handleExpandCollapseClick = this.handleExpandCollapseClick.bind(this);
+        this.handleFilterSwitchClick = this.handleFilterSwitchClick.bind(this);
+        this.beforeQueryingAllVanityUrls = this.beforeQueryingAllVanityUrls.bind(this);
+        this.afterQueryingAllVanityUrls = this.afterQueryingAllVanityUrls.bind(this);
     }
 
-    handleExpandCollapseClick = () => {
+    handleExpandCollapseClick() {
         this.setState({
             expanded: !this.state.expanded
         });
     };
 
-    handleFilterSwitchClick = (e) => {
+    handleFilterSwitchClick(e) {
         e.stopPropagation();
         this.setState({
             localFilteringEnabled: !this.state.localFilteringEnabled
         });
     };
 
-    beforeQueryingAllVanityUrls = (props) => {
+    beforeQueryingAllVanityUrls(props) {
         return {
             variables: {
                 uuid: this.props.content.uuid
@@ -64,7 +71,7 @@ class VanityUrlEnabledContent extends React.Component {
         };
     }
 
-    afterQueryingAllVanityUrls = ({data, ownProps}) => {
+    afterQueryingAllVanityUrls({data, ownProps}) {
 
         if (!data.jcr) {
             return {
