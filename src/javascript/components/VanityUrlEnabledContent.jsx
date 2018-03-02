@@ -48,13 +48,20 @@ class VanityUrlEnabledContent extends React.Component {
         });
     };
 
+    handleFilterSwitchClick = (e) => {
+        e.stopPropagation();
+        this.setState({
+            localFilteringEnabled: !this.state.localFilteringEnabled
+        });
+    };
+
     propsToOptions = (props) => {
         return {
             variables: {
                 uuid: this.props.content.uuid
             },
             fetchPolicy: 'network-only'
-        }
+        };
     }
 
     resultsToProps = ({data, ownProps}) => {
@@ -62,8 +69,7 @@ class VanityUrlEnabledContent extends React.Component {
         if (!data.jcr) {
             return {
                 ...ownProps,
-                vanityUrls: [],
-                filterText: this.props.filterText
+                vanityUrls: []
             };
         }
 
@@ -75,8 +81,7 @@ class VanityUrlEnabledContent extends React.Component {
 
         return {
             ...ownProps,
-            vanityUrls: _.values(urlPairs),
-            filterText: this.props.filterText
+            vanityUrls: _.values(urlPairs)
         };
     }
 
@@ -114,15 +119,8 @@ class VanityUrlEnabledContent extends React.Component {
             props: this.resultsToProps
         })(VanityUrlLists);
 
-        return <VanityUrlLists/>
+        return <VanityUrlLists filterText={this.props.filterText}/>
     }
-
-    handleFilterSwitchClick = (e) => {
-        e.stopPropagation();
-        this.setState({
-            localFilteringEnabled: !this.state.localFilteringEnabled
-        });
-    };
 
     render() {
 
