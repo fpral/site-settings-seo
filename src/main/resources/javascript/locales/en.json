@@ -1,9 +1,13 @@
 {
   "label": {
     "title": "Vanity URL Dashboard",
+    "localFilter": {
+      "switchOn": "Show matches only",
+      "switchOff": "Show all"
+    },
     "mappings": {
-        "default": "Default mappings",
-        "live": "Live mappings"
+      "default": "Default mappings",
+      "live": "Live mappings"
     },
     "missingDefault": "Deleted {{vanityUrl}}",
     "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
