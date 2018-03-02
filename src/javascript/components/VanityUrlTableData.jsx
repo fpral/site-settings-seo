@@ -4,6 +4,7 @@ import {graphql} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
+import { GQL_VANITY_URL_FIELDS, gqlContentNodeToVanityUrlPairs } from './SeoUtils';
 
 let mapResultsToProps = ({data, ownProps}) => {
 
@@ -19,16 +20,13 @@ let mapResultsToProps = ({data, ownProps}) => {
 
             rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
-                let defaultUrls = _.keyBy(_.map(contentNode.vanityUrls, vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
-                let liveUrls = contentNode.liveNode ? _.keyBy(_.map(contentNode.liveNode.vanityUrls, vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
-                let urlPairs = _.merge(defaultUrls, liveUrls);
-                urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
+                let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode);
 
                 return {
                     path: contentNode.path,
                     uuid: contentNode.uuid,
                     displayName: contentNode.displayName,
-                    urls: _.values(urlPairs)
+                    urls: urlPairs
                 }
             })
         }
@@ -80,21 +78,11 @@ let query = gql`
                     path
                     displayName(language: $lang)
                     vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                        active
-                        default
-                        url
-                        language
-                        uuid
-                        path
+                        ${GQL_VANITY_URL_FIELDS}
                     }
                     liveNode: nodeInWorkspace(workspace: LIVE) {
                         vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                            active
-                            default
-                            url
-                            language
-                            uuid
-                            path
+                            ${GQL_VANITY_URL_FIELDS}
                         }
                     }
                 }

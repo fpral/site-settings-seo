@@ -2,9 +2,9 @@ import React from 'react';
 import {translate} from 'react-i18next';
 import {graphql} from 'react-apollo';
 import gql from "graphql-tag";
-import * as _ from "lodash";
 
 import { VanityUrlListDefault, VanityUrlListLive } from './VanityUrlList';
+import { GQL_VANITY_URL_FIELDS, gqlContentNodeToVanityUrlPairs } from './SeoUtils';
 
 import {
     Button,
@@ -80,13 +80,7 @@ class VanityUrlEnabledContent extends React.Component {
             };
         }
 
-        let contentNode = data.jcr.nodeById;
-        let defaultUrls = _.keyBy(_.map(contentNode.vanityUrls, vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
-        let liveUrls = contentNode.liveNode ? _.keyBy(_.map(contentNode.liveNode.vanityUrls, vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
-        let urlPairs = _.merge(defaultUrls, liveUrls);
-        urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
-
-        this.allVanityUrls = _.values(urlPairs);
+        this.allVanityUrls = gqlContentNodeToVanityUrlPairs(data.jcr.nodeById);
 
         return {
             ...ownProps,
@@ -105,21 +99,11 @@ class VanityUrlEnabledContent extends React.Component {
                 jcr {
                     nodeById(uuid: $uuid) {
                         vanityUrls {
-                            active
-                            default
-                            url
-                            language
-                            uuid
-                            path
+                            ${GQL_VANITY_URL_FIELDS}
                         }
                         liveNode: nodeInWorkspace(workspace: LIVE) {
                             vanityUrls {
-                                active
-                                default
-                                url
-                                language
-                                uuid
-                                path
+                                ${GQL_VANITY_URL_FIELDS}
                             }
                         }
                     }
