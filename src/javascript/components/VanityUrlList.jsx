@@ -51,7 +51,7 @@ class VanityUrlListDefault extends React.Component {
         let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography type="caption" classes={{caption: classes.boxTitle}} >
+                <Typography variant="caption" classes={{caption: classes.boxTitle}} >
                     {t('label.mappings.default')}
                 </Typography>
                 <Paper elevation={4}>
@@ -66,8 +66,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classes.checkboxLeft}>
                                                 <CheckBoxOutlineBlank/>
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive}>
-                                                <Switch checked={url.active} color="primary"/>
+                                            <TableCell padding={'none'}>
+                                                <Switch checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
@@ -76,7 +76,7 @@ class VanityUrlListDefault extends React.Component {
                                                 [Actions]
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                {url.default ? <Star color={url.active ? 'primary' : 'disabled'}/> : ''}
+                                                {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
@@ -111,7 +111,7 @@ class VanityUrlListLive extends React.Component {
         let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography type="caption" className={classes.boxTitle} >
+                <Typography variant="caption" className={classes.boxTitle} >
                     {t('label.mappings.live')}
                 </Typography>
                 <Paper elevation={4}>
@@ -127,7 +127,7 @@ class VanityUrlListLive extends React.Component {
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                {url.default ? <Star color={url.active ? 'primary' : 'disabled'}/> : ''}
+                                                {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}

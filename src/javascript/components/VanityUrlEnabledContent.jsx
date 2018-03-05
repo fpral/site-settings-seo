@@ -68,7 +68,7 @@ class VanityUrlEnabledContent extends React.Component {
         if (filterText && this.state.expanded) {
 
             filterMatchInfo = (
-                <Typography type="caption" classes={{caption: classes.filterMatchInfo}}>
+                <Typography variant="caption" classes={{caption: classes.filterMatchInfo}}>
                     {t('label.filterMatch', {count: content.urls.length, totalCount: content.allUrls.length})}
                 </Typography>
             );

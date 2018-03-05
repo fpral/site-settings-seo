@@ -1,24 +1,33 @@
 import React from 'react';
-import {AppBar, Paper, Toolbar, Typography, withStyles, createMuiTheme, MuiThemeProvider} from 'material-ui';
+import {AppBar, Paper, Grid, Toolbar, Typography, withStyles, createMuiTheme, MuiThemeProvider} from 'material-ui';
 import {DxContextProvider, LanguageSwitcher, store} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
 import {VanityUrlTableData} from "./VanityUrlTableData";
-import {grey} from 'material-ui/colors'
 import {translate} from 'react-i18next';
 import {SearchField} from "./SearchField";
+import {blueGrey, lightBlue} from 'material-ui/colors/index'
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#546E7A' },
-    },
+        primary: {
+            main: blueGrey[500],
+            light: blueGrey[300],
+            dark: blueGrey[700]
+        },
+        secondary: {
+            main: lightBlue[500],
+            light: lightBlue[300],
+            dark: lightBlue[700]
+        },
+    }
 });
 
 const styles = theme => ({
     body: theme.mixins.gutters({
-        backgroundColor: grey[100]
+        backgroundColor: theme.palette.background.default
     }),
     footer: {
-        backgroundColor: grey[100],
+        backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit
     }
 });
@@ -53,7 +62,7 @@ class SiteSettingsSeoApp extends React.Component {
             <div>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typography type="title" color="inherit">
+                        <Typography variant="title" color="inherit">
                             {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
                         </Typography>
                         <SearchField onChangeFilter={this.onChangeFilter}/>
@@ -69,7 +78,7 @@ class SiteSettingsSeoApp extends React.Component {
                     />
                 </Paper>
                 <Paper elevation={1} className={this.props.classes.footer}>
-                    <Typography type="caption" align="center">
+                    <Typography variant="caption" align="center">
                         {this.props.t('label.copyright')}
                     </Typography>
                 </Paper>

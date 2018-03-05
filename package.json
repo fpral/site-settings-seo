@@ -8,7 +8,7 @@
     "@jahia/react-dxcomponents": "git+ssh://git@github.com:Jahia/react-dxcomponents.git",
     "graphql-tag": "^2.6.1",
     "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.30",
+    "material-ui": "^1.0.0-beta.35",
     "material-ui-icons": "^1.0.0-beta.17",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",

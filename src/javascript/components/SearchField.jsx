@@ -8,7 +8,7 @@ const styles = theme => ({
         position: 'absolute',
         'right': '20px',
         'color' : 'inherit',
-        backgroundColor : 'rgba(114, 139, 150, 1.00)',
+        backgroundColor : theme.palette.primary.light,
         'bottom': '16px',
     },
     input: {
@@ -54,6 +54,7 @@ class SearchField extends React.Component {
             <div>
                 <Input classes={{root: classes.root, input: classes.input}}
                        onChange={this.handleChange}
+                       disableUnderline={true}
                        type="text"
                        startAdornment={<InputAdornment classes={{root: classes.searchIcon}} position="start"><Search/></InputAdornment>}
                 />
