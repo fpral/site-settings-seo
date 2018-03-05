@@ -1,6 +1,7 @@
 {
   "label": {
     "title": "Vanity URL Dashboard",
+    "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
     "localFilter": {
       "switchOn": "Show matches only",
       "switchOff": "Show all"

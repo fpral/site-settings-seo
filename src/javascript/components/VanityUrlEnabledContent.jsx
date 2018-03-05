@@ -11,6 +11,7 @@ import {
     ListItemIcon,
     ListItemText,
     Paper,
+    Typography,
     withStyles
 } from 'material-ui';
 
@@ -21,9 +22,12 @@ import {
 
 const styles = theme => ({
     root: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing.unit
     },
-    nested: {
+    filterMatchInfo: {
+        margin: theme.spacing.unit
+    },
+    vanityUrlLists: {
         paddingLeft: 64,
         padding: 16,
     },
@@ -58,13 +62,28 @@ class VanityUrlEnabledContent extends React.Component {
 
         const { content, filterText, classes, t } = this.props;
 
-        let filterSwitchButtonLabel = null;
+        let filterMatchInfo = null;
+        let localFilterSwitch = null;
+
         if (filterText && this.state.expanded) {
+
+            filterMatchInfo = (
+                <Typography type="caption" classes={{caption: classes.filterMatchInfo}}>
+                    {t('label.filterMatch', {count: content.urls.length, totalCount: content.allUrls.length})}
+                </Typography>
+            );
+
+            let filterSwitchButtonLabel = null;
             if (this.state.localFilteringEnabled) {
                 filterSwitchButtonLabel = t('label.localFilter.switchOff');
             } else {
                 filterSwitchButtonLabel = t('label.localFilter.switchOn');
             }
+            localFilterSwitch = (
+                <Button onClick={(e) => this.handleFilterSwitchClick(e)}>
+                    {filterSwitchButtonLabel}
+                </Button>
+            );
         }
 
         let vanityUrlLists = null;
@@ -80,7 +99,8 @@ class VanityUrlEnabledContent extends React.Component {
                     <ListItem onClick={() => this.handleExpandCollapseClick()} >
                         <ListItemIcon>{this.state.expanded ? <ExpandLess/> : <ExpandMore/>}</ListItemIcon>
                         <ListItemText inset primary={content.displayName} secondary={content.path}/>
-                        {filterSwitchButtonLabel ? <Button onClick={(e) => this.handleFilterSwitchClick(e)}>{filterSwitchButtonLabel}</Button> : ''}
+                        {filterMatchInfo}
+                        {localFilterSwitch}
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                         {vanityUrlLists}
@@ -102,7 +122,7 @@ class VanityUrlLists extends React.Component {
         const { vanityUrls, filterText, classes} = this.props;
 
         return (
-            <Grid container spacing={24}  className={classes.nested}>
+            <Grid container spacing={24} className={classes.vanityUrlLists}>
                 <Grid item xs={12} lg={6}>
                     <VanityUrlListDefault vanityUrls={vanityUrls} filterText={filterText}/>
                 </Grid>
