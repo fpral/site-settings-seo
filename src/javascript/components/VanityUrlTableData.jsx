@@ -4,7 +4,16 @@ import {graphql} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
-import { GQL_VANITY_URL_FIELDS, gqlContentNodeToVanityUrlPairs } from './SeoUtils';
+
+const GQL_VANITY_URL_FIELDS = 'active default url language uuid path';
+
+function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
+    let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
+    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
+    let urlPairs = _.merge(defaultUrls, liveUrls);
+    urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
+    return _.values(urlPairs);
+}
 
 let mapResultsToProps = ({data, ownProps}) => {
 
@@ -20,13 +29,15 @@ let mapResultsToProps = ({data, ownProps}) => {
 
             rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
-                let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode);
+                let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
+                let allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
 
                 return {
                     path: contentNode.path,
                     uuid: contentNode.uuid,
                     displayName: contentNode.displayName,
-                    urls: urlPairs
+                    urls: urlPairs,
+                    allUrls: allUrlPairs
                 }
             })
         }
@@ -80,8 +91,14 @@ let query = gql`
                     vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
                         ${GQL_VANITY_URL_FIELDS}
                     }
+                    allVanityUrls: vanityUrls {
+                        ${GQL_VANITY_URL_FIELDS}
+                    }
                     liveNode: nodeInWorkspace(workspace: LIVE) {
                         vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+                            ${GQL_VANITY_URL_FIELDS}
+                        }
+                        allVanityUrls: vanityUrls {
                             ${GQL_VANITY_URL_FIELDS}
                         }
                     }

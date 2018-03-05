@@ -1,10 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-import {graphql} from 'react-apollo';
-import gql from "graphql-tag";
 
 import { VanityUrlListDefault, VanityUrlListLive } from './VanityUrlList';
-import { GQL_VANITY_URL_FIELDS, gqlContentNodeToVanityUrlPairs } from './SeoUtils';
 
 import {
     Button,
@@ -42,11 +39,6 @@ class VanityUrlEnabledContent extends React.Component {
             expanded: false,
             localFilteringEnabled: true
         };
-
-        this.handleExpandCollapseClick = this.handleExpandCollapseClick.bind(this);
-        this.handleFilterSwitchClick = this.handleFilterSwitchClick.bind(this);
-        this.beforeQueryingAllVanityUrls = this.beforeQueryingAllVanityUrls.bind(this);
-        this.afterQueryingAllVanityUrls = this.afterQueryingAllVanityUrls.bind(this);
     }
 
     handleExpandCollapseClick() {
@@ -61,63 +53,6 @@ class VanityUrlEnabledContent extends React.Component {
             localFilteringEnabled: !this.state.localFilteringEnabled
         });
     };
-
-    beforeQueryingAllVanityUrls(props) {
-        return {
-            variables: {
-                uuid: this.props.content.uuid
-            },
-            fetchPolicy: 'network-only'
-        };
-    }
-
-    afterQueryingAllVanityUrls({data, ownProps}) {
-
-        if (!data.jcr) {
-            return {
-                ...ownProps,
-                vanityUrls: []
-            };
-        }
-
-        this.allVanityUrls = gqlContentNodeToVanityUrlPairs(data.jcr.nodeById);
-
-        return {
-            ...ownProps,
-            vanityUrls: this.allVanityUrls
-        };
-    }
-
-    getLocalFilteringDisabledVanityUrlLists(VanityUrlLists) {
-
-        if (this.allVanityUrls) {
-            return <VanityUrlLists vanityUrls={this.allVanityUrls} filterText={this.props.filterText}/>
-        }
-
-        let query = gql`
-            query NodesQuery($uuid: String!) {
-                jcr {
-                    nodeById(uuid: $uuid) {
-                        vanityUrls {
-                            ${GQL_VANITY_URL_FIELDS}
-                        }
-                        liveNode: nodeInWorkspace(workspace: LIVE) {
-                            vanityUrls {
-                                ${GQL_VANITY_URL_FIELDS}
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-        VanityUrlLists = graphql(query, {
-            options: this.beforeQueryingAllVanityUrls,
-            props: this.afterQueryingAllVanityUrls
-        })(VanityUrlLists);
-
-        return <VanityUrlLists filterText={this.props.filterText}/>
-    }
 
     render() {
 
@@ -136,7 +71,7 @@ class VanityUrlEnabledContent extends React.Component {
         if (this.state.localFilteringEnabled) {
             vanityUrlLists = <VanityUrlLists vanityUrls={content.urls} filterText={filterText}/>;
         } else {
-            vanityUrlLists = this.getLocalFilteringDisabledVanityUrlLists(VanityUrlLists);
+            vanityUrlLists = <VanityUrlLists vanityUrls={content.allUrls} filterText={filterText}/>;
         }
 
         return (
