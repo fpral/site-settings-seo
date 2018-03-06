@@ -9,6 +9,9 @@ import {blueGrey, lightBlue} from 'material-ui/colors/index'
 
 const theme = createMuiTheme({
     palette: {
+        background: {
+            global: 'rgb(234, 234, 234)'
+        },
         primary: {
             main: blueGrey[500],
             light: blueGrey[300],
@@ -18,17 +21,36 @@ const theme = createMuiTheme({
             main: lightBlue[500],
             light: lightBlue[300],
             dark: lightBlue[700]
-        },
+        }
+    },
+    typography: {
+        display4: {
+            fontSize: '14px',
+            fontWeight: 300,
+            lineHeight: 1.42857,
+            letterSpacing: 0,
+            color: '#777'
+        }
     }
 });
 
 const styles = theme => ({
-    body: theme.mixins.gutters({
+    root: {
+        height: '100%',
+        backgroundColor: theme.palette.background.global
+    },
+});
+
+const bodyStyles = theme => ({
+    root: theme.mixins.gutters({
+        margin: theme.spacing.unit * 2,
         backgroundColor: theme.palette.background.default
-    }),
-    footer: {
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing.unit
+    })
+});
+
+const footerStyles = theme => ({
+    root: {
+        backgroundColor: 'inherit'
     }
 });
 
@@ -59,16 +81,14 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         return (
-            <div>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="title" color="inherit">
-                            {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
-                        </Typography>
-                        <SearchField onChangeFilter={this.onChangeFilter}/>
-                    </Toolbar>
-                </AppBar>
-                <Paper elevation={1} className={this.props.classes.body}>
+            <SiteSettings>
+                <SiteSettingsHeader>
+                    <Typography variant="title" color="inherit">
+                        {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
+                    </Typography>
+                    <SearchField onChangeFilter={this.onChangeFilter}/>
+                </SiteSettingsHeader>
+                <SiteSettingsBody>
                     <VanityUrlTableData
                         {...this.props}
                         {...this.state}
@@ -76,18 +96,82 @@ class SiteSettingsSeoApp extends React.Component {
                         onChangeRowsPerPage={this.onChangeRowsPerPage}
                         path={this.props.dxContext.mainResourcePath}
                     />
-                </Paper>
-                <Paper elevation={1} className={this.props.classes.footer}>
-                    <Typography variant="caption" align="center">
-                        {this.props.t('label.copyright')}
-                    </Typography>
-                </Paper>
-            </div>
+                </SiteSettingsBody>
+                <SiteSettingsFooter/>
+            </SiteSettings>
         )
     }
 }
 
-SiteSettingsSeoApp = withStyles(styles)(translate('site-settings-seo')(SiteSettingsSeoApp));
+class SiteSettings extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Paper elevation={0} className={this.props.classes.root}>
+                {this.props.children}
+            </Paper>
+        );
+    }
+}
+
+class SiteSettingsHeader extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <AppBar position="static">
+                <Toolbar>
+                    {this.props.children}
+                </Toolbar>
+            </AppBar>
+        );
+    }
+}
+
+class SiteSettingsBody extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Paper elevation={1} className={this.props.classes.root}>
+                {this.props.children}
+            </Paper>
+        );
+    }
+}
+
+class SiteSettingsFooter extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Paper elevation={0} className={this.props.classes.root}>
+                <Typography variant="display4" align="center">
+                    {this.props.t('label.copyright')}
+                </Typography>
+            </Paper>
+        );
+    }
+}
+
+SiteSettingsSeoApp = translate('site-settings-seo')(SiteSettingsSeoApp);
+SiteSettings = withStyles(styles)(SiteSettings);
+SiteSettingsHeader = translate('site-settings-seo')(SiteSettingsHeader);
+SiteSettingsBody = withStyles(bodyStyles)(SiteSettingsBody);
+SiteSettingsFooter = withStyles(footerStyles)(translate('site-settings-seo')(SiteSettingsFooter));
 
 let SiteSettingsSeo = function (props) {
     return (
