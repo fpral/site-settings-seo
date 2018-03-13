@@ -54,7 +54,7 @@ class VanityUrlListDefault extends React.Component {
                 <Typography variant="caption" classes={{caption: classes.boxTitle}} >
                     {t('label.mappings.default')}
                 </Typography>
-                <Paper elevation={4}>
+                <Paper elevation={2}>
                     <Table>
                         <TableBody>
                             {vanityUrls.map(urlPair => {
@@ -114,7 +114,7 @@ class VanityUrlListLive extends React.Component {
                 <Typography variant="caption" className={classes.boxTitle} >
                     {t('label.mappings.live')}
                 </Typography>
-                <Paper elevation={4}>
+                <Paper elevation={2}>
                     <Table>
                         <TableBody>
                             {vanityUrls.map(urlPair => {
