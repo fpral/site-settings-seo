@@ -5,8 +5,6 @@ import gql from "graphql-tag";
 import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
 
-const GQL_VANITY_URL_FIELDS = 'active default url language uuid path';
-
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
     let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
@@ -30,7 +28,11 @@ let mapResultsToProps = ({data, ownProps}) => {
             rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
                 let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                let allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                let allUrlPairs;
+                if (ownProps.filterText) {
+                    allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                    urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
+                }
 
                 return {
                     path: contentNode.path,
@@ -68,6 +70,7 @@ let mapPropsToOptions = (props) => {
         limit: props.pageSize,
         query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
         filterText: props.filterText,
+        doFilter: !!props.filterText,
         queryFilter: {multi: "ANY", filters: props.filterText ? [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}] : []}
     };
 
@@ -78,7 +81,7 @@ let mapPropsToOptions = (props) => {
 };
 
 let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $queryFilter: InputFieldFiltersInput) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
         jcr {
             nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
@@ -88,23 +91,29 @@ let query = gql`
                     uuid
                     path
                     displayName(language: $lang)
-                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                        ${GQL_VANITY_URL_FIELDS}
-                    }
-                    allVanityUrls: vanityUrls {
-                        ${GQL_VANITY_URL_FIELDS}
-                    }
+                    ...NodeFields
                     liveNode: nodeInWorkspace(workspace: LIVE) {
-                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                            ${GQL_VANITY_URL_FIELDS}
-                        }
-                        allVanityUrls: vanityUrls {
-                            ${GQL_VANITY_URL_FIELDS}
-                        }
+                        ...NodeFields
                     }
                 }
             }
         }
+    }
+    fragment NodeFields on JCRNode {
+        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+            ... VanityUrlFields
+        }
+        allVanityUrls: vanityUrls @include(if: $doFilter) {
+            ... VanityUrlFields
+        }
+    }
+    fragment VanityUrlFields on VanityUrl {
+        active
+        default 
+        url 
+        language 
+        uuid 
+        path
     }
 `;
 
