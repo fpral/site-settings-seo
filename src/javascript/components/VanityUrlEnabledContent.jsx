@@ -46,16 +46,16 @@ class VanityUrlEnabledContent extends React.Component {
     }
 
     handleExpandCollapseClick() {
-        this.setState({
-            expanded: !this.state.expanded
-        });
+        this.setState((state) => ({
+            expanded: !state.expanded
+        }));
     };
 
     handleFilterSwitchClick(e) {
         e.stopPropagation();
-        this.setState({
-            localFilteringEnabled: !this.state.localFilteringEnabled
-        });
+        this.setState((state) => ({
+            localFilteringEnabled: !state.localFilteringEnabled
+        }));
     };
 
     render() {
