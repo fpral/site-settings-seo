@@ -55,15 +55,6 @@ let mapResultsToProps = ({data, ownProps}) => {
 
 let mapPropsToOptions = (props) => {
 
-    // Normally we want to perform all content filtering on the server side, either by non-empty collection of associated vanity URLs and filter text (if any).
-    // However, because current GraphQL API does not allow for fetching content that has vanity URLs in LIVE but does not have any in DEFAULT, we fetch any
-    // content that has ever had any vanity URLs in DEFAULT (otherwise, it could not have any vanity URLs in LIVE). The jmix:vanityUrlMapped mixin is temporarily
-    // serving this purpose, because it is (mistakenly) not removed when all vanity URLs of a content are removed.
-    //
-    // At the same time, we still perform all filtering on the server side in case any filter text is entered. This won't fetch any content that has vanity URLs
-    // in LIVE, but does not have any in DEFAULT, as explained above, however.
-    //
-    // BACKLOG-7698 is to resolve the issue with fetching content that has vanity URLs in LIVE only, but not in DEFAULT.
     let vars = {
         lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
@@ -109,10 +100,10 @@ let query = gql`
     }
     fragment VanityUrlFields on VanityUrl {
         active
-        default 
-        url 
-        language 
-        uuid 
+        default
+        url
+        language
+        uuid
         path
     }
 `;
