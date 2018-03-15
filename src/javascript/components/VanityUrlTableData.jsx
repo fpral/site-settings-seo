@@ -69,8 +69,8 @@ let mapPropsToOptions = (props) => {
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
         query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
-        filterText: props.filterText ? props.filterText : "",
-        doFilter: true,
+        filterText: props.filterText,
+        doFilter: !!props.filterText,
         queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
     };
 
