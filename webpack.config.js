@@ -25,11 +25,11 @@ let config = {
 
                 {
                     test: /\.jsx?$/,
-                    exclude: /node_modules/,
+                    exclude: [/node_modules/, /apollo-dx/],
                     loader: 'babel-loader',
 
                     query: {
-                        presets: ['es2015', 'react', 'stage-2']
+                        presets: ['env', 'react', 'stage-2']
                     }
                 }
             ]
