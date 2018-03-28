@@ -73,13 +73,7 @@ class VanityUrlEnabledContent extends React.Component {
             );
         }
 
-        let vanityUrlLists = null;
-        if (this.state.localFilteringEnabled) {
-            vanityUrlLists = <VanityUrlLists vanityUrls={content.urls} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} />;
-        } else {
-            vanityUrlLists = <VanityUrlLists vanityUrls={content.allUrls} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} />;
-        }
-
+        let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls
         return (
             <div className={this.props.classes.root}>
                 <Paper elevation={1}>
@@ -90,7 +84,14 @@ class VanityUrlEnabledContent extends React.Component {
                         {localFilterSwitch}
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                        {vanityUrlLists}
+                        <Grid container spacing={24} className={classes.vanityUrlLists}>
+                            <Grid item xs={12} lg={6}>
+                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded}/>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText}/>
+                            </Grid>
+                        </Grid>
                     </Collapse>
                 </Paper>
             </div>
@@ -98,30 +99,6 @@ class VanityUrlEnabledContent extends React.Component {
     }
 }
 
-class VanityUrlLists extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
-        const { vanityUrls, filterText, classes, selection, onChangeSelection} = this.props;
-
-        return (
-            <Grid container spacing={24} className={classes.vanityUrlLists}>
-                <Grid item xs={12} lg={6}>
-                    <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText}/>
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                    <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText}/>
-                </Grid>
-            </Grid>
-        );
-    }
-}
-
-VanityUrlLists = withStyles(styles)(VanityUrlLists);
 VanityUrlEnabledContent = withStyles(styles)(translate('site-settings-seo')(VanityUrlEnabledContent));
 
 export {VanityUrlEnabledContent};
