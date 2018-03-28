@@ -4,7 +4,8 @@
     "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
     "selection": {
-      "count": "{{count}} mappings selected",
+      "count": "{{count}} mapping selected",
+      "count_plural": "{{count}} mappings selected",
       "clear": "Clear"
     },
     "localFilter": {
