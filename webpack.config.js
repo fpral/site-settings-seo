@@ -25,7 +25,7 @@ let config = {
 
                 {
                     test: /\.jsx?$/,
-                    exclude: [/node_modules/, /apollo-dx/],
+                    include: [__dirname + '/src'],
                     loader: 'babel-loader',
 
                     query: {

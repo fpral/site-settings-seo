@@ -1,19 +1,20 @@
 import React from 'react';
-import {Toolbar, Typography} from 'material-ui';
-import {DxContextProvider, LanguageSwitcher, SettingsLayout, store} from '@jahia/react-dxcomponents';
+import {Toolbar, Typography, withTheme} from 'material-ui';
+import {DxContextProvider, LanguageSwitcher, SettingsLayout, SearchBar, store} from '@jahia/react-dxcomponents';
 import {client} from '@jahia/apollo-dx';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {translate} from 'react-i18next';
-import {SearchField} from "./SearchField";
 
 class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {filterText:'', currentPage:0, pageSize:5};
-        this.onChangePage.bind(this);
-        this.onChangeRowsPerPage.bind(this);
-        this.onChangeFilter.bind(this);
+        this.state = {filterText: '', currentPage: 0, pageSize: 5, appBarStyle: {}};
+        this.onChangePage = this.onChangePage.bind(this);
+        this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
+        this.onChangeFilter = this.onChangeFilter.bind(this);
+        this.onSearchFocus = this.onSearchFocus.bind(this);
+        this.onSearchBlur = this.onSearchBlur.bind(this);
     }
 
     onChangeFilter = (filterText) => {
@@ -23,22 +24,37 @@ class SiteSettingsSeoApp extends React.Component {
         });
     }
 
-    onChangePage = (newPage) => {
+    onChangePage(newPage) {
         this.setState({currentPage: newPage});
     }
 
-    onChangeRowsPerPage = (newRowsPerPage) => {
+    onChangeRowsPerPage(newRowsPerPage) {
         this.setState({pageSize: newRowsPerPage});
     }
 
+    onSearchFocus() {
+        this.setState({
+            appBarStyle: {
+                backgroundColor: this.props.theme.palette.primary.dark
+            }
+        })
+    }
+
+    onSearchBlur() {
+        this.setState({
+            appBarStyle: {}
+        })
+    }
+
     render() {
+        let { dxContext, t } = this.props;
         return (
-            <SettingsLayout footer={this.props.t('label.copyright')} appBar={
+            <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
                 <Toolbar>
                     <Typography variant="title" color="inherit">
-                        {this.props.t('label.title')} - {this.props.dxContext.siteTitle}
+                        {t('label.title')} - {dxContext.siteTitle}
                     </Typography>
-                    <SearchField onChangeFilter={this.onChangeFilter}/>
+                    <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
                 </Toolbar>
             }>
                 <VanityUrlTableData
@@ -46,14 +62,14 @@ class SiteSettingsSeoApp extends React.Component {
                     {...this.state}
                     onChangePage={this.onChangePage}
                     onChangeRowsPerPage={this.onChangeRowsPerPage}
-                    path={this.props.dxContext.mainResourcePath}
+                    path={dxContext.mainResourcePath}
                 />
             </SettingsLayout>
         )
     }
 }
 
-SiteSettingsSeoApp = translate('site-settings-seo')(SiteSettingsSeoApp);
+SiteSettingsSeoApp = withTheme()(translate('site-settings-seo')(SiteSettingsSeoApp));
 
 let SiteSettingsSeo = function (props) {
     return (
