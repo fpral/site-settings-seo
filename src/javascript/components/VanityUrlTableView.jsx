@@ -1,9 +1,7 @@
 import React from 'react';
 import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 
-import {
-    List,
-} from 'material-ui';
+import {List} from 'material-ui';
 
 import {Pagination} from "./Pagination";
 import {translate} from 'react-i18next';
@@ -16,7 +14,8 @@ class VanityUrlTableView extends React.Component {
             open: false,
             openedItems: {}
         };
-
+        this.handleOpenDialog = this.handleOpenDialog.bind(this);
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
     handleOpenDialog = (path) => {
@@ -28,10 +27,11 @@ class VanityUrlTableView extends React.Component {
     };
 
     render() {
+        let { rows, selection, onChangeSelection, filterText} = this.props;
         return (
             <div>
                 <List>
-                    {this.props.rows.map(row => (<VanityUrlEnabledContent key={row.uuid} content={row} filterText={this.props.filterText}/>))}
+                    {rows.map(row => (<VanityUrlEnabledContent key={row.uuid} content={row} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection}/>))}
                 </List>
                 <Pagination {...this.props} />
             </div>

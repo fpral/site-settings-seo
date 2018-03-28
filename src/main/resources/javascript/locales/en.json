@@ -1,10 +1,20 @@
 {
   "label": {
     "title": "Vanity URL Dashboard",
+    "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "selection": {
+      "count": "{{count}} mappings selected",
+      "clear": "Clear"
+    },
     "localFilter": {
       "switchOn": "Show matches only",
       "switchOff": "Show all"
+    },
+    "actions": {
+      "move": "Move",
+      "publish": "Publish",
+      "delete": "Delete"
     },
     "mappings": {
       "default": "Default mappings",

@@ -1,9 +1,8 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-
-import {Paper, Switch, Table, TableBody, TableCell, TableRow, Typography, withStyles} from 'material-ui';
-
-import {CheckBoxOutlineBlank, Star} from 'material-ui-icons';
+import {Checkbox, Paper, Switch, Table, TableBody, TableCell, TableRow, Typography, withStyles} from 'material-ui';
+import {Star} from 'material-ui-icons';
+import {VanityUrlActions} from './VanityUrlActions';
 
 const styles = (theme) => ({
     boxTitle: {
@@ -22,7 +21,7 @@ const styles = (theme) => ({
     },
     checkboxLeft: {
         marginLeft: '-48px',
-        marginTop: '12px',
+        marginTop: '2px',
         position: 'absolute',
         border: '0'
     },
@@ -48,7 +47,7 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
-        let { vanityUrls, classes, t } = this.props;
+        let { vanityUrls, classes, t, selection, onChangeSelection } = this.props;
         return (
             <div>
                 <Typography variant="caption" classes={{caption: classes.boxTitle}} >
@@ -59,12 +58,13 @@ class VanityUrlListDefault extends React.Component {
                         <TableBody>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
+                                let selected = selection.indexOf(urlPair.uuid) > -1;
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
                                         <TableRow key={urlPair.uuid} hover className={classes.vanityUrl}>
-                                            <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classes.checkboxLeft}>
-                                                <CheckBoxOutlineBlank/>
+                                            <TableCell padding={'none'} className={(selected ? '' : (classes.hiddenOnHover + ' ')) + classes.checkboxLeft}>
+                                                <Checkbox checked={selected} onChange={(event)=> onChangeSelection(urlPair.uuid)}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 <Switch checked={url.active} />
@@ -73,7 +73,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
-                                                [Actions]
+                                                {selection.length === 0 && <VanityUrlActions/>}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}

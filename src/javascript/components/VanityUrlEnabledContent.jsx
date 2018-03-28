@@ -1,24 +1,11 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 
-import { VanityUrlListDefault, VanityUrlListLive } from './VanityUrlList';
+import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 
-import {
-    Button,
-    Collapse,
-    Grid,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Paper,
-    Typography,
-    withStyles
-} from 'material-ui';
+import {Button, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
 
-import {
-    ExpandLess,
-    ExpandMore
-} from 'material-ui-icons';
+import {ExpandLess, ExpandMore} from 'material-ui-icons';
 
 const styles = theme => ({
     root: {
@@ -60,7 +47,7 @@ class VanityUrlEnabledContent extends React.Component {
 
     render() {
 
-        const { content, filterText, classes, t } = this.props;
+        const { content, filterText, classes, t, onChangeSelection, selection } = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
@@ -88,9 +75,9 @@ class VanityUrlEnabledContent extends React.Component {
 
         let vanityUrlLists = null;
         if (this.state.localFilteringEnabled) {
-            vanityUrlLists = <VanityUrlLists vanityUrls={content.urls} filterText={filterText}/>;
+            vanityUrlLists = <VanityUrlLists vanityUrls={content.urls} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} />;
         } else {
-            vanityUrlLists = <VanityUrlLists vanityUrls={content.allUrls} filterText={filterText}/>;
+            vanityUrlLists = <VanityUrlLists vanityUrls={content.allUrls} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} />;
         }
 
         return (
@@ -119,12 +106,12 @@ class VanityUrlLists extends React.Component {
 
     render() {
 
-        const { vanityUrls, filterText, classes} = this.props;
+        const { vanityUrls, filterText, classes, selection, onChangeSelection} = this.props;
 
         return (
             <Grid container spacing={24} className={classes.vanityUrlLists}>
                 <Grid item xs={12} lg={6}>
-                    <VanityUrlListDefault vanityUrls={vanityUrls} filterText={filterText}/>
+                    <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText}/>
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText}/>
