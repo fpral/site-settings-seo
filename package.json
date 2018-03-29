@@ -1,6 +1,10 @@
 {
   "name": "@jahia/site-settings-seo",
   "version": "1.0.0",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
   "main": "src/javascript/index.js",
   "license": "MIT",
   "dependencies": {

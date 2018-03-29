@@ -1,3 +1,5 @@
+let path = require('path');
+
 let config = {
         entry: {
             'siteSettingsSeo': './src/javascript/siteSettingsSeo-app.jsx'
@@ -25,7 +27,7 @@ let config = {
 
                 {
                     test: /\.jsx?$/,
-                    include: [__dirname + '/src'],
+                    include: [path.join(__dirname,"src")],
                     loader: 'babel-loader',
 
                     query: {
