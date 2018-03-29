@@ -1,10 +1,11 @@
 import React from 'react';
-import {Toolbar, Typography, withTheme, withStyles} from 'material-ui';
-import {DxContextProvider, LanguageSwitcher, SettingsLayout, SearchBar, store} from '@jahia/react-dxcomponents';
-import {client} from '@jahia/apollo-dx';
+import {Toolbar, Typography, withTheme} from 'material-ui';
+import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
+import {Delete, Publish, SwapHoriz} from "material-ui-icons"
+import * as _ from 'lodash';
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -17,10 +18,42 @@ class SiteSettingsSeoApp extends React.Component {
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
+
+        this.mutationPlaceholder = function(selection, event) {
+            console.log(selection);
+            console.log(event);
+        };
+
+        this.actions = {
+            deleteAction:{
+                buttonLabel: "Delete",
+                buttonIcon: <Delete/>,
+                color:"#f00",
+                call: this.mutationPlaceholder
+            },
+            publishAction:{
+                buttonLabel: "Publish",
+                buttonIcon: <Publish/>,
+                color:"#f50",
+                call: this.mutationPlaceholder
+            },
+            moveAction:{
+                buttonLabel: "Move",
+                buttonIcon: <SwapHoriz/>,
+                color:"#06F",
+                call: this.mutationPlaceholder
+            },
+            setDefaultAction:{
+                call: this.mutationPlaceholder
+            },
+            setActiveAction:{
+                call: this.mutationPlaceholder
+            }
+        }
     }
 
-    onChangeSelection(uuid) {
-        if (!uuid) {
+    onChangeSelection(urlPair) {
+        if (!urlPair) {
             // Clear selection
             this.setState({
                 selection: []
@@ -28,7 +61,7 @@ class SiteSettingsSeoApp extends React.Component {
         } else {
             // Switch selected uuid
             this.setState((previous) => ({
-                selection: (previous.selection.indexOf(uuid) > -1) ? _.filter(previous.selection, (p) => (uuid !== p)) : _.concat(previous.selection, uuid)
+                selection: (_.find(previous.selection, (p)=> p.uuid === urlPair.uuid)) ? _.filter(previous.selection, (p) => (urlPair.uuid !== p.uuid)) : _.concat(previous.selection, urlPair)
             }))
         }
     }
@@ -74,7 +107,7 @@ class SiteSettingsSeoApp extends React.Component {
                 </Toolbar>
             }>
 
-                <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection}/>
+                <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
                 <VanityUrlTableData
                     {...this.props}
@@ -82,6 +115,7 @@ class SiteSettingsSeoApp extends React.Component {
                     onChangeSelection={this.onChangeSelection}
                     onChangePage={this.onChangePage}
                     onChangeRowsPerPage={this.onChangeRowsPerPage}
+                    actions={this.actions}
                     path={dxContext.mainResourcePath}
                 />
             </SettingsLayout>
