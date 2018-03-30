@@ -1,9 +1,8 @@
 import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
-import {graphql, Query} from 'react-apollo';
+import {Query} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
-import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -12,43 +11,6 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
     return _.values(urlPairs);
 }
-
-let mapResultsToProps = (res, ownProps) => {
-
-    let jcr = res.data.jcr;
-
-    if (jcr) {
-
-        return {
-            totalCount: jcr.nodesByQuery.pageInfo.totalCount,
-            numberOfPages: (jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
-
-            rows: _.map(jcr.nodesByQuery.nodes, contentNode => {
-
-                let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                let allUrlPairs;
-                if (ownProps.filterText) {
-                    allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                    urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
-                }
-
-                return {
-                    path: contentNode.path,
-                    uuid: contentNode.uuid,
-                    displayName: contentNode.displayName,
-                    urls: urlPairs,
-                    allUrls: allUrlPairs
-                }
-            })
-        }
-    }
-
-    return {
-        totalCount: 0,
-        numberOfPages: 0,
-        rows: []
-    }
-};
 
 let query = gql`
     query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
@@ -102,7 +64,40 @@ let VanityUrlTableData = (props) => {
     let fetchPolicy = 'network-only';
 
     return <Query fetchPolicy={fetchPolicy} query={query} variables={variables} >
-        { (res) => <VanityUrlTableView {...mapResultsToProps(res, props)} {...props} /> }
+        { ({loading, error, data}) => {
+            let totalCount = 0;
+            let numberOfPages = 0;
+            let rows = [];
+
+            if (error) {
+                console.log("Error when fetching data : "+ error);
+            }
+
+            if (!loading && !error) {
+                totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+                numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / props.pageSize);
+
+                rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+
+                    let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
+                    let allUrlPairs;
+                    if (props.filterText) {
+                        allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                        urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
+                    }
+
+                    return {
+                        path: contentNode.path,
+                        uuid: contentNode.uuid,
+                        displayName: contentNode.displayName,
+                        urls: urlPairs,
+                        allUrls: allUrlPairs
+                    }
+                })
+            }
+
+            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
+        }}
     </Query>
 }
 
