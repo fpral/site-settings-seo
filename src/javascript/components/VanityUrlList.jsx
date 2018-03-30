@@ -12,7 +12,11 @@ import {
     Typography,
     withStyles
 } from 'material-ui';
-import {Star, StarBorder} from 'material-ui-icons';
+import {
+    Done,
+    Star,
+    StarBorder
+} from 'material-ui-icons';
 import * as _ from "lodash";
 
 const styles = (theme) => ({
@@ -77,31 +81,35 @@ class VanityUrlListDefault extends React.Component {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
                                         <TableRow key={urlPair.uuid} hover className={classes.vanityUrl} onClick={(event) => onChangeSelection(urlPair)}>
-                                            <TableCell padding={'none'} className={(selected ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover )) + ' ' + classes.checkboxLeft}>
-                                                <Checkbox onClick={(event)=>{event.stopPropagation()}} checked={selected} onChange={(event)=> onChangeSelection(urlPair)}/>
+                                            <TableCell padding={'none'} className={(selected ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
+                                                <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event) => onChangeSelection(urlPair)}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Switch onClick={(event)=>{event.stopPropagation()}} onChange={(event)=> actions.setActiveAction.call([urlPair], event)} checked={url.active} />
+                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call([urlPair], event)} checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
-                                                {selection.length === 0 &&
-                                                    _.filter(actions, x=>x.buttonIcon).map((action,i) =>
-                                                        <IconButton key={i}
-                                                                    onClick={(event) => { event.stopPropagation(); action.call([urlPair], event)}}
-                                                                    aria-label={action.buttonLabel}
-                                                                    style={{color:action.color}}>
-                                                            {action.buttonIcon}
-                                                        </IconButton>)
-                                                }
+                                                {selection.length == 0 ? (
+                                                    <span>
+                                                        <ActionButton action={actions.deleteAction}/>
+                                                        <ActionButton action={actions.moveAction}/>
+                                                    </span>
+                                                ) : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <Checkbox onClick={(event)=>{event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call([urlPair], event)}/>
+                                                <Checkbox onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call([urlPair], event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
+                                            </TableCell>
+                                            <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
+                                                {url.publicationInfo.publicationStatus == 'PUBLISHED' ? (
+                                                    <Done color="primary"/>
+                                                ) : (
+                                                    <ActionButton action={actions.publishAction}/>
+                                                )}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -193,6 +201,25 @@ class HighlightText extends React.Component {
                 )}
             </span>
         )
+    }
+}
+
+class ActionButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let action = this.props.action;
+        return (
+            <IconButton aria-label={action.buttonLabel} style={{color: action.color}} onClick={(event) => {
+                event.stopPropagation();
+                action.call([urlPair], event);
+            }}>
+                {action.buttonIcon}
+            </IconButton>
+        );
     }
 }
 

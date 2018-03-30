@@ -25,28 +25,28 @@ class SiteSettingsSeoApp extends React.Component {
         };
 
         this.actions = {
-            deleteAction:{
+            deleteAction: {
                 buttonLabel: "Delete",
                 buttonIcon: <Delete/>,
                 color:"#f00",
                 call: this.mutationPlaceholder
             },
-            publishAction:{
+            publishAction: {
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 color:"#f50",
                 call: this.mutationPlaceholder
             },
-            moveAction:{
+            moveAction: {
                 buttonLabel: "Move",
                 buttonIcon: <SwapHoriz/>,
                 color:"#06F",
                 call: this.mutationPlaceholder
             },
-            setDefaultAction:{
+            setDefaultAction: {
                 call: this.mutationPlaceholder
             },
-            setActiveAction:{
+            setActiveAction: {
                 call: this.mutationPlaceholder
             }
         }

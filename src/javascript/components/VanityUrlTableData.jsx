@@ -23,23 +23,36 @@ let query = gql`
                     uuid
                     path
                     displayName(language: $lang)
-                    ...NodeFields
+                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+                        ...DefaultVanityUrlFields
+                    }
+                    allVanityUrls: vanityUrls @include(if: $doFilter) {
+                        ...DefaultVanityUrlFields
+                    }
                     liveNode: nodeInWorkspace(workspace: LIVE) {
-                        ...NodeFields
+                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+                            ...LiveVanityUrlFields
+                        }
+                        allVanityUrls: vanityUrls @include(if: $doFilter) {
+                            ...LiveVanityUrlFields
+                        }
                     }
                 }
             }
         }
     }
-    fragment NodeFields on JCRNode {
-        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-            ... VanityUrlFields
-        }
-        allVanityUrls: vanityUrls @include(if: $doFilter) {
-            ... VanityUrlFields
+    fragment DefaultVanityUrlFields on VanityUrl {
+        active
+        default
+        url
+        language
+        uuid
+        path
+        publicationInfo: aggregatedPublicationInfo(language: $lang) {
+            publicationStatus
         }
     }
-    fragment VanityUrlFields on VanityUrl {
+    fragment LiveVanityUrlFields on VanityUrl {
         active
         default
         url
