@@ -1,6 +1,6 @@
 import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
-import {graphql} from 'react-apollo';
+import {graphql, Query} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 import {replaceFragmentsInDocument} from "@jahia/apollo-dx";
@@ -13,19 +13,17 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     return _.values(urlPairs);
 }
 
-let mapResultsToProps = ({data, ownProps}) => {
+let mapResultsToProps = (res, ownProps) => {
 
-    let jcr = data.jcr;
+    let jcr = res.data.jcr;
 
     if (jcr) {
 
         return {
+            totalCount: jcr.nodesByQuery.pageInfo.totalCount,
+            numberOfPages: (jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
 
-            ...ownProps,
-            totalCount: data.jcr.nodesByQuery.pageInfo.totalCount,
-            numberOfPages: (data.jcr.nodesByQuery.pageInfo.totalCount / ownProps.pageSize),
-
-            rows: _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+            rows: _.map(jcr.nodesByQuery.nodes, contentNode => {
 
                 let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
                 let allUrlPairs;
@@ -46,28 +44,9 @@ let mapResultsToProps = ({data, ownProps}) => {
     }
 
     return {
-        ...ownProps,
         totalCount: 0,
         numberOfPages: 0,
         rows: []
-    }
-};
-
-let mapPropsToOptions = (props) => {
-
-    let vars = {
-        lang: contextJsParameters.uilang,
-        offset: (props.currentPage * props.pageSize),
-        limit: props.pageSize,
-        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
-        filterText: props.filterText,
-        doFilter: !!props.filterText,
-        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
-    };
-
-    return {
-        variables: vars,
-        fetchPolicy: 'network-only'
     }
 };
 
@@ -108,9 +87,23 @@ let query = gql`
     }
 `;
 
-let VanityUrlTableData = graphql(query, {
-    props: mapResultsToProps,
-    options: mapPropsToOptions
-})(VanityUrlTableView);
+let VanityUrlTableData = (props) => {
+    let variables = {
+        lang: contextJsParameters.uilang,
+        offset: (props.currentPage * props.pageSize),
+        limit: props.pageSize,
+        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
+        filterText: props.filterText,
+        doFilter: !!props.filterText,
+        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
+    };
+
+    // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
+    let fetchPolicy = 'network-only';
+
+    return <Query fetchPolicy={fetchPolicy} query={query} variables={variables} >
+        { (res) => <VanityUrlTableView {...mapResultsToProps(res, props)} {...props} /> }
+    </Query>
+}
 
 export {VanityUrlTableData};
