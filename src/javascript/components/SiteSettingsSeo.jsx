@@ -1,6 +1,6 @@
 import React from 'react';
 import {Toolbar, Typography, withTheme} from 'material-ui';
-import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
+import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
@@ -104,6 +104,7 @@ class SiteSettingsSeoApp extends React.Component {
                         {t('label.title')} - {dxContext.siteTitle}
                     </Typography>
                     <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
+                    <ThemeTester/>
                 </Toolbar>
             }>
 
