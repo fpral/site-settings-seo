@@ -93,8 +93,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length == 0 ? (
                                                     <span>
-                                                        <ActionButton action={actions.deleteAction}/>
-                                                        <ActionButton action={actions.moveAction}/>
+                                                        <ActionButton action={actions.deleteAction} urlPair={urlPair}/>
+                                                        <ActionButton action={actions.moveAction} urlPair={urlPair}/>
                                                     </span>
                                                 ) : ''}
                                             </TableCell>
@@ -108,7 +108,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {url.publicationInfo.publicationStatus == 'PUBLISHED' ? (
                                                     <Done color="primary"/>
                                                 ) : (
-                                                    <ActionButton action={actions.publishAction}/>
+                                                    <ActionButton action={actions.publishAction} urlPair={urlPair}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>
@@ -212,11 +212,13 @@ class ActionButton extends React.Component {
 
     render() {
         let action = this.props.action;
+        let urlPair = this.props.urlPair;
         return (
             <IconButton aria-label={action.buttonLabel} style={{color: action.color}} onClick={(event) => {
                 event.stopPropagation();
                 action.call([urlPair], event);
             }}>
+                {action.body}
                 {action.buttonIcon}
             </IconButton>
         );
