@@ -6,6 +6,7 @@ import {
     Paper,
     Switch,
     Table,
+    TableHead,
     TableBody,
     TableCell,
     TableRow,
@@ -66,13 +67,28 @@ class VanityUrlListDefault extends React.Component {
 
     render() {
         let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions } = this.props;
+        let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
+        let allCheckboxChecked = _.differenceBy(urlPairs, selection, "uuid").length === 0;
+        let allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
+
         return (
             <div>
-                <Typography variant="caption" classes={{caption: classes.boxTitle}} >
-                    {t('label.mappings.default')}
-                </Typography>
                 <Paper elevation={2}>
                     <Table>
+                        <TableHead>
+                            <TableRow className={classes.vanityUrl}>
+                                <TableCell padding={'none'} className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
+                                    <Checkbox checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
+                                              onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
+                                              />
+                                </TableCell>
+                                <TableCell padding={'none'} colSpan={6}>
+                                    <Typography variant="caption" classes={{caption: classes.boxTitle}} >
+                                        {t('label.mappings.default')}
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
@@ -80,9 +96,9 @@ class VanityUrlListDefault extends React.Component {
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} hover className={classes.vanityUrl} onClick={(event) => onChangeSelection(urlPair)}>
+                                        <TableRow key={urlPair.uuid} hover className={classes.vanityUrl} onClick={(event) => onChangeSelection(!selected, [urlPair])}>
                                             <TableCell padding={'none'} className={(selected ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
-                                                <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event) => onChangeSelection(urlPair)}/>
+                                                <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call([urlPair], event)} checked={url.active} />
@@ -141,11 +157,17 @@ class VanityUrlListLive extends React.Component {
         let { vanityUrls, classes, t } = this.props;
         return (
             <div>
-                <Typography variant="caption" className={classes.boxTitle} >
-                    {t('label.mappings.live')}
-                </Typography>
                 <Paper elevation={2}>
                     <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell padding={'none'} colSpan={3}>
+                                    <Typography variant="caption" className={classes.boxTitle} >
+                                        {t('label.mappings.live')}
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.live;

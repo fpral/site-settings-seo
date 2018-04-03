@@ -52,17 +52,16 @@ class SiteSettingsSeoApp extends React.Component {
         }
     }
 
-    onChangeSelection(urlPair) {
-        if (!urlPair) {
+    onChangeSelection(add, urlPairs) {
+        if (!urlPairs) {
             // Clear selection
             this.setState({
                 selection: []
             })
         } else {
-            // Switch selected uuid
             this.setState((previous) => ({
-                selection: (_.find(previous.selection, (p)=> p.uuid === urlPair.uuid)) ? _.filter(previous.selection, (p) => (urlPair.uuid !== p.uuid)) : _.concat(previous.selection, urlPair)
-            }))
+                selection: add ? _.unionBy(previous.selection, urlPairs, "uuid") : _.pullAllBy(previous.selection, urlPairs, "uuid")
+            }));
         }
     }
 
