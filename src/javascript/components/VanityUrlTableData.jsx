@@ -59,6 +59,9 @@ let query = gql`
         language
         uuid
         path
+        editNode:nodeInWorkspace(workspace: EDIT) {
+            path
+        }
     }
 `;
 

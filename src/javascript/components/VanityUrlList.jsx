@@ -154,14 +154,14 @@ class VanityUrlListLive extends React.Component {
     }
 
     render() {
-        let { vanityUrls, classes, t } = this.props;
+        let { vanityUrls, classes, t, actions } = this.props;
         return (
             <div>
                 <Paper elevation={2}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell padding={'none'} colSpan={3}>
+                                <TableCell padding={'none'} colSpan={4}>
                                     <Typography variant="caption" className={classes.boxTitle} >
                                         {t('label.mappings.live')}
                                     </Typography>
@@ -184,12 +184,17 @@ class VanityUrlListLive extends React.Component {
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
                                             </TableCell>
+                                            <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
+                                                {url.editNode && url.editNode.path !== url.path ? (
+                                                    <ActionButton action={actions.publishDeleteAction} urlPair={urlPair}/>
+                                                ) : ''}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
-                                            <TableCell colSpan={3} padding={'none'}>
+                                            <TableCell colSpan={4} padding={'none'}>
                                                 {/*Not published yet */}
                                             </TableCell>
                                         </TableRow>
