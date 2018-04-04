@@ -200,8 +200,8 @@ class VanityUrlListLive extends React.Component {
                                                 {url.language}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
-                                                {url.editNode && url.editNode.path !== url.path ? (
-                                                    '' //TODO MOVE
+                                                {url.editNode ? (
+                                                    ''
                                                 ) :
                                                     <ActionButton action={actions.publishDeleteAction} urlPair={urlPair}/>
                                                 }
