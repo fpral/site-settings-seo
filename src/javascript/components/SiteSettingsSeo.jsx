@@ -4,7 +4,9 @@ import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
-import {Delete, Publish, SwapHoriz} from "material-ui-icons"
+import gql from "graphql-tag";
+import {compose, graphql} from 'react-apollo';
+import {Delete, Publish, SwapHoriz} from "material-ui-icons";
 import * as _ from 'lodash';
 
 class SiteSettingsSeoApp extends React.Component {
@@ -18,6 +20,17 @@ class SiteSettingsSeoApp extends React.Component {
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
+
+
+        this.publish = function(selection, event) {
+            const nodes = [];
+            var i;
+            for(i=0; i<selection.length; i++){
+                nodes[i] = selection[i].uuid;
+            }
+            const variables = {pathsOrIds: nodes};
+            props.publish({variables:variables});
+        };
 
         this.mutationPlaceholder = function(selection, event) {
             console.log(selection);
@@ -37,7 +50,7 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonIcon: <Publish/>,
                 tableColor:"#fff",
                 generalColor: props.theme.palette.warning.light,
-                call: this.mutationPlaceholder
+                call: this.publish
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
@@ -131,12 +144,27 @@ class SiteSettingsSeoApp extends React.Component {
     }
 }
 
-SiteSettingsSeoApp = withTheme()(translate('site-settings-seo')(SiteSettingsSeoApp));
+const publication = gql`
+            mutation mutateNodes($pathsOrIds: [String!]!){
+                jcr{
+                    mutateNodes(pathsOrIds: $pathsOrIds){
+                        publish(languages:"en")
+                        }
+                    }
+                }
+            `;
+
+
+SiteSettingsSeoApp = compose(
+    withTheme(),
+    graphql(publication, {name: 'publish'}),
+    (translate('site-settings-seo'))
+    )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <SiteSettingsSeoApp {...props} />
+                  <SiteSettingsSeoApp {...props} publish={publication}/>
         </DxContextProvider>
     );
 };
