@@ -19,6 +19,7 @@ import {
     StarBorder
 } from 'material-ui-icons';
 import * as _ from "lodash";
+import {fade} from "material-ui/styles/colorManipulator";
 
 const styles = (theme) => ({
     boxTitle: {
@@ -53,9 +54,18 @@ const styles = (theme) => ({
     missingDefaultCounterpart: {
         backgroundColor: theme.palette.error.light
     },
+    toBePublished: {
+        '&:hover': {
+            backgroundColor: fade(theme.palette.warning.light, 0.7)
+        },
+        backgroundColor: theme.palette.warning.light
+    },
     highlightText: {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
+    },
+    publishedCheck: {
+        color: theme.palette.success.main,
     }
 });
 
@@ -95,8 +105,13 @@ class VanityUrlListDefault extends React.Component {
                                 let selected = !!(_.find(selection, (p)=> p.uuid === urlPair.uuid));
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
+                                    let isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
+
                                     return (
-                                        <TableRow key={urlPair.uuid} hover className={classes.vanityUrl} onClick={(event) => onChangeSelection(!selected, [urlPair])}>
+                                        <TableRow key={urlPair.uuid} hover classes={{
+                                            root: classes.vanityUrl,
+                                            hover: (isPublished ? '' : classes.toBePublished)
+                                        }}  onClick={(event) => onChangeSelection(!selected, [urlPair])}>
                                             <TableCell padding={'none'} className={(selected ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
@@ -107,7 +122,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
-                                                {selection.length == 0 ? (
+                                                {selection.length === 0 ? (
                                                     <span>
                                                         <ActionButton action={actions.deleteAction} urlPair={urlPair}/>
                                                         <ActionButton action={actions.moveAction} urlPair={urlPair}/>
@@ -121,8 +136,8 @@ class VanityUrlListDefault extends React.Component {
                                                 {url.language}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
-                                                {url.publicationInfo.publicationStatus == 'PUBLISHED' ? (
-                                                    <Done color="primary"/>
+                                                {isPublished ? (
+                                                    <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
                                                     <ActionButton action={actions.publishAction} urlPair={urlPair}/>
                                                 )}
@@ -241,7 +256,7 @@ class ActionButton extends React.Component {
         let action = this.props.action;
         let urlPair = this.props.urlPair;
         return (
-            <IconButton aria-label={action.buttonLabel} style={{color: action.color}} onClick={(event) => {
+            <IconButton aria-label={action.buttonLabel} style={{color: action.tableColor}} onClick={(event) => {
                 event.stopPropagation();
                 action.call([urlPair], event);
             }}>

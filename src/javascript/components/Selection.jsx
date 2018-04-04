@@ -54,7 +54,7 @@ class Selection extends React.Component {
                 { _.filter(actions, x=>x.buttonLabel).map((action,i) =>
                 <Button key={i}
                         onClick={(event) => { action.call(selection, event)}}
-                        style={{backgroundColor:fade(action.color,0.5)}}>
+                        style={{backgroundColor:fade(action.generalColor,0.5)}}>
                     {action.buttonLabel}
                 </Button>) }
             </div>
