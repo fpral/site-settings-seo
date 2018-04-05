@@ -98,14 +98,24 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.onMoveInfoDialog
             },
             setDefaultAction: {
-                call: this.mutationPlaceholder
+                call: (data, event) => {
+                    props.setProperty({
+                        variables: {
+                            id: data.urlPair.uuid,
+                            property: 'j:default',
+                            value: data.defaultUrl.toString(),
+                            lang: contextJsParameters.uilang
+                        }
+                    })
+                }
             },
             setActiveAction: {
                 call: (data, event) => {
-                    props.setActive({
+                    props.setProperty({
                         variables: {
                             id: data.urlPair.uuid,
-                            active: data.active.toString(),
+                            property: 'j:active',
+                            value: data.active.toString(),
                             lang: contextJsParameters.uilang
                         }
                     });
@@ -234,12 +244,12 @@ class SiteSettingsSeoApp extends React.Component {
     }
 }
 
-const setActive = gql`
-            mutation setActive($id: String!, $active: String!, $lang: String!){
+const setProperty = gql`
+            mutation setProperty($id: String!, $value: String!, $property:String!, $lang: String!){
                 jcr{
                     mutateNodes(pathsOrIds: [$id]){
-                        mutateProperty(name:"j:active"){
-                            setValue(value:$active)
+                        mutateProperty(name:$property){
+                            setValue(value:$value)
                         }
                     }
                 }
@@ -268,7 +278,7 @@ const publication = gql`
 
 SiteSettingsSeoApp = compose(
     withTheme(),
-    graphql(setActive, {name: 'setActive'}),
+    graphql(setProperty, {name: 'setProperty'}),
     graphql(publication, {name: 'publish'}),
     (translate('site-settings-seo'))
 )(SiteSettingsSeoApp);

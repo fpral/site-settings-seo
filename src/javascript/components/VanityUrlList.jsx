@@ -130,7 +130,7 @@ class VanityUrlListDefault extends React.Component {
                                                 ) : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <Checkbox onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call([urlPair], event)}/>
+                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair:urlPair, defaultUrl:event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.language}
