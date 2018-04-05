@@ -22,6 +22,7 @@
       "live": "Live mappings"
     },
     "missingDefault": "Deleted {{vanityUrl}}",
+    "movedDefault": "Moved to {{page}}",
     "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
   }
 }

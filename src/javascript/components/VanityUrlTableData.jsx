@@ -61,6 +61,11 @@ let query = gql`
         path
         editNode:nodeInWorkspace(workspace: EDIT) {
             path
+            parent {
+                parent {
+                    displayName(language: $lang)
+                }
+            }
         }
     }
 `;

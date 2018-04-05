@@ -147,8 +147,12 @@ class VanityUrlListDefault extends React.Component {
                                 } else {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
-                                            <TableCell colSpan={6} padding={'dense'} className={classes.missingDefault}>
-                                                {t('label.missingDefault', {vanityUrl: urlPair.live.url})}
+                                            <TableCell colSpan={7} padding={'dense'} className={classes.missingDefault}>
+                                                {urlPair.live && urlPair.live.editNode ? (
+                                                    t('label.movedDefault', {page: urlPair.live.editNode.parent.parent.displayName})
+                                                ) :
+                                                    t('label.missingDefault', {vanityUrl: urlPair.live.url})
+                                                }
                                             </TableCell>
                                         </TableRow>
                                     );
