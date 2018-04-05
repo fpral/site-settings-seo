@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, withTheme} from 'material-ui';
+import {Toolbar, Typography, withTheme, Button} from 'material-ui';
 import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {translate} from 'react-i18next';
@@ -7,6 +7,8 @@ import {Selection} from "./Selection";
 import gql from "graphql-tag";
 import {compose, graphql} from 'react-apollo';
 import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
 
@@ -20,7 +22,14 @@ class SiteSettingsSeoApp extends React.Component {
             pageSize: 5,
             appBarStyle: {},
             selection: [],
-            moveInfoDialogPath: ''
+
+            moveInfoDialogPath: '',
+
+            confirmationIconDialog:{
+                open : false,
+                showSnackBar:false,
+                urlPair:[]
+            }
         };
         this.onChangeSelection = this.onChangeSelection.bind(this);
         this.onChangeFilter = this.onChangeFilter.bind(this);
@@ -29,6 +38,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
+        this.onPublishIconDialog = this.onPublishIconDialog.bind(this);
+        this.onSnackBar = this.onSnackBar.bind(this);
 
         this.publish = function(selection, event) {
             const nodes = [];
@@ -60,6 +71,13 @@ class SiteSettingsSeoApp extends React.Component {
                 generalColor: props.theme.palette.warning.light,
                 call: this.publish
             },
+            publishActionIcon:{
+                buttonLabel: "Publish",
+                buttonIcon: <Publish/>,
+                tableColor:"#fff",
+                generalColor: props.theme.palette.warning.light,
+                call: this.onPublishIconDialog
+            },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
                 tableColor:"#fff",
@@ -86,7 +104,24 @@ class SiteSettingsSeoApp extends React.Component {
         }
     }
 
-    onMoveInfoDialog = (path) => {
+    onPublishIconDialog = (urlPair) => {
+        this.setState({
+            confirmationIconDialog : {
+                open : !this.state.confirmationIconDialog.open,
+                urlPair : urlPair
+            }
+        });
+    };
+
+    onSnackBar = () => {
+        this.setState({
+            confirmationIconDialog : {
+                open : !this.state.confirmationIconDialog.showSnackBar,
+            }
+        });
+    }
+
+    onMoveInfoDialog = () => {
         this.setState({
             moveInfoDialogPath: path
         })
@@ -160,6 +195,30 @@ class SiteSettingsSeoApp extends React.Component {
                 />
 
                 <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
+                <Dialog open={this.state.confirmationIconDialog.open} fullWidth={true} onClose={this.onPublishIconDialog} aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to perform this action ?
+                        </DialogContentText>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={this.onPublishIconDialog} color="primary">
+                            Cancel
+                        </Button>
+                        <Button key={this.actions.publishAction.buttonLabel}
+                                onClick={(event) => { this.actions.publishAction.call(this.state.confirmationIconDialog.urlPair, event); this.onPublishIconDialog()}}
+                                color="primary" autoFocus>
+                            {this.actions.publishAction.buttonLabel}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Snackbar open={this.state.confirmationIconDialog.showSnackBar} onClose={this.state.confirmationIconDialog.showSnackBar} autoHideDuration={3000}
+                          anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
+                    <Typography>Publication job started on background</Typography>
+                </Snackbar>
             </SettingsLayout>
         )
     }
@@ -180,12 +239,12 @@ SiteSettingsSeoApp = compose(
     withTheme(),
     graphql(publication, {name: 'publish'}),
     (translate('site-settings-seo'))
-    )(SiteSettingsSeoApp);
+)(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-                  <SiteSettingsSeoApp {...props} publish={publication}/>
+            <SiteSettingsSeoApp {...props} publish={publication}/>
         </DxContextProvider>
     );
 };

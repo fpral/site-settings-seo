@@ -32,7 +32,9 @@ let styles = theme => ({
         float:"right"
     },
     snackBar: {
-        backgroundColor: theme.palette.primary
+        backgroundColor: theme.palette.primary.dark,
+        width: '20%',
+        height:'10%'
     }
 });
 
@@ -87,11 +89,11 @@ class Selection extends React.Component {
             {/*<Button size="small" onClick={() => onChangeSelection()}>{t('label.selection.clear')}</Button>*/}
             <div className={classes.buttonsBar}>
                 { _.filter(actions, x=>x.buttonLabel).map((action,i) =>
-                <Button key={i}
-                        onClick={(event) => { this.handleClick(action)}}
-                        style={{backgroundColor:fade(action.generalColor,0.5)}}>
-                    {action.buttonLabel}
-                </Button>) }
+                    <Button key={i}
+                            onClick={(event) => { this.handleClick(action)}}
+                            style={{backgroundColor:fade(action.generalColor,0.5)}}>
+                        {action.buttonLabel}
+                    </Button>) }
 
 
                 <Dialog open={this.state.showModal} fullWidth={true} onClose={this.handleCancel} aria-labelledby="alert-dialog-title"
@@ -99,7 +101,7 @@ class Selection extends React.Component {
                     <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to publish ?
+                            Are you sure you want to perform this actions ?
                         </DialogContentText>
                     </DialogContent>
 
@@ -114,7 +116,7 @@ class Selection extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <Snackbar open={this.state.showSnackBar} onClose={this.handleCloseSnackbar} autoHideDuration={6000}
+                <Snackbar open={this.state.showSnackBar} onClose={this.handleCloseSnackbar} autoHideDuration={3000}
                           anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} className={classes.snackBar}>
                     <Typography>Publication job started on background</Typography>
                 </Snackbar>

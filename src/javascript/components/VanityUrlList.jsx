@@ -90,7 +90,7 @@ class VanityUrlListDefault extends React.Component {
                                 <TableCell padding={'none'} className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
                                     <Checkbox checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
                                               onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
-                                              />
+                                    />
                                 </TableCell>
                                 <TableCell padding={'none'} colSpan={6}>
                                     <Typography variant="caption" classes={{caption: classes.boxTitle}} >
@@ -139,7 +139,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {isPublished ? (
                                                     <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
-                                                    <ActionButton action={actions.publishAction} data={[urlPair]}/>
+                                                    <ActionButton action={actions.publishActionIcon} data={[urlPair]}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>
@@ -149,8 +149,8 @@ class VanityUrlListDefault extends React.Component {
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
                                             <TableCell colSpan={7} padding={'dense'} className={classes.missingDefault}>
                                                 {urlPair.live && urlPair.live.editNode ? (
-                                                    t('label.movedDefault', {page: urlPair.live.editNode.parent.parent.displayName})
-                                                ) :
+                                                        t('label.movedDefault', {page: urlPair.live.editNode.parent.parent.displayName})
+                                                    ) :
                                                     t('label.missingDefault', {vanityUrl: urlPair.live.url})
                                                 }
                                             </TableCell>
