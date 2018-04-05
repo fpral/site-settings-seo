@@ -5,6 +5,7 @@ import {Query} from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 import gql from "graphql-tag";
 import * as _ from "lodash";
+import {LiveVanityUrlFields, DefaultVanityUrlFields} from "./fragments";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -42,32 +43,8 @@ let query = gql`
             }
         }
     }
-    fragment DefaultVanityUrlFields on VanityUrl {
-        ...NodeCacheRequiredFields
-        active
-        default
-        url
-        language
-        publicationInfo: aggregatedPublicationInfo(language: $lang) {
-            publicationStatus
-        }
-    }
-    fragment LiveVanityUrlFields on VanityUrl {
-        ...NodeCacheRequiredFields
-        active
-        default
-        url
-        language
-        editNode:nodeInWorkspace(workspace: EDIT) {
-            ...NodeCacheRequiredFields
-            parent {
-                parent {
-                    ...NodeCacheRequiredFields
-                    displayName(language: $lang)
-                }
-            }
-        }
-    }
+    ${DefaultVanityUrlFields}
+    ${LiveVanityUrlFields}
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 

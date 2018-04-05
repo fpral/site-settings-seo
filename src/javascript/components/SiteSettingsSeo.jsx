@@ -2,6 +2,7 @@ import React from 'react';
 import {Toolbar, Typography, withTheme, Button} from 'material-ui';
 import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
 import {VanityUrlTableData} from "./VanityUrlTableData";
+import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
 import gql from "graphql-tag";
@@ -11,6 +12,7 @@ import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 import Snackbar from 'material-ui/Snackbar';
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
+import {DefaultVanityUrlFields} from "./fragments";
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -99,7 +101,15 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.mutationPlaceholder
             },
             setActiveAction: {
-                call: this.mutationPlaceholder
+                call: (data, event) => {
+                    props.setActive({
+                        variables: {
+                            id: data.urlPair.uuid,
+                            active: data.active.toString(),
+                            lang: contextJsParameters.uilang
+                        }
+                    });
+                }
             }
         }
     }
@@ -224,6 +234,27 @@ class SiteSettingsSeoApp extends React.Component {
     }
 }
 
+const setActive = gql`
+            mutation setActive($id: String!, $active: String!, $lang: String!){
+                jcr{
+                    mutateNodes(pathsOrIds: [$id]){
+                        mutateProperty(name:"j:active"){
+                            setValue(value:$active)
+                        }
+                    }
+                }
+                reloadCache:jcr {
+                    mutateNodes(pathsOrIds: [$id]){
+                        node {
+                            ...DefaultVanityUrlFields
+                        }
+                    }
+                }
+            }
+            ${DefaultVanityUrlFields}
+            ${PredefinedFragments.nodeCacheRequiredFields.gql}
+            `;
+
 const publication = gql`
             mutation mutateNodes($pathsOrIds: [String!]!){
                 jcr{
@@ -237,6 +268,7 @@ const publication = gql`
 
 SiteSettingsSeoApp = compose(
     withTheme(),
+    graphql(setActive, {name: 'setActive'}),
     graphql(publication, {name: 'publish'}),
     (translate('site-settings-seo'))
 )(SiteSettingsSeoApp);

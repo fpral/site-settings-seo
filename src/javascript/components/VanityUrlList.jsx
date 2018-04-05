@@ -116,7 +116,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call([urlPair], event)} checked={url.active} />
+                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call({urlPair:urlPair, active:event.target.checked}, event)} checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
