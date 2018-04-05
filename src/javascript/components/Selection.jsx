@@ -1,5 +1,9 @@
 import React from 'react';
 import {Button, Paper, Typography, withStyles, Chip} from 'material-ui';
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
+import IconButton from 'material-ui/IconButton';
+import CloseIcon from 'material-ui-icons/Close';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
 import {fade, emphasize, lighten} from 'material-ui/styles/colorManipulator'
@@ -28,6 +32,10 @@ let styles = theme => ({
         margin: "6",
         position: "relative",
         float:"right"
+    },
+    dialogBox: {
+        width: '100%',
+        maxWidth: 'none'
     }
 
 });
@@ -36,6 +44,37 @@ class Selection extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {showModal: false, actionClicked: {}};
+        this.handleClick = this.handleClick.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
+        this.handleOpenSnackBar = this.handleOpenSnackBar.bind(this);
+    }
+
+    handleClick(action) {
+        this.setState({
+            showModal: true,
+            actionClicked: action,
+            showSnackBar: false
+        });
+    }
+
+    handleCancel(){
+        this.setState({
+            showModal: false
+        });
+    }
+
+    handleCloseSnackbar() {
+        this.setState({
+            showSnackBar: false
+        });
+    }
+
+    handleOpenSnackBar() {
+        this.setState({
+            showSnackBar: true
+        })
     }
 
     render() {
@@ -53,10 +92,42 @@ class Selection extends React.Component {
             <div className={classes.buttonsBar}>
                 { _.filter(actions, x=>x.buttonLabel).map((action,i) =>
                 <Button key={i}
-                        onClick={(event) => { action.call(selection, event)}}
+                        onClick={(event) => { this.handleClick(action)}}
                         style={{backgroundColor:fade(action.generalColor,0.5)}}>
                     {action.buttonLabel}
                 </Button>) }
+
+
+                <Dialog open={this.state.showModal} fullWidth={true} onClose={this.handleCancel} aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to publish ?
+                        </DialogContentText>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={this.handleCancel} color="primary">
+                            Cancel
+                        </Button>
+                        <Button key={this.state.actionClicked.buttonLabel}
+                                onClick={(event) => { this.state.actionClicked.call(selection, event); this.handleCancel(); this.handleOpenSnackBar()}}
+                                color="primary" autoFocus>
+                            {this.state.actionClicked.buttonLabel}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Snackbar open={this.state.showSnackBar} onClose={this.handleCloseSnackbar} autoHideDuration={6000}
+                          message={<span id="message-id">Publication job started on background</span>} anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',}} SnackbarContentProps={{
+                    'aria-describedby': 'message-id',}}>
+                    <IconButton key="close" aria-label="Close" color="primary" className={classes.close}
+                        onClick={this.handleCloseSnackbar} >
+                        <CloseIcon/>
+                    </IconButton>
+                </Snackbar>
             </div>
         </Paper>
     }
