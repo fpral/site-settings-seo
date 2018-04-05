@@ -39,6 +39,12 @@ let query = gql`
                             ...LiveVanityUrlFields
                         }
                     }
+                    site {
+                        languages {
+                            language
+                            displayName
+                        }
+                    }
                 }
             }
         }
@@ -89,6 +95,7 @@ let VanityUrlTableData = (props) => {
                         path: contentNode.path,
                         uuid: contentNode.uuid,
                         displayName: contentNode.displayName,
+                        languages: contentNode.site.languages,
                         urls: urlPairs,
                         allUrls: allUrlPairs
                     }

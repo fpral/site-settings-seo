@@ -86,10 +86,10 @@ class VanityUrlEnabledContent extends React.Component {
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                         <Grid container spacing={24} className={classes.vanityUrlLists}>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} />
+                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} content={content} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions}/>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} content={content}/>
                             </Grid>
                         </Grid>
                     </Collapse>

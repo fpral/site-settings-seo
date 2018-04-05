@@ -120,6 +120,18 @@ class SiteSettingsSeoApp extends React.Component {
                         }
                     });
                 }
+            },
+            setLanguage: {
+                call: (data) => {
+                    props.setProperty({
+                        variables: {
+                            id: data.urlPair.uuid,
+                            property: 'jcr:language',
+                            value: data.language,
+                            lang: contextJsParameters.uilang
+                        }
+                    });
+                }
             }
         }
     }

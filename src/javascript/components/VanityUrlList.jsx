@@ -6,18 +6,15 @@ import {
     Paper,
     Switch,
     Table,
-    TableHead,
     TableBody,
     TableCell,
+    TableHead,
     TableRow,
     Typography,
     withStyles
 } from 'material-ui';
-import {
-    Done,
-    Star,
-    StarBorder
-} from 'material-ui-icons';
+import {Done, Star, StarBorder} from 'material-ui-icons';
+import {LanguageMenu} from "./LanguageMenu";
 import * as _ from "lodash";
 import {fade} from "material-ui/styles/colorManipulator";
 
@@ -69,6 +66,22 @@ const styles = (theme) => ({
     }
 });
 
+const languageMenuStyles = (theme) => ({
+    langButton: {
+        '&:hover $rightIcon': {
+            transition: ["opacity","0.25s"],
+                opacity:1
+        },
+        '&:hover': {
+            backgroundColor: "#fff"
+        }
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+            opacity:0
+    }
+});
+
 class VanityUrlListDefault extends React.Component {
 
     constructor(props) {
@@ -76,7 +89,7 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
-        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions } = this.props;
+        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, content } = this.props;
         let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
         let allCheckboxChecked = _.differenceBy(urlPairs, selection, "uuid").length === 0;
         let allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
@@ -133,7 +146,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair:urlPair, defaultUrl:event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                {url.language}
+                                                <LanguageMenu languages={content.languages} urlPair={urlPair} action={actions.setLanguage}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
                                                 {isPublished ? (
