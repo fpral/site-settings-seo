@@ -20,10 +20,7 @@ class SiteSettingsSeoApp extends React.Component {
             pageSize: 5,
             appBarStyle: {},
             selection: [],
-            moveInfoDialog: {
-                open : false,
-                path: ''
-            }
+            moveInfoDialogPath: ''
         };
         this.onChangeSelection = this.onChangeSelection.bind(this);
         this.onChangeFilter = this.onChangeFilter.bind(this);
@@ -91,11 +88,8 @@ class SiteSettingsSeoApp extends React.Component {
 
     onMoveInfoDialog = (path) => {
         this.setState({
-            moveInfoDialog: {
-                open : !this.state.moveInfoDialog.open,
-                path : path ? path : ''
-            }
-        });
+            moveInfoDialogPath: path
+        })
     };
 
     onChangeSelection(add, urlPairs) {
@@ -165,7 +159,7 @@ class SiteSettingsSeoApp extends React.Component {
                     path={dxContext.mainResourcePath}
                 />
 
-                <MoveInfoDialog {...this.props} {...this.state.moveInfoDialog} onClose={this.onMoveInfoDialog}/>
+                <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
             </SettingsLayout>
         )
     }
