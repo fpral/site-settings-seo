@@ -15,19 +15,19 @@ const actionsStyles = theme => ({
 
 class TablePaginationActions extends React.Component {
     handleFirstPageButtonClick = event => {
-        this.props.onChangePage(0);
+        this.props.onChangePage(event, 0);
     };
 
     handleBackButtonClick = event => {
-        this.props.onChangePage(this.props.page - 1);
+        this.props.onChangePage(event, this.props.page - 1);
     };
 
     handleNextButtonClick = event => {
-        this.props.onChangePage(this.props.page + 1);
+        this.props.onChangePage(event, this.props.page + 1);
     };
 
     handleLastPageButtonClick = event => {
-        this.props.onChangePage(
+        this.props.onChangePage(event,
             Math.max(0, Math.ceil(this.props.count / this.props.rowsPerPage) - 1),
         );
     };

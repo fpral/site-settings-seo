@@ -147,7 +147,7 @@ class SiteSettingsSeoApp extends React.Component {
         });
     };
 
-    onChangePage(newPage) {
+    onChangePage(event, newPage) {
         this.setState({currentPage: newPage});
     }
 

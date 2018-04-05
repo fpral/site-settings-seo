@@ -2,6 +2,7 @@ import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {Query} from 'react-apollo';
+import { CircularProgress } from 'material-ui/Progress';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 
@@ -114,10 +115,12 @@ let VanityUrlTableData = (props) => {
                         urls: urlPairs,
                         allUrls: allUrlPairs
                     }
-                })
+                });
+
+                return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
             }
 
-            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
+            return <CircularProgress />
         }}
     </Query>
 }
