@@ -2,8 +2,6 @@ import React from 'react';
 import {Button, Paper, Typography, withStyles, Chip} from 'material-ui';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
-import IconButton from 'material-ui/IconButton';
-import CloseIcon from 'material-ui-icons/Close';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
 import {fade, emphasize, lighten} from 'material-ui/styles/colorManipulator'
@@ -33,18 +31,16 @@ let styles = theme => ({
         position: "relative",
         float:"right"
     },
-    dialogBox: {
-        width: '100%',
-        maxWidth: 'none'
+    snackBar: {
+        backgroundColor: theme.palette.primary
     }
-
 });
 
 class Selection extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {showModal: false, actionClicked: {}};
+        this.state = {showModal: false, actionClicked: {}, showSnackBar: false};
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
@@ -119,14 +115,8 @@ class Selection extends React.Component {
                     </DialogActions>
                 </Dialog>
                 <Snackbar open={this.state.showSnackBar} onClose={this.handleCloseSnackbar} autoHideDuration={6000}
-                          message={<span id="message-id">Publication job started on background</span>} anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',}} SnackbarContentProps={{
-                    'aria-describedby': 'message-id',}}>
-                    <IconButton key="close" aria-label="Close" color="primary" className={classes.close}
-                        onClick={this.handleCloseSnackbar} >
-                        <CloseIcon/>
-                    </IconButton>
+                          anchorOrigin={{vertical: 'bottom', horizontal: 'left',}} className={classes.snackBar}>
+                    <Typography>Publication job started on background</Typography>
                 </Snackbar>
             </div>
         </Paper>
