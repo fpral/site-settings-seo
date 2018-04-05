@@ -6,21 +6,32 @@ import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
 import gql from "graphql-tag";
 import {compose, graphql} from 'react-apollo';
-import {Delete, Publish, SwapHoriz} from "material-ui-icons";
+import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
+import MoveInfoDialog from "./MoveInfoDialog";
 
 class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {filterText: '', currentPage: 0, pageSize: 5, appBarStyle: {}, selection: []};
+        this.state = {
+            filterText: '',
+            currentPage: 0,
+            pageSize: 5,
+            appBarStyle: {},
+            selection: [],
+            moveInfoDialog: {
+                open : false,
+                path: ''
+            }
+        };
         this.onChangeSelection = this.onChangeSelection.bind(this);
         this.onChangeFilter = this.onChangeFilter.bind(this);
         this.onChangePage = this.onChangePage.bind(this);
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
-
+        this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
 
         this.publish = function(selection, event) {
             const nodes = [];
@@ -64,6 +75,11 @@ class SiteSettingsSeoApp extends React.Component {
                 generalColor: props.theme.palette.primary.main,
                 call: this.mutationPlaceholder
             },
+            moveInfo: {
+                buttonIcon: <Info/>,
+                tableColor:"#fff",
+                call: this.onMoveInfoDialog
+            },
             setDefaultAction: {
                 call: this.mutationPlaceholder
             },
@@ -72,6 +88,15 @@ class SiteSettingsSeoApp extends React.Component {
             }
         }
     }
+
+    onMoveInfoDialog = (path) => {
+        this.setState({
+            moveInfoDialog: {
+                open : !this.state.moveInfoDialog.open,
+                path : path ? path : ''
+            }
+        });
+    };
 
     onChangeSelection(add, urlPairs) {
         if (!urlPairs) {
@@ -91,7 +116,7 @@ class SiteSettingsSeoApp extends React.Component {
             filterText: filterText,
             currentPage: 0
         });
-    }
+    };
 
     onChangePage(newPage) {
         this.setState({currentPage: newPage});
@@ -139,6 +164,8 @@ class SiteSettingsSeoApp extends React.Component {
                     actions={this.actions}
                     path={dxContext.mainResourcePath}
                 />
+
+                <MoveInfoDialog {...this.props} {...this.state.moveInfoDialog} onClose={this.onMoveInfoDialog}/>
             </SettingsLayout>
         )
     }

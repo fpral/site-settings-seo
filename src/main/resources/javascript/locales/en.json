@@ -21,6 +21,13 @@
       "default": "Default mappings",
       "live": "Live mappings"
     },
+    "dialogs": {
+      "moveInfo": {
+         "content": "Mapping to this page will be removed on publication of {{pagePath}}"
+      }
+    },
+    "okGotIt": "OK, GOT IT",
+    "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",
     "movedDefault": "Moved to {{page}}",
     "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"

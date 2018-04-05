@@ -124,8 +124,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length === 0 ? (
                                                     <span>
-                                                        <ActionButton action={actions.deleteAction} urlPair={urlPair}/>
-                                                        <ActionButton action={actions.moveAction} urlPair={urlPair}/>
+                                                        <ActionButton action={actions.deleteAction} data={[urlPair]}/>
+                                                        <ActionButton action={actions.moveAction} data={[urlPair]}/>
                                                     </span>
                                                 ) : ''}
                                             </TableCell>
@@ -139,7 +139,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {isPublished ? (
                                                     <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
-                                                    <ActionButton action={actions.publishAction} urlPair={urlPair}/>
+                                                    <ActionButton action={actions.publishAction} data={[urlPair]}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>
@@ -204,10 +204,12 @@ class VanityUrlListLive extends React.Component {
                                                 {url.language}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
-                                                {url.editNode ? (
-                                                    ''
-                                                ) :
-                                                    <ActionButton action={actions.publishDeleteAction} urlPair={urlPair}/>
+                                                {url.editNode ?
+                                                    (url.editNode.path !== url.path ?
+                                                        <ActionButton action={actions.moveInfo} data={url.editNode.parent.parent.path}/> :
+                                                        '')
+                                                    :
+                                                    <ActionButton action={actions.publishDeleteAction} data={[urlPair]}/>
                                                 }
                                             </TableCell>
                                         </TableRow>
@@ -260,11 +262,11 @@ class ActionButton extends React.Component {
 
     render() {
         let action = this.props.action;
-        let urlPair = this.props.urlPair;
+        let data = this.props.data;
         return (
             <IconButton aria-label={action.buttonLabel} style={{color: action.tableColor}} onClick={(event) => {
                 event.stopPropagation();
-                action.call([urlPair], event);
+                action.call(data, event);
             }}>
                 {action.body}
                 {action.buttonIcon}

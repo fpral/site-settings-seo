@@ -1,5 +1,6 @@
 import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
+import {PredefinedFragments} from "@jahia/apollo-dx";
 import {Query} from 'react-apollo';
 import gql from "graphql-tag";
 import * as _ from "lodash";
@@ -20,8 +21,7 @@ let query = gql`
                     totalCount
                 }
                 nodes {
-                    uuid
-                    path
+                    ...NodeCacheRequiredFields
                     displayName(language: $lang)
                     vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
                         ...DefaultVanityUrlFields
@@ -42,32 +42,32 @@ let query = gql`
         }
     }
     fragment DefaultVanityUrlFields on VanityUrl {
+        ...NodeCacheRequiredFields
         active
         default
         url
         language
-        uuid
-        path
         publicationInfo: aggregatedPublicationInfo(language: $lang) {
             publicationStatus
         }
     }
     fragment LiveVanityUrlFields on VanityUrl {
+        ...NodeCacheRequiredFields
         active
         default
         url
         language
-        uuid
-        path
         editNode:nodeInWorkspace(workspace: EDIT) {
-            path
+            ...NodeCacheRequiredFields
             parent {
                 parent {
+                    ...NodeCacheRequiredFields
                     displayName(language: $lang)
                 }
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
 let VanityUrlTableData = (props) => {
