@@ -36,11 +36,15 @@ const styles = (theme) => ({
         opacity:0,
         transition: ["opacity","0.25s"],
     },
+    table: {
+        color: theme.palette.text.primary,
+    },
     checkboxLeft: {
         marginLeft: '-48px',
         marginTop: '2px',
         position: 'absolute',
-        border: '0'
+        border: '0',
+        color: theme.palette.text.primary,
     },
     inactive: {
         color: theme.palette.text.disabled
@@ -49,22 +53,31 @@ const styles = (theme) => ({
         color: theme.palette.text.secondary
     },
     missingDefaultCounterpart: {
-        backgroundColor: theme.palette.error.light
+        backgroundColor: theme.palette.delete.main,
+        color: theme.palette.getContrastText(theme.palette.delete.main),
     },
     toBePublished: {
         '&:hover': {
-            backgroundColor: fade(theme.palette.warning.light, 0.7)
+            backgroundColor: fade(theme.palette.publish.main, 0.7)
         },
-        backgroundColor: theme.palette.warning.light
+        backgroundColor: theme.palette.publish.main,
+        color: theme.palette.getContrastText(theme.palette.publish.main),
     },
     highlightText: {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
     },
     publishedCheck: {
-        color: theme.palette.success.main,
-    }
+        color: theme.palette.enabled.main,
+    },
+    moveAction: {
+        color: theme.palette.secondary.main,
+    },
+    deleteAction: {
+        color: theme.palette.delete.main,
+    },
 });
+
 
 const languageMenuStyles = (theme) => ({
     langButton: {
@@ -97,7 +110,7 @@ class VanityUrlListDefault extends React.Component {
         return (
             <div>
                 <Paper elevation={2}>
-                    <Table>
+                    <Table className={classes.table}>
                         <TableHead>
                             <TableRow className={classes.vanityUrl}>
                                 <TableCell padding={'none'} className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
@@ -137,8 +150,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length === 0 ? (
                                                     <span>
-                                                        <ActionButton action={actions.deleteAction} data={[urlPair]}/>
-                                                        <ActionButton action={actions.moveAction} data={[urlPair]}/>
+                                                        <ActionButton className={isPublished ? classes.deleteAction : ''} action={actions.deleteAction} data={[urlPair]}/>
+                                                        <ActionButton className={isPublished ? classes.moveAction : ''} action={actions.moveAction} data={[urlPair]}/>
                                                     </span>
                                                 ) : ''}
                                             </TableCell>
@@ -190,7 +203,7 @@ class VanityUrlListLive extends React.Component {
         return (
             <div>
                 <Paper elevation={2}>
-                    <Table>
+                    <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
                                 <TableCell padding={'none'} colSpan={4}>
@@ -274,10 +287,9 @@ class ActionButton extends React.Component {
     }
 
     render() {
-        let action = this.props.action;
-        let data = this.props.data;
+        let {action, data, className} = this.props;
         return (
-            <IconButton aria-label={action.buttonLabel} style={{color: action.tableColor}} onClick={(event) => {
+            <IconButton className={className} aria-label={action.buttonLabel} onClick={(event) => {
                 event.stopPropagation();
                 action.call(data, event);
             }}>

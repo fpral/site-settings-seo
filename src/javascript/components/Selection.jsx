@@ -29,6 +29,27 @@ let styles = theme => ({
         position: "relative",
         float:"right"
     },
+    publish: {
+        '&:hover': {
+            backgroundColor: fade(theme.palette.publish.main, 0.7)
+        },
+        backgroundColor: theme.palette.publish.main,
+        color: theme.palette.getContrastText(theme.palette.publish.main),
+    },
+    delete: {
+        '&:hover': {
+            backgroundColor: fade(theme.palette.delete.main, 0.7)
+        },
+        backgroundColor: theme.palette.delete.main,
+        color: theme.palette.getContrastText(theme.palette.delete.main),
+    },
+    move: {
+        '&:hover': {
+            backgroundColor: fade(theme.palette.primary.main, 0.7)
+        },
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+    }
 });
 
 class Selection extends React.Component {
@@ -53,7 +74,7 @@ class Selection extends React.Component {
                 { _.filter(actions, x=>x.buttonLabel).map((action,i) =>
                     <Button key={i}
                             onClick={(event) => { action.call(selection, event)}}
-                            style={{backgroundColor:fade(action.generalColor,0.5)}}>
+                            className={classes[action.className]}>
                         {action.buttonLabel}
                     </Button>) }
             </div>

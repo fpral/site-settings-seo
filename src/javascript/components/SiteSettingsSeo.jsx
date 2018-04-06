@@ -65,32 +65,29 @@ class SiteSettingsSeoApp extends React.Component {
             deleteAction: {
                 buttonLabel: "Delete",
                 buttonIcon: <Delete/>,
-                tableColor: props.theme.palette.error.light,
-                generalColor: props.theme.palette.error.light,
+                className: "delete",
                 call: this.mutationPlaceholder
             },
             publishAction: {
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
-                tableColor:"#fff",
-                generalColor: props.theme.palette.warning.light,
+                className: "publish",
                 call: this.onPublishIconDialog
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
-                tableColor:"#fff",
+                className: "delete",
                 call: this.mutationPlaceholder
             },
             moveAction: {
                 buttonLabel: "Move",
                 buttonIcon: <SwapHoriz/>,
-                tableColor: props.theme.palette.primary.main,
-                generalColor: props.theme.palette.primary.main,
+                className: "move",
                 call: this.mutationPlaceholder
             },
             moveInfo: {
                 buttonIcon: <Info/>,
-                tableColor:"#fff",
+                className: "move",
                 call: this.onMoveInfoDialog
             },
             setDefaultAction: {
