@@ -24,17 +24,17 @@ const styles = (theme) => ({
     },
     vanityUrl: {
         '&:hover $hiddenOnHover': {
-            transition: ["opacity","0.25s"],
-            opacity:1
+            transition: ["opacity", "0.25s"],
+            opacity: 1
         },
         height: '52px'
     },
     hidden: {
-        opacity:0
+        opacity: 0
     },
     hiddenOnHover: {
-        opacity:0,
-        transition: ["opacity","0.25s"],
+        opacity: 0,
+        transition: ["opacity", "0.25s"],
     },
     table: {
         color: theme.palette.text.primary,
@@ -82,8 +82,8 @@ const styles = (theme) => ({
 const languageMenuStyles = (theme) => ({
     langButton: {
         '&:hover $rightIcon': {
-            transition: ["opacity","0.25s"],
-                opacity:1
+            transition: ["opacity", "0.25s"],
+                opacity: 1
         },
         '&:hover': {
             backgroundColor: "#fff"
@@ -91,7 +91,7 @@ const languageMenuStyles = (theme) => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
-            opacity:0
+            opacity: 0
     }
 });
 
@@ -142,7 +142,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call({urlPair:urlPair, active:event.target.checked}, event)} checked={url.active} />
+                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
@@ -156,7 +156,7 @@ class VanityUrlListDefault extends React.Component {
                                                 ) : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair:urlPair, defaultUrl:event.target.checked}, event)}/>
+                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair: urlPair, defaultUrl: event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 <LanguageMenu languages={content.languages} urlPair={urlPair} action={actions.setLanguage}/>

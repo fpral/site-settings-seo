@@ -8,7 +8,7 @@ let styles = theme => ({
     root: {
         margin: theme.spacing.unit,
         padding: theme.spacing.unit,
-        transition: ["max-height","0.25s"],
+        transition: ["max-height", "0.25s"],
         height: "48px",
         maxHeight: "48px"
     },
@@ -17,17 +17,17 @@ let styles = theme => ({
         padding: "0 " + theme.spacing.unit + " 0 " +theme.spacing.unit,
         maxHeight: "0px",
         overflow: "hidden",
-        transition: ["max-height","0.25s"],
+        transition: ["max-height", "0.25s"],
     },
-    text : {
-        margin:"8",
+    text: {
+        margin: "8",
         position: "relative",
-        float:"left"
+        float: "left"
     },
-    buttonsBar : {
+    buttonsBar: {
         margin: "6",
         position: "relative",
-        float:"right"
+        float: "right"
     },
     publish: {
         '&:hover': {
@@ -59,19 +59,19 @@ class Selection extends React.Component {
     }
 
     render() {
-        let { t, selection, classes, onChangeSelection,actions } = this.props;
+        let { t, selection, classes, onChangeSelection, actions } = this.props;
 
         return <Paper elevation={1} classes={{root: (selection.length === 0 ? classes.rootHidden : classes.root)}}>
             <Chip
-                label={t('label.selection.count', {count:selection.length })}
+                label={t('label.selection.count', {count: selection.length })}
                 onDelete={() => onChangeSelection()}
-                classes={{root:classes.text}}
+                classes={{root: classes.text}}
             />
 
-            {/*<Typography variant="subheading" classes={{root:classes.text}}></Typography>*/}
+            {/*<Typography variant="subheading" classes={{root: classes.text}}></Typography>*/}
             {/*<Button size="small" onClick={() => onChangeSelection()}>{t('label.selection.clear')}</Button>*/}
             <div className={classes.buttonsBar}>
-                { _.filter(actions, x=>x.buttonLabel).map((action,i) =>
+                { _.filter(actions, x=>x.buttonLabel).map((action, i) =>
                     <Button key={i}
                             onClick={(event) => { action.call(selection, event)}}
                             className={classes[action.className]}>

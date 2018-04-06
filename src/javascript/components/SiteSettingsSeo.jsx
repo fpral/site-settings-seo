@@ -29,9 +29,9 @@ class SiteSettingsSeoApp extends React.Component {
             moveInfoDialogPath: '',
 
             confirmationIconDialog: {
-                open : false,
-                openSnackBar : false,
-                urlPair:[]
+                open: false,
+                openSnackBar: false,
+                urlPair: []
             }
         };
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -53,7 +53,7 @@ class SiteSettingsSeoApp extends React.Component {
                 nodes[i] = selection[i].uuid;
             }
             const variables = {pathsOrIds: nodes};
-            props.publish({variables:variables});
+            props.publish({variables: variables});
         };
 
         this.mutationPlaceholder = function(selection, event) {
@@ -131,16 +131,16 @@ class SiteSettingsSeoApp extends React.Component {
 
     onPublishIconDialog = (urlPair) => {
         this.setState({
-            confirmationIconDialog : {
-                open : !this.state.confirmationIconDialog.open,
-                urlPair : urlPair,
-                openSnackBar:false
+            confirmationIconDialog: {
+                open: !this.state.confirmationIconDialog.open,
+                urlPair: urlPair,
+                openSnackBar: false
             }
         })
     };
 
     handleClick(selection, event){
-        (selection.length == 0)? this.publish( this.state.confirmationIconDialog.urlPair, event) : this.publish(selection, event);
+        (selection.length == 0) ? this.publish( this.state.confirmationIconDialog.urlPair, event) : this.publish(selection, event);
         this.setState({
             confirmationIconDialog: {
                 open: false,
@@ -159,8 +159,8 @@ class SiteSettingsSeoApp extends React.Component {
 
     onSnackBar = () => {
         this.setState({
-            confirmationIconDialog : {
-                openSnackBar : !this.state.confirmationIconDialog.openSnackBar
+            confirmationIconDialog: {
+                openSnackBar: !this.state.confirmationIconDialog.openSnackBar
             }
         })
     };
@@ -261,7 +261,7 @@ class SiteSettingsSeoApp extends React.Component {
                     </DialogActions>
                 </Dialog>
                 <Snackbar open={this.state.confirmationIconDialog.openSnackBar} onClose={this.onSnackBar} autoHideDuration={3000}
-                          anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
+                          anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
                     <Typography>Publication job started on background</Typography>
                 </Snackbar>
 
@@ -271,16 +271,16 @@ class SiteSettingsSeoApp extends React.Component {
 }
 
 const setProperty = gql`
-            mutation setProperty($id: String!, $value: String!, $property:String!, $lang: String!){
-                jcr{
-                    mutateNodes(pathsOrIds: [$id]){
-                        mutateProperty(name:$property){
+            mutation setProperty($id: String!, $value: String!, $property:String!, $lang: String!) {
+                jcr {
+                    mutateNodes(pathsOrIds: [$id]) {
+                        mutateProperty(name:$property) {
                             setValue(value:$value)
                         }
                     }
                 }
-                reloadCache:jcr {
-                    mutateNodes(pathsOrIds: [$id]){
+                reloadCache: jcr {
+                    mutateNodes(pathsOrIds: [$id]) {
                         node {
                             ...DefaultVanityUrlFields
                         }
@@ -289,17 +289,17 @@ const setProperty = gql`
             }
             ${DefaultVanityUrlFields}
             ${PredefinedFragments.nodeCacheRequiredFields.gql}
-            `;
+        `;
 
 const publication = gql`
-            mutation mutateNodes($pathsOrIds: [String!]!){
-                jcr{
-                    mutateNodes(pathsOrIds: $pathsOrIds){
-                        publish(languages:"en")
-                        }
+            mutation mutateNodes($pathsOrIds: [String!]!) {
+                jcr {
+                    mutateNodes(pathsOrIds: $pathsOrIds) {
+                        publish(languages: "en")
                     }
                 }
-            `;
+            }
+        `;
 
 
 SiteSettingsSeoApp = compose(
