@@ -152,7 +152,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {isPublished ? (
                                                     <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
-                                                    <ActionButton action={actions.publishActionIcon} data={[urlPair]}/>
+                                                    <ActionButton action={actions.publishAction} data={[urlPair]}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>

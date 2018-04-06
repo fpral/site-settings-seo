@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, withTheme, Button} from 'material-ui';
+import {Toolbar, Typography, withTheme, Button, IconButton} from 'material-ui';
 import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {PredefinedFragments} from "@jahia/apollo-dx";
@@ -13,6 +13,8 @@ import Snackbar from 'material-ui/Snackbar';
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
 import {DefaultVanityUrlFields} from "./fragments";
+import CloseIcon from 'material-ui-icons/Close';
+
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -27,9 +29,9 @@ class SiteSettingsSeoApp extends React.Component {
 
             moveInfoDialogPath: '',
 
-            confirmationIconDialog:{
+            confirmationIconDialog: {
                 open : false,
-                showSnackBar:false,
+                openSnackBar : false,
                 urlPair:[]
             }
         };
@@ -42,6 +44,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
         this.onPublishIconDialog = this.onPublishIconDialog.bind(this);
         this.onSnackBar = this.onSnackBar.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.handleClick = this.handleClick.bind(this);
 
         this.publish = function(selection, event) {
             const nodes = [];
@@ -67,13 +71,6 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.mutationPlaceholder
             },
             publishAction: {
-                buttonLabel: "Publish",
-                buttonIcon: <Publish/>,
-                tableColor:"#fff",
-                generalColor: props.theme.palette.warning.light,
-                call: this.publish
-            },
-            publishActionIcon:{
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 tableColor:"#fff",
@@ -140,18 +137,37 @@ class SiteSettingsSeoApp extends React.Component {
         this.setState({
             confirmationIconDialog : {
                 open : !this.state.confirmationIconDialog.open,
-                urlPair : urlPair
+                urlPair : urlPair,
+                openSnackBar:false
             }
-        });
+        })
+    };
+
+    handleClick(selection, event){
+        (selection.length == 0)? this.publish( this.state.confirmationIconDialog.urlPair, event) : this.publish(selection, event);
+        this.setState({
+            confirmationIconDialog: {
+                open: false,
+                openSnackBar: true
+            }
+        })
+    };
+
+    closeDialog() {
+        this.setState({
+            confirmationIconDialog: {
+                open: false
+            }
+        })
     };
 
     onSnackBar = () => {
         this.setState({
             confirmationIconDialog : {
-                open : !this.state.confirmationIconDialog.showSnackBar,
+                openSnackBar : !this.state.confirmationIconDialog.openSnackBar
             }
-        });
-    }
+        })
+    };
 
     onMoveInfoDialog = () => {
         this.setState({
@@ -227,28 +243,28 @@ class SiteSettingsSeoApp extends React.Component {
                 />
 
                 <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
-                <Dialog open={this.state.confirmationIconDialog.open} fullWidth={true} onClose={this.onPublishIconDialog} aria-labelledby="alert-dialog-title"
+                <Dialog open={this.state.confirmationIconDialog.open} fullWidth={true} onClose={this.closeDialog} aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to perform this action ?
+                            Are you sure you want to publish ?
                         </DialogContentText>
                     </DialogContent>
 
                     <DialogActions>
-                        <Button onClick={this.onPublishIconDialog} color="primary">
+                        <Button onClick={this.closeDialog} color="primary">
                             Cancel
                         </Button>
                         <Button key={this.actions.publishAction.buttonLabel}
-                                onClick={(event) => { this.actions.publishAction.call(this.state.confirmationIconDialog.urlPair, event); this.onPublishIconDialog()}}
+                                onClick={(event) => {this.handleClick(this.state.selection, event)}}
                                 color="primary" autoFocus>
                             {this.actions.publishAction.buttonLabel}
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <Snackbar open={this.state.confirmationIconDialog.showSnackBar} onClose={this.state.confirmationIconDialog.showSnackBar} autoHideDuration={3000}
-                          anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
+                <Snackbar open={this.state.confirmationIconDialog.openSnackBar} onClose={this.onSnackBar} autoHideDuration={3000}
+                          anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
                     <Typography>Publication job started on background</Typography>
                 </Snackbar>
             </SettingsLayout>
