@@ -47,13 +47,11 @@ class SiteSettingsSeoApp extends React.Component {
         this.handleClick = this.handleClick.bind(this);
 
         this.publish = function(selection, event) {
-            const nodes = [];
-            var i;
-            for(i=0; i<selection.length; i++){
-                nodes[i] = selection[i].uuid;
+            const uuids = [];
+            for (var i = 0; i < selection.length; i++) {
+                uuids[i] = selection[i].uuid;
             }
-            const variables = {pathsOrIds: nodes};
-            props.publish({variables: variables});
+            props.publish({variables: {pathsOrIds: uuids}});
         };
 
         this.mutationPlaceholder = function(selection, event) {
@@ -139,7 +137,7 @@ class SiteSettingsSeoApp extends React.Component {
         })
     };
 
-    handleClick(selection, event){
+    handleClick(selection, event) {
         (selection.length == 0) ? this.publish( this.state.confirmationIconDialog.urlPair, event) : this.publish(selection, event);
         this.setState({
             confirmationIconDialog: {
@@ -291,7 +289,7 @@ const setProperty = gql`
             ${PredefinedFragments.nodeCacheRequiredFields.gql}
         `;
 
-const publication = gql`
+const publish = gql`
             mutation mutateNodes($pathsOrIds: [String!]!) {
                 jcr {
                     mutateNodes(pathsOrIds: $pathsOrIds) {
@@ -305,14 +303,14 @@ const publication = gql`
 SiteSettingsSeoApp = compose(
     withTheme(),
     graphql(setProperty, {name: 'setProperty'}),
-    graphql(publication, {name: 'publish'}),
+    graphql(publish, {name: 'publish'}),
     (translate('site-settings-seo'))
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <SiteSettingsSeoApp {...props} publish={publication}/>
+            <SiteSettingsSeoApp {...props} publish={publish}/>
         </DxContextProvider>
     );
 };
