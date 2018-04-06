@@ -10,7 +10,7 @@ import ErrorSnackBar from "./ErrorSnackBar";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
-    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid:vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
+    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
     let urlPairs = _.merge(defaultUrls, liveUrls);
     urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
     return _.values(urlPairs);
@@ -90,7 +90,7 @@ let VanityUrlTableData = (props) => {
                 let allUrlPairs;
                 if (props.filterText) {
                     allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                    urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
+                    urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
                 }
 
                 return {

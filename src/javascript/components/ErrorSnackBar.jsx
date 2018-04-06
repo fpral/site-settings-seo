@@ -33,7 +33,6 @@ class ErrorSnackBar extends React.Component {
                 horizontal: 'left',
             }}
             open={this.state.open}
-            autoHideDuration={6000}
             onClose={this.handleClose}
             SnackbarContentProps={{
                 'aria-describedby': 'message-id',
@@ -45,8 +44,8 @@ class ErrorSnackBar extends React.Component {
                     aria-label="Close"
                     color="inherit"
                     className={classes.close}
-                    onClick={this.handleClose}>
-
+                    onClick={this.handleClose}
+                >
                     <CloseIcon />
                 </IconButton>,
             ]}
