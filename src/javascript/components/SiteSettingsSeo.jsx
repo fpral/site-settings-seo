@@ -248,7 +248,7 @@ class SiteSettingsSeoApp extends React.Component {
                     </DialogActions>
                 </Dialog>
                 <Snackbar open={this.state.confirmationIconDialog.showSnackBar} onClose={this.state.confirmationIconDialog.showSnackBar} autoHideDuration={3000}
-                          anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
+                          anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
                     <Typography>Publication job started on background</Typography>
                 </Snackbar>
             </SettingsLayout>

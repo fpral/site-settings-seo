@@ -59,7 +59,7 @@ let VanityUrlTableData = (props) => {
         lang: contextJsParameters.uilang,
         offset: (props.currentPage * props.pageSize),
         limit: props.pageSize,
-        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]" ,
+        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
         filterText: props.filterText,
         doFilter: !!props.filterText,
         queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
@@ -68,14 +68,14 @@ let VanityUrlTableData = (props) => {
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
 
-    return <Query fetchPolicy={fetchPolicy} query={query} variables={variables} >
+    return <Query fetchPolicy={fetchPolicy} query={query} variables={variables}>
         { ({loading, error, data}) => {
             let totalCount = 0;
             let numberOfPages = 0;
             let rows = [];
 
             if (error) {
-                console.log("Error when fetching data : "+ error);
+                console.log("Error when fetching data : " + error);
             }
 
             if (!loading && !error) {
@@ -104,7 +104,7 @@ let VanityUrlTableData = (props) => {
                 return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
             }
 
-            return <CircularProgress />
+            return <CircularProgress/>
         }}
     </Query>
 }
