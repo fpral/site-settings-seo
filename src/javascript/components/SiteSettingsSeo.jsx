@@ -28,10 +28,12 @@ class SiteSettingsSeoApp extends React.Component {
 
             moveInfoDialogPath: '',
 
-            confirmationIconDialog: {
+            publicationConfirmationDialog: {
                 open: false,
-                openSnackBar: false,
                 urlPair: []
+            },
+            publicationStartedNotification: {
+                openSnackBar: false
             }
         };
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -41,16 +43,13 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
-        this.onPublishIconDialog = this.onPublishIconDialog.bind(this);
-        this.onSnackBar = this.onSnackBar.bind(this);
-        this.closeDialog = this.closeDialog.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.onPublishClicked = this.onPublishClicked.bind(this);
+        this.openPublicationStartedNotification = this.openPublicationStartedNotification.bind(this);
+        this.closePublicationConfirmationDialog = this.closePublicationConfirmationDialog.bind(this);
+        this.onPublishConfirmed = this.onPublishConfirmed.bind(this);
 
         this.publish = function(selection, event) {
-            const uuids = [];
-            for (var i = 0; i < selection.length; i++) {
-                uuids[i] = selection[i].uuid;
-            }
+            const uuids = _.map(selection, "uuid");
             props.publish({variables: {pathsOrIds: uuids}});
         };
 
@@ -70,7 +69,7 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 className: "publish",
-                call: this.onPublishIconDialog
+                call: this.onPublishClicked
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
@@ -127,38 +126,42 @@ class SiteSettingsSeoApp extends React.Component {
         }
     }
 
-    onPublishIconDialog = (urlPair) => {
+    onPublishClicked = (urlPair) => {
         this.setState({
-            confirmationIconDialog: {
-                open: !this.state.confirmationIconDialog.open,
-                urlPair: urlPair,
+            publicationConfirmationDialog: {
+                open: true,
+                urlPair: urlPair
+            },
+            publicationStartedNotification: {
                 openSnackBar: false
             }
         })
     };
 
-    handleClick(selection, event) {
-        (selection.length == 0) ? this.publish( this.state.confirmationIconDialog.urlPair, event) : this.publish(selection, event);
+    onPublishConfirmed(selection, event) {
+        this.publish(selection, event);
         this.setState({
-            confirmationIconDialog: {
+            publicationConfirmationDialog: {
                 open: false,
+            },
+            publicationStartedNotification: {
                 openSnackBar: true
             }
         })
     };
 
-    closeDialog() {
+    closePublicationConfirmationDialog() {
         this.setState({
-            confirmationIconDialog: {
+            publicationConfirmationDialog: {
                 open: false
             }
         })
     };
 
-    onSnackBar = () => {
+    openPublicationStartedNotification = () => {
         this.setState({
-            confirmationIconDialog: {
-                openSnackBar: !this.state.confirmationIconDialog.openSnackBar
+            publicationStartedNotification: {
+                openSnackBar: true
             }
         })
     };
@@ -238,29 +241,29 @@ class SiteSettingsSeoApp extends React.Component {
 
                 <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
 
-                <Dialog open={this.state.confirmationIconDialog.open} fullWidth={true} onClose={this.closeDialog} aria-labelledby="alert-dialog-title"
+                <Dialog open={this.state.publicationConfirmationDialog.open} fullWidth={true} onClose={this.closePublicationConfirmationDialog} aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.publish.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to publish ?
+                            {t('label.dialogs.publish.content')}
                         </DialogContentText>
                     </DialogContent>
 
                     <DialogActions>
-                        <Button onClick={this.closeDialog} color="primary">
+                        <Button onClick={this.closePublicationConfirmationDialog} color="primary">
                             Cancel
                         </Button>
                         <Button key={this.actions.publishAction.buttonLabel}
-                                onClick={(event) => {this.handleClick(this.state.selection, event)}}
+                                onClick={(event) => {this.onPublishConfirmed(this.state.publicationConfirmationDialog.urlPair, event)}}
                                 color="primary" autoFocus>
                             {this.actions.publishAction.buttonLabel}
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <Snackbar open={this.state.confirmationIconDialog.openSnackBar} onClose={this.onSnackBar} autoHideDuration={3000}
+                <Snackbar open={this.state.publicationStartedNotification.openSnackBar} autoHideDuration={3000}
                           anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
-                    <Typography>Publication job started on background</Typography>
+                    <Typography>{t('label.publishSnackBar')}</Typography>
                 </Snackbar>
 
             </SettingsLayout>
@@ -293,7 +296,7 @@ const publish = gql`
             mutation mutateNodes($pathsOrIds: [String!]!) {
                 jcr {
                     mutateNodes(pathsOrIds: $pathsOrIds) {
-                        publish(languages: "en")
+                        publish
                     }
                 }
             }

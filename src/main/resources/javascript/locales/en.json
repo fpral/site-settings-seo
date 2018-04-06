@@ -24,11 +24,16 @@
     "dialogs": {
       "moveInfo": {
          "content": "Mapping to this page will be removed on publication of {{pagePath}}"
+      },
+      "publish": {
+        "title": "Publish confirmation",
+        "content": "Are you sure you want to publish vanity urls selected ?"
       }
     },
     "errors": {
       "loadingVanityUrl": "Error loading vanity URLs"
     },
+    "publishSnackBar": "Publication job started on background",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",

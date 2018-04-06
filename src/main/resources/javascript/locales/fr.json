@@ -5,6 +5,12 @@
       "default": "Default mappings",
       "live": "Live mappings"
     },
-    "missingDefault": "{{vanityUrl}} supprimées"
+    "missingDefault": "{{vanityUrl}} supprimées",
+    "publishSnackBar": "job de publication lancé en arrière plan",
+    ,
+    "publish": {
+      "title": "Confirmation de publication",
+      "content": "êtes vous sur de vouloir publier les vanity urls selectionnées ?"
+    }
   }
 }
