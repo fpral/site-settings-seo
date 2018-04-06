@@ -132,7 +132,7 @@ class SiteSettingsSeoApp extends React.Component {
         })
     };
 
-    onMoveInfoDialog = () => {
+    onMoveInfoDialog = (path) => {
         this.setState({
             moveInfoDialogPath: path
         })
