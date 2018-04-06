@@ -5,14 +5,12 @@ import {VanityUrlTableData} from "./VanityUrlTableData";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
-import gql from "graphql-tag";
 import {compose, graphql} from 'react-apollo';
 import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
-import Snackbar from 'material-ui/Snackbar';
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
-import {DefaultVanityUrlFields} from "./fragments";
+import {SetPropertyMutation} from "./mutations";
+import Publication from "./Publication";
 
 
 class SiteSettingsSeoApp extends React.Component {
@@ -28,12 +26,9 @@ class SiteSettingsSeoApp extends React.Component {
 
             moveInfoDialogPath: '',
 
-            publicationConfirmationDialog: {
+            publication: {
                 open: false,
-                urlPair: []
-            },
-            publicationStartedNotification: {
-                openSnackBar: false
+                urlPairs: []
             }
         };
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -43,15 +38,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
-        this.onPublishClicked = this.onPublishClicked.bind(this);
-        this.openPublicationStartedNotification = this.openPublicationStartedNotification.bind(this);
-        this.closePublicationConfirmationDialog = this.closePublicationConfirmationDialog.bind(this);
-        this.onPublishConfirmed = this.onPublishConfirmed.bind(this);
-
-        this.publish = function(selection, event) {
-            const uuids = _.map(selection, "uuid");
-            props.publish({variables: {pathsOrIds: uuids}});
-        };
+        this.openPublication = this.openPublication.bind(this);
+        this.closePublication = this.closePublication.bind(this);
 
         this.mutationPlaceholder = function(selection, event) {
             console.log(selection);
@@ -69,7 +57,7 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 className: "publish",
-                call: this.onPublishClicked
+                call: this.openPublication
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
@@ -126,42 +114,20 @@ class SiteSettingsSeoApp extends React.Component {
         }
     }
 
-    onPublishClicked = (urlPair) => {
+    openPublication = (urlPairs) => {
         this.setState({
-            publicationConfirmationDialog: {
+            publication: {
                 open: true,
-                urlPair: urlPair
-            },
-            publicationStartedNotification: {
-                openSnackBar: false
+                urlPairs: urlPairs
             }
         })
     };
 
-    onPublishConfirmed(selection, event) {
-        this.publish(selection, event);
+    closePublication() {
         this.setState({
-            publicationConfirmationDialog: {
+            publication: {
                 open: false,
-            },
-            publicationStartedNotification: {
-                openSnackBar: true
-            }
-        })
-    };
-
-    closePublicationConfirmationDialog() {
-        this.setState({
-            publicationConfirmationDialog: {
-                open: false
-            }
-        })
-    };
-
-    openPublicationStartedNotification = () => {
-        this.setState({
-            publicationStartedNotification: {
-                openSnackBar: true
+                urlPairs: []
             }
         })
     };
@@ -241,79 +207,26 @@ class SiteSettingsSeoApp extends React.Component {
 
                 <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
 
-                <Dialog open={this.state.publicationConfirmationDialog.open} fullWidth={true} onClose={this.closePublicationConfirmationDialog} aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.publish.title')}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {t('label.dialogs.publish.content')}
-                        </DialogContentText>
-                    </DialogContent>
-
-                    <DialogActions>
-                        <Button onClick={this.closePublicationConfirmationDialog} color="primary">
-                            Cancel
-                        </Button>
-                        <Button key={this.actions.publishAction.buttonLabel}
-                                onClick={(event) => {this.onPublishConfirmed(this.state.publicationConfirmationDialog.urlPair, event)}}
-                                color="primary" autoFocus>
-                            {this.actions.publishAction.buttonLabel}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                <Snackbar open={this.state.publicationStartedNotification.openSnackBar} autoHideDuration={3000}
-                          anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
-                    <Typography>{t('label.publishSnackBar')}</Typography>
-                </Snackbar>
-
+                <Publication
+                    {...this.state.publication}
+                    t={t}
+                    action={this.actions.publishAction}
+                    onClose={this.closePublication}/>
             </SettingsLayout>
         )
     }
 }
 
-const setProperty = gql`
-            mutation setProperty($id: String!, $value: String!, $property:String!, $lang: String!) {
-                jcr {
-                    mutateNodes(pathsOrIds: [$id]) {
-                        mutateProperty(name:$property) {
-                            setValue(value:$value)
-                        }
-                    }
-                }
-                reloadCache: jcr {
-                    mutateNodes(pathsOrIds: [$id]) {
-                        node {
-                            ...DefaultVanityUrlFields
-                        }
-                    }
-                }
-            }
-            ${DefaultVanityUrlFields}
-            ${PredefinedFragments.nodeCacheRequiredFields.gql}
-        `;
-
-const publish = gql`
-            mutation mutateNodes($pathsOrIds: [String!]!) {
-                jcr {
-                    mutateNodes(pathsOrIds: $pathsOrIds) {
-                        publish
-                    }
-                }
-            }
-        `;
-
-
 SiteSettingsSeoApp = compose(
     withTheme(),
-    graphql(setProperty, {name: 'setProperty'}),
-    graphql(publish, {name: 'publish'}),
+    graphql(SetPropertyMutation, {name: 'setProperty'}),
     (translate('site-settings-seo'))
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <SiteSettingsSeoApp {...props} publish={publish}/>
+            <SiteSettingsSeoApp {...props}/>
         </DxContextProvider>
     );
 };
