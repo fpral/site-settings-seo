@@ -72,22 +72,33 @@ class TablePaginationActions extends React.Component {
 
 TablePaginationActions = withStyles(actionsStyles, {withTheme: true})(TablePaginationActions);
 
-let Pagination = (props) =>
-    <Table>
-        <TableFooter>
-            <TableRow>
-            <TablePagination
-                count={props.totalCount}
-                rowsPerPage={props.pageSize}
-                page={props.currentPage}
-                onChangePage={props.onChangePage}
-                onChangeRowsPerPage={(event) => props.onChangeRowsPerPage(event.target.value)}
-                Actions={TablePaginationActions}
-            />
-            </TableRow>
-        </TableFooter>
-    </Table>
-;
+class Pagination extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    onChangePage = (event, page) => {
+        this.props.onChangePage(page);
+    };
+
+    render() {
+        let {totalCount, pageSize, currentPage} = this.props;
+        return <Table>
+            <TableFooter>
+                <TableRow>
+                    <TablePagination
+                        count={totalCount}
+                        rowsPerPage={pageSize}
+                        page={currentPage}
+                        onChangePage={this.onChangePage}
+                        onChangeRowsPerPage={(event) => props.onChangeRowsPerPage(event.target.value)}
+                        Actions={TablePaginationActions}
+                    />
+                </TableRow>
+            </TableFooter>
+        </Table>
+    }
+}
 
 export {Pagination}

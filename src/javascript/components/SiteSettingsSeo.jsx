@@ -13,7 +13,6 @@ import Snackbar from 'material-ui/Snackbar';
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
 import {DefaultVanityUrlFields} from "./fragments";
-import CloseIcon from 'material-ui-icons/Close';
 
 
 class SiteSettingsSeoApp extends React.Component {
@@ -195,7 +194,7 @@ class SiteSettingsSeoApp extends React.Component {
         });
     };
 
-    onChangePage(event, newPage) {
+    onChangePage(newPage) {
         this.setState({currentPage: newPage});
     }
 
@@ -243,6 +242,7 @@ class SiteSettingsSeoApp extends React.Component {
                 />
 
                 <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
+
                 <Dialog open={this.state.confirmationIconDialog.open} fullWidth={true} onClose={this.closeDialog} aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
@@ -267,6 +267,7 @@ class SiteSettingsSeoApp extends React.Component {
                           anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
                     <Typography>Publication job started on background</Typography>
                 </Snackbar>
+
             </SettingsLayout>
         )
     }

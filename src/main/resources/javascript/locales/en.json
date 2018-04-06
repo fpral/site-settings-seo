@@ -26,6 +26,9 @@
          "content": "Mapping to this page will be removed on publication of {{pagePath}}"
       }
     },
+    "errors": {
+      "loadingVanityUrl": "Error loading vanity URLs"
+    },
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",

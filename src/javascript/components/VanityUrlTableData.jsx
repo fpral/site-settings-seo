@@ -6,6 +6,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import gql from "graphql-tag";
 import * as _ from "lodash";
 import {LiveVanityUrlFields, DefaultVanityUrlFields} from "./fragments";
+import ErrorSnackBar from "./ErrorSnackBar";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -70,43 +71,41 @@ let VanityUrlTableData = (props) => {
 
     return <Query fetchPolicy={fetchPolicy} query={query} variables={variables}>
         { ({loading, error, data}) => {
-            let totalCount = 0;
-            let numberOfPages = 0;
-            let rows = [];
 
             if (error) {
                 console.log("Error when fetching data : " + error);
+                return <ErrorSnackBar error={props.t('label.errors.loadingVanityUrl')}/>
             }
 
-            if (!loading && !error) {
-                totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-                numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / props.pageSize);
-
-                rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
-
-                    let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                    let allUrlPairs;
-                    if (props.filterText) {
-                        allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                        urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
-                    }
-
-                    return {
-                        path: contentNode.path,
-                        uuid: contentNode.uuid,
-                        displayName: contentNode.displayName,
-                        languages: contentNode.site.languages,
-                        urls: urlPairs,
-                        allUrls: allUrlPairs
-                    }
-                });
-
-                return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
+            if (loading) {
+                return <CircularProgress/>
             }
 
-            return <CircularProgress/>
+            let totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+            let numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / props.pageSize);
+
+            let rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+
+                let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
+                let allUrlPairs;
+                if (props.filterText) {
+                    allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                    urlPairs = _.filter(allUrlPairs, (p) => _.find(urlPairs, (url) => url.uuid === p.uuid));
+                }
+
+                return {
+                    path: contentNode.path,
+                    uuid: contentNode.uuid,
+                    displayName: contentNode.displayName,
+                    languages: contentNode.site.languages,
+                    urls: urlPairs,
+                    allUrls: allUrlPairs
+                }
+            });
+
+            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
         }}
     </Query>
-}
+};
 
 export {VanityUrlTableData};
