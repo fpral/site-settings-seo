@@ -104,7 +104,7 @@ class VanityUrlListDefault extends React.Component {
     render() {
         let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, content } = this.props;
         let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
-        let allCheckboxChecked = _.differenceBy(urlPairs, selection, "uuid").length === 0;
+        let allCheckboxChecked = urlPairs.length > 0 && _.differenceBy(urlPairs, selection, "uuid").length === 0;
         let allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
 
         return (
@@ -114,9 +114,11 @@ class VanityUrlListDefault extends React.Component {
                         <TableHead>
                             <TableRow className={classes.vanityUrl}>
                                 <TableCell padding={'none'} className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
-                                    <Checkbox checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
-                                              onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
-                                    />
+                                    {urlPairs.length > 0 ? (
+                                        <Checkbox checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
+                                                  onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
+                                        />
+                                    ) : ''}
                                 </TableCell>
                                 <TableCell padding={'none'} colSpan={6}>
                                     <Typography variant="caption" classes={{caption: classes.boxTitle}} >

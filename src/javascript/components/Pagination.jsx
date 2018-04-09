@@ -83,7 +83,7 @@ class Pagination extends React.Component {
     };
 
     render() {
-        let {totalCount, pageSize, currentPage} = this.props;
+        let {totalCount, pageSize, currentPage, onChangeRowsPerPage} = this.props;
         return <Table>
             <TableFooter>
                 <TableRow>
@@ -92,7 +92,7 @@ class Pagination extends React.Component {
                         rowsPerPage={pageSize}
                         page={currentPage}
                         onChangePage={this.onChangePage}
-                        onChangeRowsPerPage={(event) => props.onChangeRowsPerPage(event.target.value)}
+                        onChangeRowsPerPage={(event) => onChangeRowsPerPage(event.target.value)}
                         Actions={TablePaginationActions}
                     />
                 </TableRow>
