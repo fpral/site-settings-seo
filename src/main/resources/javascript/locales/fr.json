@@ -5,11 +5,13 @@
       "default": "Default mappings",
       "live": "Live mappings"
     },
+    "dialogs": {
+      "publish": {
+        "title": "Confirmation de publication",
+        "content": "Êtes vous sur de vouloir publier les vanity URLs selectionnées ? La publication sera démarrée en tache de fond."
+      }
+    },
     "missingDefault": "{{vanityUrl}} supprimées",
-    "publicationStarted": "Job de publication lancé en arrière plan",
-    "publish": {
-      "title": "Confirmation de publication",
-      "content": "�tes vous sur de vouloir publier les vanity URLs selectionn�es ? La publication sera d�marr�e en tache de fond."
-    }
+    "publicationStarted": "Job de publication lancé en arrière plan"
   }
 }
