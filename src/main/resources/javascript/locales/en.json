@@ -27,7 +27,7 @@
       },
       "publish": {
         "title": "Publish confirmation",
-        "content": "Are you sure you want to publish vanity urls selected?",
+        "content": "Are you sure you want to publish vanity URLs selected? The publication will be started as a background job.",
         "cancel": "Cancel",
         "publish": "Publish"
       }

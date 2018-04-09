@@ -9,7 +9,7 @@
     "publicationStarted": "Job de publication lancé en arrière plan",
     "publish": {
       "title": "Confirmation de publication",
-      "content": "êtes vous sur de vouloir publier les vanity urls selectionnées ?"
+      "content": "êtes vous sur de vouloir publier les vanity URLs selectionnées ? La publication sera d�marr�e en tache de fond."
     }
   }
 }
