@@ -3,11 +3,11 @@ import {DefaultVanityUrlFields} from "./gqlFragments";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 
 const SetPropertyMutation = gql`
-    mutation setProperty($id: String!, $value: String!, $property:String!, $lang: String!) {
+    mutation setProperty($id: String!, $value: String!, $property: String!, $lang: String!) {
         jcr {
             mutateNodes(pathsOrIds: [$id]) {
-                mutateProperty(name:$property) {
-                    setValue(value:$value)
+                mutateProperty(name: $property) {
+                    setValue(value: $value)
                 }
             }
         }
@@ -33,4 +33,4 @@ const PublishMutation = gql`
     }
 `;
 
-export {SetPropertyMutation, PublishMutation}
+export {SetPropertyMutation, PublishMutation};

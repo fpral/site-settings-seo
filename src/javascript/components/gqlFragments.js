@@ -9,7 +9,8 @@ const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl 
         publicationInfo: aggregatedPublicationInfo(language: $lang) {
             publicationStatus
         }
-    }`;
+    }
+`;
 
 const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
         ...NodeCacheRequiredFields
@@ -17,7 +18,7 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
         default
         url
         language
-        editNode:nodeInWorkspace(workspace: EDIT) {
+        editNode: nodeInWorkspace(workspace: EDIT) {
             ...NodeCacheRequiredFields
             ...on VanityUrl {
                 targetNode {
@@ -29,4 +30,4 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
     }
 `;
 
-export {DefaultVanityUrlFields, LiveVanityUrlFields}
+export {DefaultVanityUrlFields, LiveVanityUrlFields};
