@@ -27,13 +27,15 @@
       },
       "publish": {
         "title": "Publish confirmation",
-        "content": "Are you sure you want to publish vanity urls selected ?"
+        "content": "Are you sure you want to publish vanity urls selected?",
+        "cancel": "Cancel",
+        "publish": "Publish"
       }
     },
     "errors": {
       "loadingVanityUrl": "Error loading vanity URLs"
     },
-    "publishSnackBar": "Publication job started on background",
+    "publicationStarted": "Publication job started in background",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",

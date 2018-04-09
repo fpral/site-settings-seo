@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import {Button} from 'material-ui';
 import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
-import {PublishMutation} from "./mutations";
+import {PublishMutation} from "./gqlMutations";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 
 class Publication extends React.Component {
@@ -16,30 +16,26 @@ class Publication extends React.Component {
             notificationOpen: false,
         };
 
-        this.handleOpenNotification = this.handleOpenNotification.bind(this);
-        this.handleCloseNotification = this.handleCloseNotification.bind(this);
+        this.openNotification = this.openNotification.bind(this);
+        this.closeNotification = this.closeNotification.bind(this);
 
         this.publish = function() {
-
-            // props and this.props are different
-            // props: is in closure state and have the initialisation values
-            // this.props: have the current props in current context
             props.publish({variables: {pathsOrIds: _.map(this.props.urlPairs, "uuid")}});
             props.onClose();
-            this.handleOpenNotification();
+            this.openNotification();
         };
     }
 
-    handleOpenNotification = () => {
+    openNotification = () => {
         this.setState({notificationOpen: true});
     };
 
-    handleCloseNotification = () => {
+    closeNotification = () => {
         this.setState({notificationOpen: false});
     };
 
     render() {
-        const { open, onClose, action, t } = this.props;
+        const { open, onClose, t } = this.props;
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
@@ -50,15 +46,12 @@ class Publication extends React.Component {
                             {t('label.dialogs.publish.content')}
                         </DialogContentText>
                     </DialogContent>
-
                     <DialogActions>
                         <Button onClick={onClose} color="primary">
-                            Cancel
+                            {t('label.dialogs.publish.cancel')}
                         </Button>
-                        <Button key={action.buttonLabel}
-                                onClick={() => {this.publish()}}
-                                color="primary" autoFocus>
-                            {action.buttonLabel}
+                        <Button onClick={() => {this.publish()}} color="primary" autoFocus>
+                            {t('label.dialogs.publish.publish')}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -69,12 +62,12 @@ class Publication extends React.Component {
                         horizontal: 'left',
                     }}
                     autoHideDuration={3000}
-                    onClose={this.handleCloseNotification}
+                    onClose={this.closeNotification}
                     open={this.state.notificationOpen}
                     SnackbarContentProps={{
                         'aria-describedby': 'message-id',
                     }}
-                    message={<span id="message-id">{t('label.publishSnackBar')}</span>}
+                    message={<span id="message-id">{t('label.publicationStarted')}</span>}
                 />
             </div>
         );

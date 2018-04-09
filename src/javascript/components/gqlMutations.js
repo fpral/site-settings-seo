@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import {DefaultVanityUrlFields} from "./fragments";
+import {DefaultVanityUrlFields} from "./gqlFragments";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 
 const SetPropertyMutation = gql`

@@ -9,7 +9,7 @@ import {compose, graphql} from 'react-apollo';
 import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
-import {SetPropertyMutation} from "./mutations";
+import {SetPropertyMutation} from "./gqlMutations";
 import Publication from "./Publication";
 
 
@@ -209,8 +209,6 @@ class SiteSettingsSeoApp extends React.Component {
 
                 <Publication
                     {...this.state.publication}
-                    t={t}
-                    action={this.actions.publishAction}
                     onClose={this.closePublication}/>
             </SettingsLayout>
         )

@@ -5,7 +5,7 @@ import {Query} from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 import gql from "graphql-tag";
 import * as _ from "lodash";
-import {LiveVanityUrlFields, DefaultVanityUrlFields} from "./fragments";
+import {LiveVanityUrlFields, DefaultVanityUrlFields} from "./gqlFragments";
 import ErrorSnackBar from "./ErrorSnackBar";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
