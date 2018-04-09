@@ -11,7 +11,7 @@ const SetPropertyMutation = gql`
                 }
             }
         }
-        reloadCache: jcr {
+        return: jcr {
             mutateNodes(pathsOrIds: [$id]) {
                 node {
                     ...DefaultVanityUrlFields
