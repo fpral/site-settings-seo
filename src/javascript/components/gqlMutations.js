@@ -2,20 +2,14 @@ import gql from "graphql-tag";
 import {DefaultVanityUrlFields} from "./gqlFragments";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 
-const SetPropertyMutation = gql`
-    mutation setProperty($id: String!, $value: String!, $property: String!, $lang: String!) {
+const UpdateVanityMutation = gql`
+    mutation updateVanity($ids: [String!]!, $defaultMapping: Boolean, $active: Boolean, $url: String, $language: String, $lang: String!) {
         jcr {
-            mutateNodes(pathsOrIds: [$id]) {
-                mutateProperty(name: $property) {
-                    setValue(value: $value)
-                }
+            mutateVanityUrls(pathsOrIds: $ids) {
+              update(defaultMapping:$defaultMapping,active:$active,url:$url, language:$language)
             }
-        }
-        return: jcr {
-            mutateNodes(pathsOrIds: [$id]) {
-                node {
-                    ...DefaultVanityUrlFields
-                }
+            modifiedNodes {
+              ...DefaultVanityUrlFields
             }
         }
     }
@@ -43,4 +37,4 @@ const DeleteVanity = gql`
     }         
 `;
 
-export {SetPropertyMutation, PublishMutation, DeleteVanity};
+export {UpdateVanityMutation, PublishMutation, DeleteVanity};

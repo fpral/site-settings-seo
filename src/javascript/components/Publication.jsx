@@ -76,7 +76,7 @@ class Publication extends React.Component {
 
 Publication = compose(
     graphql(PublishMutation, {name: 'publish'}),
-    (translate('site-settings-seo'))
+    translate('site-settings-seo')
 )(Publication);
 
 export default Publication;

@@ -127,7 +127,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.setActiveAction.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
+                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
@@ -141,10 +141,10 @@ class VanityUrlListDefault extends React.Component {
                                                 ) : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair: urlPair, defaultUrl: event.target.checked}, event)}/>
+                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <LanguageMenu languages={languages} urlPair={urlPair} action={actions.setLanguageAction}/>
+                                                <LanguageMenu languages={languages} urlPair={urlPair} action={actions.updateVanity}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
                                                 {isPublished ? (

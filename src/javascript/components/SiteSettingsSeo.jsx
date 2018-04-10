@@ -9,7 +9,7 @@ import {compose, graphql} from 'react-apollo';
 import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
-import {SetPropertyMutation} from "./gqlMutations";
+import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
 
@@ -83,40 +83,18 @@ class SiteSettingsSeoApp extends React.Component {
                 className: "move",
                 call: this.onMoveInfoDialog
             },
-            setDefaultAction: {
-                call: (data, event) => {
-                    props.setProperty({
+            updateVanity: {
+                call: (data) => {
+                    props.updateVanity({
                         variables: {
-                            id: data.urlPair.uuid,
-                            property: 'j:default',
-                            value: data.defaultUrl.toString(),
+                            ids: [data.urlPair.uuid],
+                            defaultMapping: data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
+                            active: data.active != null ? data.active.toString() : undefined,
+                            language: data.language,
+                            url: data.url,
                             lang: contextJsParameters.uilang
                         }
                     })
-                }
-            },
-            setActiveAction: {
-                call: (data, event) => {
-                    props.setProperty({
-                        variables: {
-                            id: data.urlPair.uuid,
-                            property: 'j:active',
-                            value: data.active.toString(),
-                            lang: contextJsParameters.uilang
-                        }
-                    });
-                }
-            },
-            setLanguageAction: {
-                call: (data) => {
-                    props.setProperty({
-                        variables: {
-                            id: data.urlPair.uuid,
-                            property: 'jcr:language',
-                            value: data.language,
-                            lang: contextJsParameters.uilang
-                        }
-                    });
                 }
             }
         }
@@ -246,8 +224,8 @@ class SiteSettingsSeoApp extends React.Component {
 
 SiteSettingsSeoApp = compose(
     withTheme(),
-    graphql(SetPropertyMutation, {name: 'setProperty'}),
-    (translate('site-settings-seo'))
+    graphql(UpdateVanityMutation, {name: 'updateVanity'}),
+    translate('site-settings-seo')
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {

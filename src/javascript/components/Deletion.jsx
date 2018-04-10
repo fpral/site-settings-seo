@@ -77,7 +77,7 @@ class Deletion extends React.Component {
 
 Deletion = compose(
     graphql(DeleteVanity, {name: 'delete'}),
-    (translate('site-settings-seo'))
+    translate('site-settings-seo')
 )(Deletion);
 
 export default Deletion;
