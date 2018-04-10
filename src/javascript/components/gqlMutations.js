@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
-import {DefaultVanityUrlFields} from "./gqlFragments";
-import {PredefinedFragments} from "@jahia/apollo-dx";
+import {DefaultVanityUrlFields, DefaultVanityUrls} from "./gqlFragments";
 
 const UpdateVanityMutation = gql`
     mutation updateVanity($ids: [String!]!, $defaultMapping: Boolean, $active: Boolean, $url: String, $language: String, $lang: String!) {
@@ -14,7 +13,6 @@ const UpdateVanityMutation = gql`
         }
     }
     ${DefaultVanityUrlFields}
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
 const PublishMutation = gql`

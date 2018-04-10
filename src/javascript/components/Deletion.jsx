@@ -21,7 +21,11 @@ class Deletion extends React.Component {
         this.closeNotification = this.closeNotification.bind(this);
 
         this.delete = function() {
-            props.delete({variables: {pathsOrIds: _.map(this.props.urlPairs, "uuid")}});
+            props.delete({
+                variables: {
+                    pathsOrIds: _.map(this.props.urlPairs, "uuid")
+                },
+                refetchQueries:['NodesQuery']});
             props.onClose();
             this.openNotification();
         };

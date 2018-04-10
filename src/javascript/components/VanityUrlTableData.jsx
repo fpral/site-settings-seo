@@ -5,7 +5,7 @@ import {Query} from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 import gql from "graphql-tag";
 import * as _ from "lodash";
-import {LiveVanityUrlFields, DefaultVanityUrlFields} from "./gqlFragments";
+import {LiveVanityUrls, DefaultVanityUrls} from "./gqlFragments";
 import ErrorSnackBar from "./ErrorSnackBar";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
@@ -26,20 +26,8 @@ let query = gql`
                 nodes {
                     ...NodeCacheRequiredFields
                     displayName(language: $lang)
-                    vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                        ...DefaultVanityUrlFields
-                    }
-                    allVanityUrls: vanityUrls @include(if: $doFilter) {
-                        ...DefaultVanityUrlFields
-                    }
-                    liveNode: nodeInWorkspace(workspace: LIVE) {
-                        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
-                            ...LiveVanityUrlFields
-                        }
-                        allVanityUrls: vanityUrls @include(if: $doFilter) {
-                            ...LiveVanityUrlFields
-                        }
-                    }
+                    ...DefaultVanityUrls
+                    ...LiveVanityUrls
                 }
             }
             nodeByPath(path: $path) {
@@ -52,9 +40,8 @@ let query = gql`
             }
         }
     }
-    ${DefaultVanityUrlFields}
-    ${LiveVanityUrlFields}
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+    ${DefaultVanityUrls}
+    ${LiveVanityUrls}
 `;
 
 let VanityUrlTableData = (props) => {
