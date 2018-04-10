@@ -33,4 +33,14 @@ const PublishMutation = gql`
     }
 `;
 
-export {SetPropertyMutation, PublishMutation};
+const DeleteVanity = gql`
+    mutation deleteVanityUrls($pathsOrIds: [String!]!) {
+        jcr{
+            mutateNodes(pathsOrIds: $pathsOrIds){
+                delete
+            }
+        }
+    }         
+`;
+
+export {SetPropertyMutation, PublishMutation, DeleteVanity};

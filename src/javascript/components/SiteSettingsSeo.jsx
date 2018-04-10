@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import MoveInfoDialog from "./MoveInfoDialog";
 import {SetPropertyMutation} from "./gqlMutations";
 import Publication from "./Publication";
+import Deletion from "./Deletion";
 
 
 class SiteSettingsSeoApp extends React.Component {
@@ -29,6 +30,10 @@ class SiteSettingsSeoApp extends React.Component {
             publication: {
                 open: false,
                 urlPairs: []
+            },
+            deletion: {
+                open:false,
+                urlPairs:[]
             }
         };
 
@@ -41,6 +46,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
         this.openPublication = this.openPublication.bind(this);
         this.closePublication = this.closePublication.bind(this);
+        this.openDeletion = this.openDeletion.bind(this);
+        this.closeDeletion = this.closeDeletion.bind(this);
 
         this.mutationPlaceholder = function(selection, event) {
             console.log(selection);
@@ -52,7 +59,7 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonLabel: "Delete",
                 buttonIcon: <Delete/>,
                 className: "delete",
-                call: this.mutationPlaceholder
+                call: this.openDeletion
             },
             publishAction: {
                 buttonLabel: "Publish",
@@ -127,6 +134,24 @@ class SiteSettingsSeoApp extends React.Component {
     closePublication() {
         this.setState({
             publication: {
+                open: false,
+                urlPairs: []
+            }
+        })
+    };
+
+    openDeletion = (urlPairs) => {
+        this.setState({
+            deletion: {
+                open: true,
+                urlPairs: urlPairs
+            }
+        })
+    };
+
+    closeDeletion() {
+        this.setState({
+            deletion: {
                 open: false,
                 urlPairs: []
             }
@@ -211,6 +236,9 @@ class SiteSettingsSeoApp extends React.Component {
                 <Publication
                     {...this.state.publication}
                     onClose={this.closePublication}/>
+                <Deletion
+                    {...this.state.deletion}
+                    onClose={this.closeDeletion}/>
             </SettingsLayout>
         )
     }

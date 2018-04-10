@@ -30,12 +30,19 @@
         "content": "Are you sure you want to publish vanity URLs selected? The publication will be started as a background job.",
         "cancel": "Cancel",
         "publish": "Publish"
+      },
+      "delete": {
+        "title": "Delete confirmation",
+        "content": "Are you sure you want to delete vanity URLs selected?",
+        "cancel": "Cancel",
+        "publish": "Delete"
       }
     },
     "errors": {
       "loadingVanityUrl": "Error loading vanity URLs"
     },
     "publicationStarted": "Publication job started in background",
+    "deletionConfirmed": "Deletion confirmed",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",

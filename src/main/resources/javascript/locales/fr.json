@@ -8,10 +8,19 @@
     "dialogs": {
       "publish": {
         "title": "Confirmation de publication",
-        "content": "Êtes vous sur de vouloir publier les vanity URLs selectionnées ? La publication sera démarrée en tache de fond."
+        "content": "Êtes vous sur de vouloir publier les vanity URLs selectionnées ? La publication sera démarrée en tache de fond.",
+        "cancel": "Annuler",
+        "publish": "Publier"
+      },
+      "delete": {
+        "title": "Confirmation de suppression",
+        "content": "Êtes vous sur de vouloir supprimer les vanity URLs selectionnées?",
+        "cancel": "Annuler",
+        "publish": "Supprimer"
       }
     },
     "missingDefault": "{{vanityUrl}} supprimées",
-    "publicationStarted": "Job de publication lancé en arrière plan"
+    "publicationStarted": "Job de publication lancé en arrière plan",
+    "deletionConfirmed": "Suppression confirmée"
   }
 }
