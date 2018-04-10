@@ -100,7 +100,7 @@ class SiteSettingsSeoApp extends React.Component {
                     });
                 }
             },
-            setLanguage: {
+            setLanguageAction: {
                 call: (data) => {
                     props.setProperty({
                         variables: {

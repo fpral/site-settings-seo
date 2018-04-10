@@ -5,8 +5,8 @@ import {ArrowDropDown} from 'material-ui-icons';
 const styles = (theme) => ({
     langButton: {
         '&:hover $rightIcon': {
-            transition: ["opacity","0.25s"],
-            opacity:1
+            transition: ["opacity", "0.25s"],
+            opacity: 1
         },
         '&:hover': {
             backgroundColor: "#fff"
@@ -14,11 +14,12 @@ const styles = (theme) => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
-        opacity:0
+        opacity: 0
     }
 });
 
 class LanguageMenu extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,38 +30,33 @@ class LanguageMenu extends React.Component {
     }
 
     handleClick(event) {
-        this.setState({ anchorEl: event.currentTarget });
         event.stopPropagation();
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleClose(event) {
-        this.setState({ anchorEl: null });
         event.stopPropagation();
+        this.setState({anchorEl: null});
     };
 
     handleSelect(language, event) {
         this.handleClose(event);
         const { action, urlPair } = this.props;
-        action.call({urlPair:urlPair, language:language})
+        action.call({urlPair: urlPair, language: language})
     };
 
     render() {
+
         const { anchorEl } = this.state;
         const { urlPair, languages, classes } = this.props;
 
         return (<div>
-            <Button className={classes.langButton}
-                    onClick={this.handleClick}
-            >
+            <Button className={classes.langButton} onClick={this.handleClick}>
                 {urlPair.default.language}
                 <ArrowDropDown className={classes.rightIcon}/>
             </Button>
-            <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={this.handleClose}
-            >
-                {languages.map(l => <MenuItem key={l.language} onClick={ (event) => this.handleSelect(l.language, event)}>{l.displayName} ({l.language})</MenuItem>)}
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
+                {languages.map(language => <MenuItem key={language.language} onClick={(event) => this.handleSelect(language.language, event)}>{language.displayName} ({language.language})</MenuItem>)}
             </Menu>
         </div>)
     }
