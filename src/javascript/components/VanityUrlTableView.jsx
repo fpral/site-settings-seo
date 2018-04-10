@@ -27,11 +27,11 @@ class VanityUrlTableView extends React.Component {
     };
 
     render() {
-        let { rows, selection, onChangeSelection, filterText, actions} = this.props;
+        let { rows, selection, onChangeSelection, filterText, actions, languages} = this.props;
         return (
             <div>
                 <List>
-                    {rows.map(row => (<VanityUrlEnabledContent key={row.uuid} content={row} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} actions={actions}/>))}
+                    {rows.map(row => (<VanityUrlEnabledContent key={row.uuid} content={row} filterText={filterText} onChangeSelection={onChangeSelection} selection={selection} actions={actions} languages={languages}/>))}
                 </List>
                 <Pagination {...this.props} />
             </div>

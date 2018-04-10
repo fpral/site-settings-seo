@@ -47,7 +47,7 @@ class VanityUrlEnabledContent extends React.Component {
 
     render() {
 
-        const { content, filterText, classes, t, onChangeSelection, selection, actions } = this.props;
+        const { content, filterText, classes, t, onChangeSelection, selection, actions, languages } = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
@@ -86,10 +86,10 @@ class VanityUrlEnabledContent extends React.Component {
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                         <Grid container spacing={24} className={classes.vanityUrlLists}>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} content={content} />
+                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages}/>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} content={content}/>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText}/>
                             </Grid>
                         </Grid>
                     </Collapse>

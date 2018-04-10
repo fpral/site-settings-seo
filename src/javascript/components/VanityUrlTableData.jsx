@@ -17,7 +17,7 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
 }
 
 let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $path: String!) {
         jcr {
             nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
@@ -40,11 +40,13 @@ let query = gql`
                             ...LiveVanityUrlFields
                         }
                     }
-                    site {
-                        languages {
-                            language
-                            displayName
-                        }
+                }
+            }
+            nodeByPath(path: $path) {
+                site {
+                    languages {
+                        language
+                        displayName
                     }
                 }
             }
@@ -63,7 +65,8 @@ let VanityUrlTableData = (props) => {
         query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
         filterText: props.filterText,
         doFilter: !!props.filterText,
-        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
+        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]},
+        path: props.path
     };
 
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
@@ -97,13 +100,12 @@ let VanityUrlTableData = (props) => {
                     path: contentNode.path,
                     uuid: contentNode.uuid,
                     displayName: contentNode.displayName,
-                    languages: contentNode.site.languages,
                     urls: urlPairs,
                     allUrls: allUrlPairs
                 }
             });
 
-            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows}/>
+            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows} languages={data.jcr.nodeByPath.site.languages}/>
         }}
     </Query>
 };

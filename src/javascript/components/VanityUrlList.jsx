@@ -85,7 +85,7 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
-        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, content } = this.props;
+        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages } = this.props;
         let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
         let allCheckboxChecked = urlPairs.length > 0 && _.differenceBy(urlPairs, selection, "uuid").length === 0;
         let allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
@@ -144,7 +144,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.setDefaultAction.call({urlPair: urlPair, defaultUrl: event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <LanguageMenu languages={content.languages} urlPair={urlPair} action={actions.setLanguageAction}/>
+                                                <LanguageMenu languages={languages} urlPair={urlPair} action={actions.setLanguageAction}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
                                                 {isPublished ? (
