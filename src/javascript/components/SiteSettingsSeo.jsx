@@ -16,21 +16,22 @@ import Publication from "./Publication";
 class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
+
         super(props);
+
         this.state = {
             filterText: '',
             currentPage: 0,
             pageSize: 5,
             appBarStyle: {},
             selection: [],
-
             moveInfoDialogPath: '',
-
             publication: {
                 open: false,
                 urlPairs: []
             }
         };
+
         this.onChangeSelection = this.onChangeSelection.bind(this);
         this.onChangeFilter = this.onChangeFilter.bind(this);
         this.onChangePage = this.onChangePage.bind(this);
