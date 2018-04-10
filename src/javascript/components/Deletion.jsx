@@ -21,11 +21,25 @@ class Deletion extends React.Component {
         this.closeNotification = this.closeNotification.bind(this);
 
         this.delete = function() {
+            let pathsOrIds = _.map(this.props.urlPairs, "uuid");
+            let parents = _.map(this.props.urlPairs, "default.targetNode.uuid");
             props.delete({
                 variables: {
-                    pathsOrIds: _.map(this.props.urlPairs, "uuid")
+                    pathsOrIds: pathsOrIds
                 },
-                refetchQueries:['NodesQuery']});
+                update:(proxy) => {
+                    // Manually clean cache from parent list
+                    _.each(parents, (uuid) => {
+                        let parentNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:uuid, workspace:"EDIT"})];
+                        let list = parentNode[_.find(Object.keys(parentNode), (k) => k.startsWith("vanityUrls"))];
+                        _.each(pathsOrIds, (vanityUuid) => {
+                            let id = proxy.config.dataIdFromObject({uuid:vanityUuid, workspace:"EDIT"});
+                            _.remove(list, (v) => (v.id === id))
+                        });
+                    });
+                    debugger;
+                }
+            });
             props.onClose();
             this.openNotification();
         };
