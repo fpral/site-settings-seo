@@ -9,7 +9,8 @@ const styles = (theme) => ({
             opacity: 1
         },
         '&:hover': {
-            backgroundColor: "#fff"
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary
         }
     },
     rightIcon: {
