@@ -144,7 +144,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <LanguageMenu languages={languages} urlPair={urlPair} action={actions.updateVanity}/>
+                                                <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={(languageCode) => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
                                                 {isPublished ? (

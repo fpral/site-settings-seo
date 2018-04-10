@@ -85,6 +85,10 @@ class SiteSettingsSeoApp extends React.Component {
             },
             updateVanity: {
                 call: (data) => {
+
+                    alert(data.urlPair.uuid);
+                    alert(data.language);
+
                     props.updateVanity({
                         variables: {
                             ids: [data.urlPair.uuid],

@@ -39,24 +39,23 @@ class LanguageMenu extends React.Component {
         this.setState({anchorEl: null});
     };
 
-    handleSelect(language, event) {
+    handleSelect(languageCode, event) {
         this.handleClose(event);
-        const { action, urlPair } = this.props;
-        action.call({urlPair: urlPair, language: language})
+        this.props.onLanguageSelected(languageCode);
     };
 
     render() {
 
         const { anchorEl } = this.state;
-        const { urlPair, languages, classes } = this.props;
+        const { languageCode, languages, classes } = this.props;
 
         return (<div>
             <Button className={classes.langButton} onClick={this.handleClick}>
-                {urlPair.default.language}
+                {languageCode}
                 <ArrowDropDown className={classes.rightIcon}/>
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
-                {languages.map(language => <MenuItem key={language.language} onClick={(event) => this.handleSelect(language.language, event)}>{language.displayName} ({language.language})</MenuItem>)}
+                {languages.map(language => <MenuItem key={language.code} onClick={(event) => this.handleSelect(language.code, event)}>{language.name} ({language.code})</MenuItem>)}
             </Menu>
         </div>)
     }

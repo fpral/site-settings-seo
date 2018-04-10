@@ -33,8 +33,8 @@ let query = gql`
             nodeByPath(path: $path) {
                 site {
                     languages {
-                        language
-                        displayName
+                        code: language
+                        name: displayName
                     }
                 }
             }
@@ -92,7 +92,9 @@ let VanityUrlTableData = (props) => {
                 }
             });
 
-            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows} languages={data.jcr.nodeByPath.site.languages}/>
+            let languages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
+
+            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows} languages={languages}/>
         }}
     </Query>
 };
