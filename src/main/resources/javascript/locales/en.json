@@ -36,6 +36,14 @@
         "content": "Are you sure you want to delete vanity URLs selected?",
         "cancel": "Cancel",
         "delete": "Delete"
+      },
+      "move": {
+        "title": "Move Mapping",
+        "content": "Please enter the path to where you want to point ...",
+        "target": "Target node path",
+        "confirm": "I understand that this move is a one way ticket !!",
+        "cancel": "Cancel",
+        "move": "Move"
       }
     },
     "errors": {
@@ -44,6 +52,7 @@
     },
     "publicationStarted": "Publication job started in background",
     "deletionConfirmed": "Deletion confirmed",
+    "moveConfirmed": "Move confirmed",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
     "missingDefault": "Deleted {{vanityUrl}}",

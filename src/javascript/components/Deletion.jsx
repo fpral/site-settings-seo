@@ -7,23 +7,19 @@ import {translate} from "react-i18next";
 import {DeleteVanity} from "./gqlMutations";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {query} from './VanityUrlTableData';
+import {withNotifications} from '@jahia/react-dxcomponents';
 
 class Deletion extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            notificationOpen: false,
-        };
-
-        this.openNotification = this.openNotification.bind(this);
-        this.closeNotification = this.closeNotification.bind(this);
+        let { deleteMutation, notificationContext, t } = this.props;
 
         this.delete = function() {
             let pathsOrIds = _.map(this.props.urlPairs, "uuid");
             let parents = _.map(this.props.urlPairs, "default.targetNode.uuid");
-            props.delete({
+            deleteMutation({
                 variables: {
                     pathsOrIds: pathsOrIds
                 },
@@ -44,17 +40,9 @@ class Deletion extends React.Component {
                 }
             });
             props.onClose();
-            this.openNotification();
+            notificationContext.notify(t('label.deletionConfirmed'));
         };
     }
-
-    openNotification = () => {
-        this.setState({notificationOpen: true});
-    };
-
-    closeNotification = () => {
-        this.setState({notificationOpen: false});
-    };
 
     render() {
         const { open, onClose, t } = this.props;
@@ -77,27 +65,14 @@ class Deletion extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    autoHideDuration={3000}
-                    onClose={this.closeNotification}
-                    open={this.state.notificationOpen}
-                    SnackbarContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">{t('label.deletionConfirmed')}</span>}
-                />
             </div>
         );
     }
 }
 
 Deletion = compose(
-    graphql(DeleteVanity, {name: 'delete'}),
+    graphql(DeleteVanity, {name: 'deleteMutation'}),
+    withNotifications(),
     translate('site-settings-seo')
 )(Deletion);
 

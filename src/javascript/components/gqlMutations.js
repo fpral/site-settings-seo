@@ -35,4 +35,14 @@ const DeleteVanity = gql`
     }         
 `;
 
-export {UpdateVanityMutation, PublishMutation, DeleteVanity};
+const MoveMutation = gql`
+    mutation mutateNodes($pathsOrIds: [String!]!, $target: String!) {
+        jcr {
+            mutateVanityUrls(pathsOrIds: $pathsOrIds) {
+                move(target: $target)
+            }
+        }
+    }
+`;
+
+export {MoveMutation, UpdateVanityMutation, PublishMutation, DeleteVanity};

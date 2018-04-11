@@ -8,11 +8,11 @@ import {Selection} from "./Selection";
 import {compose, graphql} from 'react-apollo';
 import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
-import MoveInfoDialog from "./MoveInfoDialog";
+import MoveInfo from "./MoveInfo";
 import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
-
+import Move from "./Move";
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -26,7 +26,6 @@ class SiteSettingsSeoApp extends React.Component {
             pageSize: 5,
             appBarStyle: {},
             selection: [],
-            moveInfoDialogPath: '',
             publication: {
                 open: false,
                 urlPairs: []
@@ -34,6 +33,14 @@ class SiteSettingsSeoApp extends React.Component {
             deletion: {
                 open:false,
                 urlPairs:[]
+            },
+            move: {
+                open: false,
+                urlPairs: []
+            },
+            moveInfo: {
+                open: false,
+                path: ''
             }
         };
 
@@ -43,7 +50,13 @@ class SiteSettingsSeoApp extends React.Component {
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
-        this.onMoveInfoDialog = this.onMoveInfoDialog.bind(this);
+
+        this.openMoveInfo = this.openMoveInfo.bind(this);
+        this.closeMoveInfo = this.closeMoveInfo.bind(this);
+
+        this.openMove = this.openMove.bind(this);
+        this.closeMove = this.closeMove.bind(this);
+
         this.openPublication = this.openPublication.bind(this);
         this.closePublication = this.closePublication.bind(this);
         this.openDeletion = this.openDeletion.bind(this);
@@ -76,12 +89,12 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonLabel: "Move",
                 buttonIcon: <SwapHoriz/>,
                 className: "move",
-                call: this.mutationPlaceholder
+                call: this.openMove
             },
             moveInfo: {
                 buttonIcon: <Info/>,
                 className: "move",
-                call: this.onMoveInfoDialog
+                call: this.openMoveInfo
             },
             updateVanity: {
                 call: (data) => props.updateVanity({
@@ -97,6 +110,42 @@ class SiteSettingsSeoApp extends React.Component {
             }
         }
     }
+
+    openMoveInfo = (targetPath) => {
+        this.setState({
+            moveInfo: {
+                open: true,
+                path: targetPath
+            }
+        })
+    };
+
+    closeMoveInfo() {
+        this.setState({
+            moveInfo: {
+                open: false,
+                path: ''
+            }
+        })
+    };
+
+    openMove = (urlPairs) => {
+        this.setState({
+            move: {
+                open: true,
+                urlPairs: urlPairs
+            }
+        })
+    };
+
+    closeMove() {
+        this.setState({
+            move: {
+                open: false,
+                urlPairs: []
+            }
+        })
+    };
 
     openPublication = (urlPairs) => {
         this.setState({
@@ -207,11 +256,16 @@ class SiteSettingsSeoApp extends React.Component {
                     path={dxContext.mainResourcePath}
                 />
 
-                <MoveInfoDialog {...this.props} path={this.state.moveInfoDialogPath} onClose={this.onMoveInfoDialog}/>
+                <Move {...this.state.move}
+                      onClose={this.closeMove} />
+
+                <MoveInfo {...this.state.moveInfo}
+                          onClose={this.closeMoveInfo}/>
 
                 <Publication
                     {...this.state.publication}
                     onClose={this.closePublication}/>
+
                 <Deletion
                     {...this.state.deletion}
                     onClose={this.closeDeletion}/>
