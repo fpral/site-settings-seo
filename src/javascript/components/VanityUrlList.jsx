@@ -85,10 +85,16 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
+
         let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages } = this.props;
         let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
-        let allCheckboxChecked = urlPairs.length > 0 && _.differenceBy(urlPairs, selection, "uuid").length === 0;
-        let allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
+
+        let allCheckboxChecked = false;
+        let allCheckboxIndeterminate = false;
+        if (urlPairs.length > 0) {
+            allCheckboxChecked = _.differenceBy(urlPairs, selection, "uuid").length === 0;
+            allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
+        }
 
         return (
             <div>
