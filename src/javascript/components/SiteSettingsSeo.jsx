@@ -13,6 +13,7 @@ import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
 import Move from "./Move";
+import {VanityMutationsProvider} from "./VanityMutationsProvider";
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -283,7 +284,9 @@ SiteSettingsSeoApp = compose(
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <SiteSettingsSeoApp {...props}/>
+            <VanityMutationsProvider vanityMutationsContext={{}}>
+                <SiteSettingsSeoApp {...props}/>
+            </VanityMutationsProvider>
         </DxContextProvider>
     );
 };

@@ -6,12 +6,13 @@ import {translate} from "react-i18next";
 import {MoveMutation} from "./gqlMutations";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withNotifications} from '@jahia/react-dxcomponents';
+import {withVanityMutationContext} from "./VanityMutationsProvider";
 
 class Move extends React.Component {
 
     constructor(props) {
         super(props);
-        let { moveMutation, notificationContext, t } = this.props;
+        let { vanityMutationsContext, notificationContext, t } = this.props;
 
         this.state = {
             targetPath: '',
@@ -23,7 +24,7 @@ class Move extends React.Component {
         this.handleClose = this.handleClose.bind(this);
 
         this.move = function() {
-            moveMutation({variables: {pathsOrIds: _.map(this.props.urlPairs, "uuid"), target: this.state.targetPath}});
+            vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath);
             this.handleClose();
             notificationContext.notify(t("label.moveConfirmed"));
         };
@@ -87,7 +88,7 @@ class Move extends React.Component {
 }
 
 Move = compose(
-    graphql(MoveMutation, {name: 'moveMutation'}),
+    withVanityMutationContext(),
     withNotifications(),
     (translate('site-settings-seo'))
 )(Move);
