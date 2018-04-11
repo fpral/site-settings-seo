@@ -37,7 +37,10 @@ class Deletion extends React.Component {
                             _.remove(list, (v) => (v.id === id))
                         });
                     });
-                    debugger;
+                    _.each(pathsOrIds, (id) => {
+                        let liveNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:id, workspace:"LIVE"})];
+                        liveNode[_.find(Object.keys(liveNode), (k) => k.startsWith("nodeInWorkspace"))] = null;
+                    });
                 }
             });
             props.onClose();
