@@ -12,13 +12,16 @@ import {
     TableRow,
     Typography,
     Input,
-    withStyles
+    withStyles, withTheme
 } from 'material-ui';
 import {Done, Star, StarBorder} from 'material-ui-icons';
 import {LanguageMenu} from "./LanguageMenu";
 import * as _ from "lodash";
 import {fade} from "material-ui/styles/colorManipulator";
 import {Editable} from "./Editable";
+import {withVanityMutationContext} from "./VanityMutationsProvider";
+import {compose} from "react-apollo/index";
+import {withNotifications} from '@jahia/react-dxcomponents';
 
 const styles = (theme) => ({
     boxTitle: {
@@ -98,9 +101,9 @@ class VanityUrlListDefault extends React.Component {
                 onError();
                 _.each(errors.graphQLErrors, (error) => {
                     if (error.errorType === "GqlConstraintException") {
-                        console.error(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
+                        this.props.notificationContext.notify(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
                     } else {
-                        console.error(error);
+                        this.props.notificationContext.notify(error.message);
                     }
                 })
             });
@@ -316,8 +319,17 @@ class ActionButton extends React.Component {
     }
 }
 
-VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
-VanityUrlListLive = withStyles(styles)(translate('site-settings-seo')(VanityUrlListLive));
+VanityUrlListDefault = compose(
+    withStyles(styles),
+    withVanityMutationContext(),
+    withNotifications(),
+    translate('site-settings-seo')
+)(VanityUrlListDefault);
+
+VanityUrlListLive = compose(
+    withStyles(styles),
+    translate('site-settings-seo')
+)(VanityUrlListLive);
 
 export {VanityUrlListLive};
 export {VanityUrlListDefault};

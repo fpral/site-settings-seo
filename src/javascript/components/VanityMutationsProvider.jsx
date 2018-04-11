@@ -9,39 +9,54 @@ class VanityMutationsProvider extends Component {
     constructor(props) {
         super(props);
 
-        let {vanityMutationsContext, deleteMutation, moveMutation} = this.props;
+        let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation} = this.props;
 
-        vanityMutationsContext.delete = (pathsOrIds, parents) => {
-            deleteMutation({
-                variables: {
-                    pathsOrIds: pathsOrIds
-                },
-                update:(proxy) => {
-                    // Manually clean cache from parent list
-                    _.each(parents, (uuid) => {
-                        let parentNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:uuid, workspace:"EDIT"})];
-                        let list = parentNode[_.find(Object.keys(parentNode), (k) => k.startsWith("vanityUrls"))];
-                        _.each(pathsOrIds, (vanityUuid) => {
-                            let id = proxy.config.dataIdFromObject({uuid:vanityUuid, workspace:"EDIT"});
-                            _.remove(list, (v) => (v.id === id))
-                        });
+        vanityMutationsContext.delete = (pathsOrIds, parents) => deleteMutation({
+            variables: {
+                pathsOrIds: pathsOrIds
+            },
+            update:(proxy) => {
+                // Manually clean cache from parent list
+                _.each(parents, (uuid) => {
+                    let parentNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:uuid, workspace:"EDIT"})];
+                    let list = parentNode[_.find(Object.keys(parentNode), (k) => k.startsWith("vanityUrls"))];
+                    _.each(pathsOrIds, (vanityUuid) => {
+                        let id = proxy.config.dataIdFromObject({uuid:vanityUuid, workspace:"EDIT"});
+                        _.remove(list, (v) => (v.id === id))
                     });
-                    _.each(pathsOrIds, (id) => {
-                        let liveNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:id, workspace:"LIVE"})];
-                        liveNode[_.find(Object.keys(liveNode), (k) => k.startsWith("nodeInWorkspace"))] = null;
-                    });
-                }
-            });
-        };
+                });
+                _.each(pathsOrIds, (id) => {
+                    let liveNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:id, workspace:"LIVE"})];
+                    liveNode[_.find(Object.keys(liveNode), (k) => k.startsWith("nodeInWorkspace"))] = null;
+                });
+            }
+        });
 
-        vanityMutationsContext.move = (pathsOrIds, target) => {
-            moveMutation({variables: {
-                    pathsOrIds: pathsOrIds,
-                    target: target
-                }, update:(proxy) => {
-                    // TODO
-                }});
-        };
+        vanityMutationsContext.move = (pathsOrIds, target) => moveMutation({
+            variables: {
+                pathsOrIds: pathsOrIds,
+                target: target
+            }, update:(proxy) => {
+                // TODO
+            }
+        });
+
+        vanityMutationsContext.publish = (pathsOrIds) => publishMutation({
+            variables: {
+                pathsOrIds: pathsOrIds,
+            }
+        });
+
+        vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => updateMutation({
+            variables: {
+                ids: ids,
+                defaultMapping: defaultMapping,
+                active: active,
+                language: language,
+                url: url,
+                lang: contextJsParameters.uilang
+            }
+        });
     }
 
     getChildContext() {

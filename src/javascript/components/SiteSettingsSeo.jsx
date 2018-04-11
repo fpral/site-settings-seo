@@ -13,7 +13,7 @@ import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
 import Move from "./Move";
-import {VanityMutationsProvider} from "./VanityMutationsProvider";
+import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -98,16 +98,11 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openMoveInfo
             },
             updateVanity: {
-                call: (data) => props.updateVanity({
-                    variables: {
-                        ids: [data.urlPair.uuid],
-                        defaultMapping: data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
-                        active: data.active != null ? data.active.toString() : undefined,
-                        language: data.language,
-                        url: data.url,
-                        lang: contextJsParameters.uilang
-                    }
-                })
+                call: (data) => props.vanityMutationsContext.update([data.urlPair.uuid],
+                    data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
+                    data.active != null ? data.active.toString() : undefined,
+                    data.language,
+                    data.url)
             }
         }
     }
@@ -277,7 +272,7 @@ class SiteSettingsSeoApp extends React.Component {
 
 SiteSettingsSeoApp = compose(
     withTheme(),
-    graphql(UpdateVanityMutation, {name: 'updateVanity'}),
+    withVanityMutationContext(),
     translate('site-settings-seo')
 )(SiteSettingsSeoApp);
 

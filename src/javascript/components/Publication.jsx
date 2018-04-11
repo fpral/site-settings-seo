@@ -2,19 +2,19 @@ import React from 'react';
 import {withNotifications} from '@jahia/react-dxcomponents';
 import * as _ from "lodash";
 import {Button} from 'material-ui';
-import {compose, graphql} from "react-apollo/index";
+import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import {PublishMutation} from "./gqlMutations";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
+import {withVanityMutationContext} from "./VanityMutationsProvider";
 
 class Publication extends React.Component {
 
     constructor(props) {
         super(props);
-        let { publishMutation, notificationContext, t } = this.props;
+        let { vanityMutationsContext, notificationContext, t } = this.props;
 
         this.publish = function() {
-            publishMutation({variables: {pathsOrIds: _.map(this.props.urlPairs, "uuid")}});
+            vanityMutationsContext.publish(_.map(this.props.urlPairs, "uuid"));
             props.onClose();
             notificationContext.notify(t('label.publicationStarted'));
         };
@@ -47,7 +47,7 @@ class Publication extends React.Component {
 }
 
 Publication = compose(
-    graphql(PublishMutation, {name: 'publishMutation'}),
+    withVanityMutationContext(),
     withNotifications(),
     translate('site-settings-seo')
 )(Publication);
