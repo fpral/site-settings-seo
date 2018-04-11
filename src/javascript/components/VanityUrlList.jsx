@@ -91,6 +91,21 @@ class VanityUrlListDefault extends React.Component {
         super(props);
     }
 
+    onMappingChanged(urlPair, actions, value, onSuccess, onError) {
+        actions.updateVanity.call({urlPair: urlPair, url: value})
+            .then(onSuccess)
+            .catch((errors) => {
+                onError();
+                _.each(errors.graphQLErrors, (error) => {
+                    if (error.errorType === "GqlConstraintException") {
+                        console.error(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
+                    } else {
+                        console.error(error);
+                    }
+                })
+            });
+    }
+
     render() {
 
         let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages } = this.props;
@@ -146,8 +161,7 @@ class VanityUrlListDefault extends React.Component {
                                                 <Editable value={url.url}
                                                           render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <span>{props.value}</span>) }
                                                           input={ ({onSave, ...props}) => <Input {...props} onBlur={(e)=>onSave(e)} onKeyPress={(e)=>{if (e.key === 'Enter') { onSave(e) } }} classes={ {root:classes.textInput}}/> }
-                                                          onChange={ (value, callback) => { actions.updateVanity.call({urlPair: urlPair, url: value}).then(callback); } }
-                                                />
+                                                          onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length === 0 ? (

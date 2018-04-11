@@ -39,7 +39,8 @@
       }
     },
     "errors": {
-      "loadingVanityUrl": "Error loading vanity URLs"
+      "loadingVanityUrl": "Error loading vanity URLs",
+      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
     },
     "publicationStarted": "Publication job started in background",
     "deletionConfirmed": "Deletion confirmed",

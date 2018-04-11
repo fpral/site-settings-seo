@@ -19,7 +19,10 @@ class Editable extends React.Component {
                 onChange(value);
                 this.setState({edit: false})
             } else {
-                onChange(value, () => { this.setState({loading: false, edit: false})} );
+                onChange(value,
+                    () => { this.setState({loading: false, edit: false}) },
+                    () => { this.setState({loading: false}) }
+                );
                 this.setState({loading: true})
             }
         } else {
