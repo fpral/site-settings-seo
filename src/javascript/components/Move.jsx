@@ -12,23 +12,29 @@ class Move extends React.Component {
 
     constructor(props) {
         super(props);
-        let { vanityMutationsContext, notificationContext, t } = this.props;
 
         this.state = {
             targetPath: '',
             saveDisabled: true,
         };
 
+        this.handleMove = this.handleMove.bind(this);
         this.handleSaveDisabled = this.handleSaveDisabled.bind(this);
         this.handleTargetPathChange = this.handleTargetPathChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
-        this.move = function() {
-            vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath);
-            this.handleClose();
-            notificationContext.notify(t("label.moveConfirmed"));
-        };
     }
+
+    handleMove() {
+        let { vanityMutationsContext, notificationContext, t } = this.props;
+        vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath)
+            .catch((errors) => {
+                _.each(errors.graphQLErrors, (error) => {
+                    notificationContext.notify(error.message);
+                })
+            });
+        this.handleClose();
+        notificationContext.notify(t("label.moveConfirmed"));
+    };
 
     handleSaveDisabled() {
         this.setState((previous) => ({saveDisabled: !previous.saveDisabled}));
@@ -78,7 +84,7 @@ class Move extends React.Component {
                                 label={t("label.dialogs.move.confirm")}
                             />
                             <Button onClick={this.handleClose} color="primary">{t("label.dialogs.move.cancel")}</Button>
-                            <Button onClick={() => {this.move()}} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0}>{t("label.dialogs.move.move")}</Button>
+                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0}>{t("label.dialogs.move.move")}</Button>
                         </span>
                     </DialogActions>
                 </Dialog>
