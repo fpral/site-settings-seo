@@ -35,7 +35,7 @@
         "title": "Delete confirmation",
         "content": "Are you sure you want to delete vanity URLs selected?",
         "cancel": "Cancel",
-        "publish": "Delete"
+        "delete": "Delete"
       }
     },
     "errors": {

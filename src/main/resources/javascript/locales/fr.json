@@ -16,7 +16,7 @@
         "title": "Confirmation de suppression",
         "content": "Êtes vous sur de vouloir supprimer les vanity URLs selectionnées?",
         "cancel": "Annuler",
-        "publish": "Supprimer"
+        "delete": "Supprimer"
       }
     },
     "missingDefault": "{{vanityUrl}} supprimées",
