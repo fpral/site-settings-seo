@@ -4,6 +4,7 @@ import {ArrowDropDown} from 'material-ui-icons';
 
 const styles = (theme) => ({
     langButton: {
+        textTransform: 'none',
         '&:hover $rightIcon': {
             transition: ["opacity", "0.25s"],
             opacity: 1
