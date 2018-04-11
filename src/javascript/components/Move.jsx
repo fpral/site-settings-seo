@@ -1,9 +1,8 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, TextField, Checkbox, FormControlLabel} from 'material-ui';
-import {compose, graphql} from "react-apollo/index";
+import {Button, Checkbox, FormControlLabel, TextField} from 'material-ui';
+import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import {MoveMutation} from "./gqlMutations";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withNotifications} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
