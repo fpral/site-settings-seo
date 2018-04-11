@@ -144,7 +144,7 @@ class VanityUrlListDefault extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 <Editable value={url.url}
-                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText}/> : <span>{props.value}</span>) }
+                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <span>{props.value}</span>) }
                                                           input={ ({onSave, ...props}) => <Input {...props} onBlur={(e)=>onSave(e)} onKeyPress={(e)=>{if (e.key === 'Enter') { onSave(e) } }} classes={ {root:classes.textInput}}/> }
                                                           onChange={ (value, callback) => { actions.updateVanity.call({urlPair: urlPair, url: value}).then(callback); } }
                                                 />
@@ -223,7 +223,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + (urlPair.default ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell padding={'dense'} className={classInactive}>
-                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText}/> : url.url}
+                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
@@ -304,7 +304,6 @@ class ActionButton extends React.Component {
 
 VanityUrlListDefault = withStyles(styles)(translate('site-settings-seo')(VanityUrlListDefault));
 VanityUrlListLive = withStyles(styles)(translate('site-settings-seo')(VanityUrlListLive));
-HighlightText = withStyles(styles)(HighlightText);
 
 export {VanityUrlListLive};
 export {VanityUrlListDefault};
