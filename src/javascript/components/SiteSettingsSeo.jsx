@@ -84,18 +84,16 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.onMoveInfoDialog
             },
             updateVanity: {
-                call: (data) => {
-                    props.updateVanity({
-                        variables: {
-                            ids: [data.urlPair.uuid],
-                            defaultMapping: data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
-                            active: data.active != null ? data.active.toString() : undefined,
-                            language: data.language,
-                            url: data.url,
-                            lang: contextJsParameters.uilang
-                        }
-                    })
-                }
+                call: (data) => props.updateVanity({
+                    variables: {
+                        ids: [data.urlPair.uuid],
+                        defaultMapping: data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
+                        active: data.active != null ? data.active.toString() : undefined,
+                        language: data.language,
+                        url: data.url,
+                        lang: contextJsParameters.uilang
+                    }
+                })
             }
         }
     }

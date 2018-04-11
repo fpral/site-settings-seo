@@ -11,12 +11,14 @@ import {
     TableHead,
     TableRow,
     Typography,
+    Input,
     withStyles
 } from 'material-ui';
 import {Done, Star, StarBorder} from 'material-ui-icons';
 import {LanguageMenu} from "./LanguageMenu";
 import * as _ from "lodash";
 import {fade} from "material-ui/styles/colorManipulator";
+import {Editable} from "./Editable";
 
 const styles = (theme) => ({
     boxTitle: {
@@ -76,6 +78,11 @@ const styles = (theme) => ({
     deleteAction: {
         color: theme.palette.delete.main,
     },
+    textInput: {
+        color: "inherit",
+        fontSize: "inherit",
+        width: "100%"
+    }
 });
 
 class VanityUrlListDefault extends React.Component {
@@ -136,7 +143,11 @@ class VanityUrlListDefault extends React.Component {
                                                 <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
+                                                <Editable value={url.url}
+                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText}/> : <span>{props.value}</span>) }
+                                                          input={ ({onSave, ...props}) => <Input {...props} onBlur={(e)=>onSave(e)} onKeyPress={(e)=>{if (e.key === 'Enter') { onSave(e) } }} classes={ {root:classes.textInput}}/> }
+                                                          onChange={ (value, callback) => { actions.updateVanity.call({urlPair: urlPair, url: value}).then(callback); } }
+                                                />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length === 0 ? (
@@ -212,7 +223,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + (urlPair.default ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell padding={'dense'} className={classInactive}>
-                                                {this.props.filterText ? <HighlightText text={url.url} higlight={this.props.filterText}/> : url.url}
+                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText}/> : url.url}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
@@ -256,7 +267,7 @@ class HighlightText extends React.Component {
     }
 
     render() {
-        let highlight = this.props.higlight;
+        let highlight = this.props.highlight;
         let highlightEscaped = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         let parts = this.props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
         return (
