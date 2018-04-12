@@ -36,7 +36,7 @@ const DeleteVanity = gql`
 `;
 
 const MoveMutation = gql`
-    mutation mutateNodes($pathsOrIds: [String!]!, $target: String!, $lang: String!) {
+    mutation mutateNodes($pathsOrIds: [String!]!, $target: String!) {
         jcr {
             mutateVanityUrls(pathsOrIds: $pathsOrIds) {
                 move(target: $target)

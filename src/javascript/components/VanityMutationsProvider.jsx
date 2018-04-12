@@ -37,8 +37,7 @@ class VanityMutationsProvider extends Component {
             return moveMutation({
                 variables: {
                     pathsOrIds: pathsOrIds,
-                    target: target,
-                    lang: contextJsParameters.uilang
+                    target: target
                 }, refetchQueries: [{
                     query: TableQuery,
                     variables: TableQueryVariables(props)
