@@ -4,6 +4,7 @@ import { Component, Children } from "react";
 import {compose, graphql} from "react-apollo/index";
 import * as gqlMutations from "./gqlMutations";
 import * as _ from "lodash";
+import {TableQuery, TableQueryVariables} from "./gqlQueries";
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -32,14 +33,18 @@ class VanityMutationsProvider extends Component {
             }
         });
 
-        vanityMutationsContext.move = (pathsOrIds, target) => moveMutation({
-            variables: {
-                pathsOrIds: pathsOrIds,
-                target: target
-            }, update:(proxy) => {
-                // TODO
-            }
-        });
+        vanityMutationsContext.move = (pathsOrIds, target, props) => {
+            return moveMutation({
+                variables: {
+                    pathsOrIds: pathsOrIds,
+                    target: target,
+                    lang: contextJsParameters.uilang
+                }, refetchQueries: [{
+                    query: TableQuery,
+                    variables: TableQueryVariables(props)
+                }]
+            })
+        };
 
         vanityMutationsContext.publish = (pathsOrIds) => publishMutation({
             variables: {

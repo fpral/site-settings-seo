@@ -25,7 +25,7 @@ class Move extends React.Component {
 
     handleMove() {
         let { vanityMutationsContext, notificationContext, t } = this.props;
-        vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath)
+        vanityMutationsContext.move(_.map(this.props.move.urlPairs, "uuid"), this.state.targetPath, this.props)
             .catch((errors) => {
                 _.each(errors.graphQLErrors, (error) => {
                     notificationContext.notify(error.message);
@@ -52,11 +52,11 @@ class Move extends React.Component {
     }
 
     render() {
-        const { open, t } = this.props;
+        const { t } = this.props;
         return (
             <div>
                 <Dialog
-                    open={open}
+                    open={this.props.move.open}
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >

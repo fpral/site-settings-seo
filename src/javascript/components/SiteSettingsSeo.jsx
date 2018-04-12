@@ -252,7 +252,8 @@ class SiteSettingsSeoApp extends React.Component {
                     path={dxContext.mainResourcePath}
                 />
 
-                <Move {...this.state.move}
+                <Move {...this.state}
+                      path={dxContext.mainResourcePath}
                       onClose={this.closeMove} />
 
                 <MoveInfo {...this.state.moveInfo}

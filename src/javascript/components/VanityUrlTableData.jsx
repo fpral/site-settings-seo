@@ -3,10 +3,9 @@ import {VanityUrlTableView} from './VanityUrlTableView'
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {Query} from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
-import gql from "graphql-tag";
 import * as _ from "lodash";
-import {LiveVanityUrls, DefaultVanityUrls} from "./gqlFragments";
 import ErrorSnackBar from "./ErrorSnackBar";
+import {TableQuery, TableQueryVariables} from "./gqlQueries";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -16,50 +15,12 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     return _.values(urlPairs);
 }
 
-let query = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $path: String!) {
-        jcr {
-            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
-                pageInfo {
-                    totalCount
-                }
-                nodes {
-                    ...NodeCacheRequiredFields
-                    displayName(language: $lang)
-                    ...DefaultVanityUrls
-                    ...LiveVanityUrls
-                }
-            }
-            nodeByPath(path: $path) {
-                site {
-                    languages {
-                        code: language
-                        name: displayName
-                    }
-                }
-            }
-        }
-    }
-    ${DefaultVanityUrls}
-    ${LiveVanityUrls}
-`;
-
 let VanityUrlTableData = (props) => {
-    let variables = {
-        lang: contextJsParameters.uilang,
-        offset: (props.currentPage * props.pageSize),
-        limit: props.pageSize,
-        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
-        filterText: props.filterText,
-        doFilter: !!props.filterText,
-        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]},
-        path: props.path
-    };
 
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
 
-    return <Query fetchPolicy={fetchPolicy} query={query} variables={variables} pollInterval={2000}>
+    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)} pollInterval={2000}>
         { ({loading, error, data}) => {
 
             if (error) {
