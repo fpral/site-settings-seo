@@ -2,6 +2,7 @@ import React from 'react';
 import {translate} from 'react-i18next';
 
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
+import {AddVanityUrl} from "./AddVanityUrl";
 
 import {Button, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
 
@@ -82,6 +83,8 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset primary={content.displayName} secondary={content.path}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
+                        {this.state.expanded ? <AddVanityUrl path={content.path} languages={languages}/> : ''}
+
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                         <Grid container spacing={24} className={classes.vanityUrlLists}>

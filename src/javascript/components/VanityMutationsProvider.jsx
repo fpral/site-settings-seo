@@ -10,7 +10,7 @@ class VanityMutationsProvider extends Component {
     constructor(props) {
         super(props);
 
-        let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation} = this.props;
+        let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
         vanityMutationsContext.delete = (pathsOrIds, parents) => deleteMutation({
             variables: {
@@ -61,6 +61,17 @@ class VanityMutationsProvider extends Component {
                 lang: contextJsParameters.uilang
             }
         });
+
+        vanityMutationsContext.add = (path, defaultMapping, active, language, url) => addMutation({
+            variables: {
+                path: path,
+                defaultMapping: defaultMapping,
+                active: active,
+                language: language,
+                url: url,
+                lang: contextJsParameters.uilang
+            }
+        });
     }
 
     getChildContext() {
@@ -103,6 +114,7 @@ VanityMutationsProvider = compose(
     graphql(gqlMutations.MoveMutation, {name: 'moveMutation'}),
     graphql(gqlMutations.PublishMutation, {name: 'publishMutation'}),
     graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),
+    graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'}),
 )(VanityMutationsProvider);
 
 export {VanityMutationsProvider, withVanityMutationContext};

@@ -45,4 +45,17 @@ const MoveMutation = gql`
     }
 `;
 
-export {MoveMutation, UpdateVanityMutation, PublishMutation, DeleteVanity};
+const AddVanityMutation = gql`
+    mutation addVanity($path: String!, $defaultMapping: Boolean!, $active: Boolean, $url: String!, $language: String!, $lang: String!) {
+        jcr {
+            mutateNode(pathOrId: $path) {
+                addVanityUrl(defaultMapping:$defaultMapping,active:$active,url:$url, language:$language)
+            }
+            modifiedNodes {
+                ...DefaultVanityUrlFields
+            }
+        }
+    }
+    ${DefaultVanityUrlFields}
+`;
+export {MoveMutation, UpdateVanityMutation, PublishMutation, DeleteVanity, AddVanityMutation};

@@ -44,6 +44,15 @@
         "confirm": "I understand that this move is a one way ticket !!",
         "cancel": "Cancel",
         "move": "Move"
+      },
+      "vanity": {
+        "add": {
+          "title": "Add Mapping",
+          "cancel": "Cancel",
+          "save": "Save",
+          "check": "Automatic publish on save",
+          "text": "Enter mapping URL"
+        }
       }
     },
     "errors": {
@@ -52,6 +61,7 @@
     },
     "publicationStarted": "Publication job started in background",
     "deletionConfirmed": "Deletion confirmed",
+    "newMappingCreated": "New mapping(s) added",
     "moveConfirmed": "Move confirmed",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
