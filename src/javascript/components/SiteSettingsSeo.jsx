@@ -12,6 +12,7 @@ import MoveInfo from "./MoveInfo";
 import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
+import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
 
@@ -42,7 +43,11 @@ class SiteSettingsSeoApp extends React.Component {
             moveInfo: {
                 open: false,
                 path: ''
-            }
+            },
+            publishDeletion: {
+                open: false,
+                urlPairs: []
+            },
         };
 
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -62,6 +67,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.closePublication = this.closePublication.bind(this);
         this.openDeletion = this.openDeletion.bind(this);
         this.closeDeletion = this.closeDeletion.bind(this);
+        this.openPublishDeletion = this.openPublishDeletion.bind(this);
+        this.closePublishDeletion = this.closePublishDeletion.bind(this);
 
         this.mutationPlaceholder = function(selection, event) {
             console.log(selection);
@@ -83,8 +90,8 @@ class SiteSettingsSeoApp extends React.Component {
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
-                className: "delete",
-                call: this.mutationPlaceholder
+                className: "publishDeletion",
+                call: this.openPublishDeletion
             },
             moveAction: {
                 buttonLabel: "Move",
@@ -179,6 +186,24 @@ class SiteSettingsSeoApp extends React.Component {
         })
     };
 
+    openPublishDeletion = (urlPairs) => {
+        this.setState({
+            publishDeletion: {
+                open: true,
+                urlPairs: urlPairs
+            }
+        })
+    };
+
+    closePublishDeletion = (urlPairs) => {
+        this.setState({
+            publishDeletion: {
+                open: false,
+                urlPairs: []
+            }
+        })
+    };
+
     onMoveInfoDialog = (path) => {
         this.setState({
             moveInfoDialogPath: path
@@ -266,6 +291,11 @@ class SiteSettingsSeoApp extends React.Component {
                 <Deletion
                     {...this.state.deletion}
                     onClose={this.closeDeletion}/>
+
+                <PublishDeletion
+                    {...this.state.publishDeletion}
+                    onClose={this.closePublishDeletion}/>
+
             </SettingsLayout>
         )
     }

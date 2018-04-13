@@ -35,6 +35,7 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
                 }
             }
         }
+        parent{uuid}
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;

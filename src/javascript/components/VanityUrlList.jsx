@@ -215,10 +215,14 @@ class VanityUrlListLive extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            deletionUrls: []
+        };
     }
 
     render() {
         let { vanityUrls, classes, t, actions } = this.props;
+        let deletedUrls = _.filter(vanityUrls, (urlPair) => urlPair.live && !urlPair.live.editNode);
         return (
             <div>
                 <Paper elevation={2}>
@@ -254,7 +258,7 @@ class VanityUrlListLive extends React.Component {
                                                         <ActionButton action={actions.moveInfo} data={url.editNode.targetNode.path}/> :
                                                         '')
                                                     :
-                                                    <ActionButton action={actions.publishDeleteAction} data={[urlPair]}/>
+                                                    <ActionButton action={actions.publishDeleteAction} data={deletedUrls}/>
                                                 }
                                             </TableCell>
                                         </TableRow>
