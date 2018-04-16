@@ -29,19 +29,13 @@ class PublishDeletion extends React.Component {
         };
 
         this.publish = function() {
-            vanityMutationsContext.publish(_.map(this.props.urlPairs, "live.parent.uuid"));
+            if (this.props.urlPairs.length > 0) {
+                vanityMutationsContext.publish(this.props.urlPairs[0].live.parent.uuid);
+                notificationContext.notify(t('label.publicationDeletionConfirmed'));
+            }
             props.onClose();
-            notificationContext.notify(t('label.deletionConfirmed'));
         };
     }
-
-    openNotification = () => {
-        this.setState({notificationOpen: true});
-    };
-
-    closeNotification = () => {
-        this.setState({notificationOpen: false});
-    };
 
     handleDeleteDisabled = () => {
         this.setState((previous) => ({deleteButtonState: !previous.deleteButtonState}));
@@ -105,7 +99,6 @@ class PublishDeletion extends React.Component {
 }
 
 PublishDeletion = compose(
-    graphql(PublishMutation, {name: 'publish'}),
     withVanityMutationContext(),
     withNotifications(),
     (translate('site-settings-seo')),

@@ -68,6 +68,7 @@
     },
     "publicationStarted": "Publication job started in background",
     "deletionConfirmed": "Deletion confirmed",
+    "publicationDeletionConfirmed": "Deletion confirmed, publication job started in background",
     "newMappingCreated": "New mapping(s) added",
     "moveConfirmed": "Move confirmed",
     "okGotIt": "OK, GOT IT",

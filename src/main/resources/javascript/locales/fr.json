@@ -1,11 +1,30 @@
 {
   "label": {
     "title": "URL personnalisées",
+    "filterPlaceholder": "Filter by keywords",
+    "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "selection": {
+      "count": "{{count}} mapping selected",
+      "count_plural": "{{count}} mappings selected",
+      "clear": "Clear"
+    },
+    "localFilter": {
+      "switchOn": "Show matches only",
+      "switchOff": "Show all"
+    },
+    "actions": {
+      "move": "Move",
+      "publish": "Publish",
+      "delete": "Delete"
+    },
     "mappings": {
       "default": "Default mappings",
       "live": "Live mappings"
     },
     "dialogs": {
+      "moveInfo": {
+        "content": "Mapping to this page will be removed on publication of {{pagePath}}"
+      },
       "publish": {
         "title": "Confirmation de publication",
         "content": "Êtes vous sur de vouloir publier les vanity URLs selectionnées ? La publication sera démarrée en tache de fond.",
@@ -13,14 +32,49 @@
         "publish": "Publier"
       },
       "delete": {
+        "title": "Delete confirmation",
+        "content": "Are you sure you want to delete vanity URLs selected?",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "move": {
+        "title": "Move Mapping",
+        "content": "Please enter the path to where you want to point ...",
+        "target": "Target node path",
+        "confirm": "I understand that this move is a one way ticket !!",
+        "cancel": "Cancel",
+        "move": "Move"
+      },
+      "vanity": {
+        "add": {
+          "title": "Add Mapping",
+          "cancel": "Cancel",
+          "save": "Save",
+          "check": "Automatic publish on save",
+          "text": "Enter mapping URL"
+        }
+      },
+      "publishdeletion": {
         "title": "Confirmation de suppression",
-        "content": "Êtes vous sur de vouloir supprimer les vanity URLs selectionnées?",
-        "cancel": "Annuler",
+        "headline": "Vous êtes sur le point de supprimer plusieurs vanity URLs publiées",
+        "content": "Il n'est pas possible de supprimer les vanity URLs publiées individuellement, donc veuillez noter que toutes les vanity URLs publiées suivantes seront supprimées",
+        "terms": "Je comprends qu'une fois qu'elles ont été supprimées, elles sont parties. Pour toujours.",
         "delete": "Supprimer"
       }
     },
-    "missingDefault": "{{vanityUrl}} supprimées",
+    "errors": {
+      "loadingVanityUrl": "Error loading vanity URLs",
+      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
+    },
     "publicationStarted": "Job de publication lancé en arrière plan",
-    "deletionConfirmed": "Suppression confirmée"
+    "deletionConfirmed": "Suppression confirmée",
+    "publicationDeletionConfirmed": "Suppression confirmée, Job de publication lancé en arrière plan",
+    "newMappingCreated": "New mapping(s) added",
+    "moveConfirmed": "Move confirmed",
+    "okGotIt": "OK, GOT IT",
+    "importantInfo": "Important Info",
+    "missingDefault": "{{vanityUrl}} supprimées",
+    "movedDefault": "Moved to {{page}}",
+    "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
   }
 }
