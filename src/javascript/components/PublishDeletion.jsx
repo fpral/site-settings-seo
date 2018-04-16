@@ -8,6 +8,8 @@ import {Table, TableBody, TableRow, TableCell} from 'material-ui';
 import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
 import {PublishMutation} from "./gqlMutations";
+import {withVanityMutationContext} from "./VanityMutationsProvider";
+import {withNotifications} from '@jahia/react-dxcomponents';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 
 const styles = theme => ({
@@ -20,19 +22,16 @@ class PublishDeletion extends React.Component {
 
     constructor(props) {
         super(props);
+        let { vanityMutationsContext, notificationContext, t } = this.props;
 
         this.state = {
-            notificationOpen: false,
-            deleteButtonState: true
+            deleteButtonState: true,
         };
 
-        this.openNotification = this.openNotification.bind(this);
-        this.closeNotification = this.closeNotification.bind(this);
-
         this.publish = function() {
-            props.publish({variables: {pathsOrIds: _.map(this.props.urlPairs, "live.parent.uuid")}});
+            vanityMutationsContext.publish(_.map(this.props.urlPairs, "live.parent.uuid"));
             props.onClose();
-            this.openNotification();
+            notificationContext.notify(t('label.deletionConfirmed'));
         };
     }
 
@@ -100,20 +99,6 @@ class PublishDeletion extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    autoHideDuration={3000}
-                    onClose={this.closeNotification}
-                    open={this.state.notificationOpen}
-                    SnackbarContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">{t('label.publicationStarted')}</span>}
-                />
             </div>
         );
     }
@@ -121,6 +106,8 @@ class PublishDeletion extends React.Component {
 
 PublishDeletion = compose(
     graphql(PublishMutation, {name: 'publish'}),
+    withVanityMutationContext(),
+    withNotifications(),
     (translate('site-settings-seo')),
     withStyles(styles)
 )(PublishDeletion);
