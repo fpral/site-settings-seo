@@ -10,21 +10,7 @@ class VanityUrlTableView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-            openedItems: {}
-        };
-        this.handleOpenDialog = this.handleOpenDialog.bind(this);
-        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
-
-    handleOpenDialog = (path) => {
-        this.setState({open: true, path: path});
-    };
-
-    handleCloseDialog = () => {
-        this.setState({open: false});
-    };
 
     render() {
         let { rows, selection, onChangeSelection, filterText, actions, languages} = this.props;

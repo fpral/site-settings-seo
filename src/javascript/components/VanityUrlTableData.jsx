@@ -20,7 +20,7 @@ let VanityUrlTableData = (props) => {
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
 
-    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)} pollInterval={2000}>
+    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)}>
         { ({loading, error, data}) => {
 
             if (error) {

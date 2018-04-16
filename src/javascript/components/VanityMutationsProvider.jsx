@@ -62,15 +62,15 @@ class VanityMutationsProvider extends Component {
             }
         });
 
-        vanityMutationsContext.add = (path, defaultMapping, active, language, url) => addMutation({
+        vanityMutationsContext.add = (path, vanityUrls, props) => addMutation({
             variables: {
+                vanityUrls: vanityUrls,
                 path: path,
-                defaultMapping: defaultMapping,
-                active: active,
-                language: language,
-                url: url,
-                lang: contextJsParameters.uilang
-            }
+                lang: contextJsParameters.uilang,
+            }, refetchQueries: [{
+                query: TableQuery,
+                variables: TableQueryVariables(props, props.path.substring(0, props.path.lastIndexOf("/")))
+            }]
         });
     }
 

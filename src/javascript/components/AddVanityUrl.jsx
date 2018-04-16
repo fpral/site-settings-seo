@@ -37,45 +37,14 @@ class AddVanityUrl extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            openDialog: false,
-        };
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-    }
+        // get default language for the language selector
+        this.defaultLanguage = this.props.defaultLanguage;
+        this.defaultRowsDiplayed = 5;
 
-    handleOpen = (event) => {
-        this.setState({openDialog: true});
-        event.stopPropagation();
-    };
-
-    handleClose = (event) => {
-        this.setState({openDialog: false});
-        event.stopPropagation();
-    };
-
-    render() { return (
-        <div>
-            <IconButton onClick={this.handleOpen}>
-                <Add />
-            </IconButton>
-            <AddVanityUrlDialog open={this.state.openDialog} close={this.handleClose} languages={this.props.languages} path={this.props.path}/>
-        </div>
-    )}
-};
-
-class AddVanityUrlDialog extends React.Component {
-
-    constructor(props) {
-        super(props);
-        // fill new mappings
-        let newMappings = [];
-        for (let i = 4; i >= 0; i--) {
-            newMappings.push({index: i, language: "en", default: false})
-        }
         this.state = {
             newMappings: this._resetMap()
         };
+
         this.handleClickSave = this.handleClickSave.bind(this);
         this.handleClickCancel = this.handleClickCancel.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -84,23 +53,19 @@ class AddVanityUrlDialog extends React.Component {
 
     _resetMap = () => {
         let newMappings = [];
-        for (let i = 4; i >= 0; i--) {
-            newMappings.push({index: i, language: "en", default: false})
+        for (let i = this.defaultRowsDiplayed; i >= 0; i--) {
+            newMappings.push({index: i, language: this.defaultLanguage, defaultMapping: false})
         }
         return newMappings;
     }
 
     handleClickSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
-        this.state.newMappings.forEach((newMapping) => {
-            if (newMapping.url) {
-                vanityMutationsContext.add(path, newMapping.default, newMapping.active, newMapping.language, newMapping.url);
-            }
-        });
+        vanityMutationsContext.add(path,_.map(_.filter(this.state.newMappings, 'url'), function(entry) { delete entry['index']; return entry}), this.props);
         this.setState({
             newMappings: this._resetMap()
         });
-        this.props.close(event);
+        this.props.onClose(event);
         notificationContext.notify(t('label.newMappingCreated'));
     };
 
@@ -108,31 +73,37 @@ class AddVanityUrlDialog extends React.Component {
         this.setState({
             newMappings: this._resetMap()
         });
-        this.props.close(event);
+        this.props.onClose(event);
     };
 
     handleFieldChange = (field, index, value) => {
         this.setState(function (previous) {
             let prev = _.remove(previous.newMappings, {index: index})[0];
-            let merged = _.merge(prev, JSON.parse('{"index": ' + index  +',"' + field + '": "' + value + '"}'));
+            let newFieldJSON = {index: index};
+            newFieldJSON[field] = value;
+            let merged = _.merge(prev, newFieldJSON);
             previous.newMappings.push(merged);
+            if (field == "url" && _.filter(previous.newMappings, 'url').length == previous.newMappings.length) {
+                previous.newMappings.push({index: previous.newMappings.length + 1, language: this.defaultLanguage, defaultMapping: false})
+            }
             return {newMappings: previous.newMappings};
+
         });
     };
 
     render() {
-        const { t, open, close, classes, path } = this.props;
+        let { t, open, path, onClose, availableLanguages } = this.props;
         // sort arrat by index
         let newMappings = _.sortBy(this.state.newMappings, ['index']);
         return (
-            <Dialog open={open} onClose={close} maxWidth={'md'} fullWidth={true}>
-                <DialogTitle id="label.dialogs.vanity.add.title">{t('label.dialogs.vanity.add.title')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="label.dialogs.vanity.add.content">
+            <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
+                <DialogTitle id="label.dialogs.add.title"  onClick={(event) => {event.stopPropagation()}}>{t('label.dialogs.add.title')}</DialogTitle>
+                <DialogContent  onClick={(event) => {event.stopPropagation()}}>
+                    <DialogContentText id="label.dialogs.add.content" >
                         {path}
                     </DialogContentText>
                 </DialogContent>
-                <DialogContent>
+                <DialogContent  onClick={(event) => {event.stopPropagation()}}>
                     <Paper elevation={2}>
                         <Table>
                             <TableBody>
@@ -145,7 +116,7 @@ class AddVanityUrlDialog extends React.Component {
                                         </TableCell>
                                         <TableCell padding={'none'} onClick={(event) => {event.stopPropagation()}}>
                                             <Input
-                                                placeholder={t("label.dialogs.vanity.add.text")}
+                                                placeholder={t("label.dialogs.add.text")}
                                                 onClick={(event) => {event.stopPropagation()}}
                                                 onChange={(event) => this.handleFieldChange("url", entry.index, event.target.value)}
                                             />
@@ -153,11 +124,11 @@ class AddVanityUrlDialog extends React.Component {
                                         <TableCell padding={'none'}>
                                             <Checkbox icon={<StarBorder/>} checkedIcon={<Star/>}
                                                       onClick={(event) => {event.stopPropagation()}}
-                                                      onChange={(event, checked) => this.handleFieldChange("default", entry.index, checked)}/>
+                                                      onChange={(event, checked) => this.handleFieldChange("defaultMapping", entry.index, checked)}/>
                                         </TableCell>
                                         <TableCell padding={'none'}>
                                             <LanguageMenu onClick={(event) => {event.stopPropagation()}}
-                                                          languages={this.props.languages}
+                                                          languages={availableLanguages}
                                                           languageCode={ entry.language }
                                                           onLanguageSelected={(languageCode) => this.handleFieldChange("language", entry.index, languageCode)}/>
                                         </TableCell>
@@ -178,13 +149,13 @@ class AddVanityUrlDialog extends React.Component {
                                 color="primary"
                             />
                         }
-                        label={t('label.dialogs.vanity.add.check')}
+                        label={t('label.dialogs.add.check')}
                     />
                     <Button onClick={this.handleClickCancel} color="primary">
-                        {t('label.dialogs.vanity.add.cancel')}
+                        {t('label.dialogs.add.cancel')}
                     </Button>
                     <Button onClick={this.handleClickSave} color="primary" autoFocus>
-                        {t('label.dialogs.vanity.add.save')}
+                        {t('label.dialogs.add.save')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -192,17 +163,11 @@ class AddVanityUrlDialog extends React.Component {
     }
 }
 
-
 AddVanityUrl = compose(
-    withStyles(styles),
-    translate('site-settings-seo')
-)(AddVanityUrl);
-
-AddVanityUrlDialog = compose(
     withVanityMutationContext(),
     withNotifications(),
     withStyles(styles),
     translate('site-settings-seo')
-)(AddVanityUrlDialog);
+)(AddVanityUrl);
 
-export {AddVanityUrl}
+export default AddVanityUrl;

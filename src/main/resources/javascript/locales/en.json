@@ -23,7 +23,7 @@
     },
     "dialogs": {
       "moveInfo": {
-         "content": "Mapping to this page will be removed on publication of {{pagePath}}"
+        "content": "Mapping to this page will be removed on publication of {{pagePath}}"
       },
       "publish": {
         "title": "Publish confirmation",
@@ -45,14 +45,12 @@
         "cancel": "Cancel",
         "move": "Move"
       },
-      "vanity": {
-        "add": {
-          "title": "Add Mapping",
-          "cancel": "Cancel",
-          "save": "Save",
-          "check": "Automatic publish on save",
-          "text": "Enter mapping URL"
-        }
+      "add": {
+        "title": "Add Mapping",
+        "cancel": "Cancel",
+        "save": "Save",
+        "check": "Automatic publish on save",
+        "text": "Enter mapping URL"
       },
       "publishdeletion": {
         "title": "Delete Live Mappings",

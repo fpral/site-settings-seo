@@ -60,6 +60,13 @@
         "content": "Il n'est pas possible de supprimer les vanity URLs publiées individuellement, donc veuillez noter que toutes les vanity URLs publiées suivantes seront supprimées",
         "terms": "Je comprends qu'une fois qu'elles ont été supprimées, elles sont parties. Pour toujours.",
         "delete": "Supprimer"
+      },
+      "add": {
+        "title": "Ajouter Vanity",
+        "cancel": "Annuler",
+        "save": "Sauver",
+        "check": "Publier automatiquement",
+        "text": "Entrer une URL"
       }
     },
     "errors": {

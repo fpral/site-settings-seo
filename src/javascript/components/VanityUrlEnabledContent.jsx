@@ -4,7 +4,7 @@ import {translate} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {AddVanityUrl} from "./AddVanityUrl";
 
-import {Button, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
+import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
 
 import {ExpandLess, ExpandMore} from 'material-ui-icons';
 
@@ -83,7 +83,13 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset primary={content.displayName} secondary={content.path}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
-                        {this.state.expanded ? <AddVanityUrl path={content.path} languages={languages}/> : ''}
+                        {this.state.expanded ? <IconButton aria-label={actions.addAction.buttonLabel} onClick={(event) => {
+                            event.stopPropagation();
+                            actions.addAction.call(content.path, languages);
+                        }}>
+                            {actions.addAction.body}
+                            {actions.addAction.buttonIcon}
+                        </IconButton>: ''}
 
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>

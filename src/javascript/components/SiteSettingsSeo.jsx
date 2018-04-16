@@ -6,7 +6,7 @@ import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
 import {compose, graphql} from 'react-apollo';
-import {Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
+import {Add, Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
 import MoveInfo from "./MoveInfo";
 import {UpdateVanityMutation} from "./gqlMutations";
@@ -14,6 +14,7 @@ import Publication from "./Publication";
 import Deletion from "./Deletion";
 import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
+import AddVanityUrl from "./AddVanityUrl";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
 
 class SiteSettingsSeoApp extends React.Component {
@@ -48,6 +49,11 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 urlPairs: []
             },
+            add: {
+                open: false,
+                availableLanguages: []
+            }
+
         };
 
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -69,6 +75,9 @@ class SiteSettingsSeoApp extends React.Component {
         this.closeDeletion = this.closeDeletion.bind(this);
         this.openPublishDeletion = this.openPublishDeletion.bind(this);
         this.closePublishDeletion = this.closePublishDeletion.bind(this);
+
+        this.openAdd = this.openAdd.bind(this);
+        this.closeAdd = this.closeAdd.bind(this);
 
         this.mutationPlaceholder = function(selection, event) {
             console.log(selection);
@@ -103,6 +112,12 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonIcon: <Info/>,
                 className: "move",
                 call: this.openMoveInfo
+            },
+            addAction: {
+                buttonLabel: "Add",
+                buttonIcon: <Add/>,
+                className: "add",
+                call: this.openAdd
             },
             updateVanity: {
                 call: (data) => props.vanityMutationsContext.update([data.urlPair.uuid],
@@ -204,6 +219,25 @@ class SiteSettingsSeoApp extends React.Component {
         })
     };
 
+    openAdd = (path, languages) => {
+        this.setState({
+            add: {
+                open: true,
+                path: path,
+                availableLanguages: languages
+            }
+        })
+    };
+
+    closeAdd() {
+        this.setState({
+            add: {
+                open: false,
+                availableLanguages: []
+            }
+        })
+    };
+
     onMoveInfoDialog = (path) => {
         this.setState({
             moveInfoDialogPath: path
@@ -295,6 +329,11 @@ class SiteSettingsSeoApp extends React.Component {
                 <PublishDeletion
                     {...this.state.publishDeletion}
                     onClose={this.closePublishDeletion}/>
+
+                <AddVanityUrl {...this.state.add}
+                              filterText={''}
+                     onClose={this.closeAdd}
+                     defaultLanguage={contextJsParameters.lang}/>
 
             </SettingsLayout>
         )
