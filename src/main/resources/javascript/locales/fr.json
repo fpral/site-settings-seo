@@ -44,16 +44,7 @@
         "confirm": "I understand that this move is a one way ticket !!",
         "cancel": "Cancel",
         "move": "Move"
-      },
-      "vanity": {
-        "add": {
-          "title": "Add Mapping",
-          "cancel": "Cancel",
-          "save": "Save",
-          "check": "Automatic publish on save",
-          "text": "Enter mapping URL"
-        }
-      },
+      }
       "publishdeletion": {
         "title": "Confirmation de suppression",
         "headline": "Vous êtes sur le point de supprimer plusieurs vanity URLs publiées",
@@ -62,11 +53,14 @@
         "delete": "Supprimer"
       },
       "add": {
-        "title": "Ajouter Vanity",
+        "title": "Ajouter Mapping",
         "cancel": "Annuler",
         "save": "Sauver",
         "check": "Publier automatiquement",
-        "text": "Entrer une URL"
+        "text": "Entrer une URL",
+        "error": {
+          "exists": "Le Mapping existe déjà pour la page {{contentPath}}"
+        }
       }
     },
     "errors": {

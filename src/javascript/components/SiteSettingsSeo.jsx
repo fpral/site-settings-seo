@@ -114,7 +114,6 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openMoveInfo
             },
             addAction: {
-                buttonLabel: "Add",
                 buttonIcon: <Add/>,
                 className: "add",
                 call: this.openAdd

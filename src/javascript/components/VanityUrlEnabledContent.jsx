@@ -83,7 +83,7 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset primary={content.displayName} secondary={content.path}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
-                        {this.state.expanded ? <IconButton aria-label={actions.addAction.buttonLabel} onClick={(event) => {
+                        {this.state.expanded ? <IconButton aria-label={actions.addAction.className} onClick={(event) => {
                             event.stopPropagation();
                             actions.addAction.call(content.path, languages);
                         }}>

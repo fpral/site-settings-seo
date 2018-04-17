@@ -1,18 +1,21 @@
 import React from 'react';
 import {
     Checkbox,
-    IconButton,
     Input,
     Button,
+    IconButton,
+    Icon,
     Paper,
+    Popover,
     Switch,
     Table,
     TableBody,
     TableCell,
     TableRow,
-    withStyles
+    Typography,
+    withStyles,
 } from 'material-ui';
-import {Add, Star, StarBorder} from 'material-ui-icons';
+import {Add, Star, StarBorder, Info} from 'material-ui-icons';
 import {LanguageMenu} from "./LanguageMenu";
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
@@ -20,6 +23,7 @@ import { FormControlLabel } from 'material-ui/Form';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {withNotifications} from '@jahia/react-dxcomponents';
+import Grow from 'material-ui/transitions/Grow';
 import * as _ from 'lodash';
 
 const styles = theme => ({
@@ -30,6 +34,15 @@ const styles = theme => ({
     },
     inactive: {
         color: theme.palette.text.disabled
+    },
+    error: {
+        color: theme.palette.error.main
+    },
+    paper: {
+        padding: theme.spacing.unit,
+    },
+    popover: {
+        pointerEvents: 'none',
     },
 });
 
@@ -42,7 +55,10 @@ class AddVanityUrl extends React.Component {
         this.defaultRowsDiplayed = 5;
 
         this.state = {
-            newMappings: this._resetMap()
+            newMappings: this._resetMap(),
+            errors:[],
+            anchorEl: null,
+            popperOpen: false
         };
 
         this.handleClickSave = this.handleClickSave.bind(this);
@@ -51,22 +67,39 @@ class AddVanityUrl extends React.Component {
 
     }
 
+    handlePopoverOpen = event => {
+        this.setState({ anchorEl: event.target });
+    };
+
+    handlePopoverClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
     _resetMap = () => {
         let newMappings = [];
         for (let i = this.defaultRowsDiplayed; i >= 0; i--) {
-            newMappings.push({index: i, language: this.defaultLanguage, defaultMapping: false})
+            newMappings.push({language: this.defaultLanguage, defaultMapping: false})
         }
         return newMappings;
     }
 
     handleClickSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
-        vanityMutationsContext.add(path,_.map(_.filter(this.state.newMappings, 'url'), function(entry) { delete entry['index']; return entry}));
-        this.setState({
-            newMappings: this._resetMap()
-        });
-        this.props.onClose(event);
-        notificationContext.notify(t('label.newMappingCreated'));
+        vanityMutationsContext.add(path, _.filter(this.state.newMappings,(entry) =>  entry.url)).then((result) =>
+        {
+            this.setState({
+                newMappings: this._resetMap(),
+                errors: []
+            });
+            this.props.onClose(event);
+            notificationContext.notify(t('label.newMappingCreated'));
+        }, (error) => {
+            let errors = [];
+            _.map(error.graphQLErrors[0].extensions, (value) => errors.push(value))
+            this.setState(
+                {errors: errors}
+            )
+        })
     };
 
     handleClickCancel = (event) => {
@@ -78,13 +111,10 @@ class AddVanityUrl extends React.Component {
 
     handleFieldChange = (field, index, value) => {
         this.setState(function (previous) {
-            let prev = _.remove(previous.newMappings, {index: index})[0];
-            let newFieldJSON = {index: index};
-            newFieldJSON[field] = value;
-            let merged = _.merge(prev, newFieldJSON);
-            previous.newMappings.push(merged);
-            if (field == "url" && _.filter(previous.newMappings, 'url').length == previous.newMappings.length) {
-                previous.newMappings.push({index: previous.newMappings.length + 1, language: this.defaultLanguage, defaultMapping: false})
+            previous.newMappings[index][field] = value;
+            if (field == "url" && _.filter(previous.newMappings, entry => entry.url).length == previous.newMappings.length) {
+                let newKey = previous.newMappings.length + 1;
+                previous.newMappings.push({ language: this.defaultLanguage, defaultMapping: false });
             }
             return {newMappings: previous.newMappings};
 
@@ -92,12 +122,13 @@ class AddVanityUrl extends React.Component {
     };
 
     render() {
-        let { t, open, path, onClose, availableLanguages } = this.props;
+        let { t, open, path, onClose, availableLanguages, classes } = this.props;
+        const { errors, newMappings, anchorEl } = this.state;
+        const openPP = !!anchorEl;
         // sort arrat by index
-        let newMappings = _.sortBy(this.state.newMappings, ['index']);
         return (
             <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
-                <DialogTitle id="label.dialogs.add.title"  onClick={(event) => {event.stopPropagation()}}>{t('label.dialogs.add.title')}</DialogTitle>
+                <DialogTitle id="label.dialogs.add.title"  onClick={(event) => {event.stopPropagation()}}><Typography>{t('label.dialogs.add.title')}</Typography></DialogTitle>
                 <DialogContent  onClick={(event) => {event.stopPropagation()}}>
                     <DialogContentText id="label.dialogs.add.content" >
                         {path}
@@ -107,33 +138,73 @@ class AddVanityUrl extends React.Component {
                     <Paper elevation={2}>
                         <Table>
                             <TableBody>
-                                {newMappings.map((entry) => (
-                                    <TableRow key={entry.index}>
-                                        <TableCell padding={'none'}>
-                                            <Switch
-                                                onClick={(event) => {event.stopPropagation()}}
-                                                onChange={(event, checked) => this.handleFieldChange("active", entry.index, checked)}/>
-                                        </TableCell>
-                                        <TableCell padding={'none'} onClick={(event) => {event.stopPropagation()}}>
-                                            <Input
-                                                placeholder={t("label.dialogs.add.text")}
-                                                onClick={(event) => {event.stopPropagation()}}
-                                                onChange={(event) => this.handleFieldChange("url", entry.index, event.target.value)}
-                                            />
-                                        </TableCell>
-                                        <TableCell padding={'none'}>
-                                            <Checkbox icon={<StarBorder/>} checkedIcon={<Star/>}
-                                                      onClick={(event) => {event.stopPropagation()}}
-                                                      onChange={(event, checked) => this.handleFieldChange("defaultMapping", entry.index, checked)}/>
-                                        </TableCell>
-                                        <TableCell padding={'none'}>
-                                            <LanguageMenu onClick={(event) => {event.stopPropagation()}}
-                                                          languages={availableLanguages}
-                                                          languageCode={ entry.language }
-                                                          onLanguageSelected={(languageCode) => this.handleFieldChange("language", entry.index, languageCode)}/>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                {newMappings.map((entry, index) => {
+                                    const error = _.filter(errors, error =>  error.urlMapping == entry.url).length > 0;
+                                    let errorPath = "";
+                                    if (error) {
+                                        errorPath = _.filter(errors, error =>  error.urlMapping == entry.url)[0].existingNodePath;
+                                    }
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell padding={'none'}>
+                                                <Switch
+                                                    onClick={(event) => {event.stopPropagation()}}
+                                                    onChange={(event, checked) => this.handleFieldChange("active", index, checked)}/>
+                                            </TableCell>
+                                            <TableCell padding={'none'} onClick={(event) => {event.stopPropagation()}}>
+                                                <Input
+                                                    error={ error }
+                                                    placeholder={t("label.dialogs.add.text")}
+                                                    onClick={(event) => {event.stopPropagation()}}
+                                                    onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
+                                                />
+
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                { error ?
+                                                    (   <div>
+                                                        <Info color="error" className={classes.error} aria-label="error"
+                                                              onMouseOver={error ? this.handlePopoverOpen : null}
+                                                              onMouseOut={error ? this.handlePopoverClose : null}>
+                                                        </Info>
+
+                                                        <Popover
+                                                            className={classes.popover}
+                                                            classes={{
+                                                                paper: classes.paper,
+                                                            }}
+                                                            open={openPP}
+                                                            anchorEl={anchorEl}
+                                                            anchorOrigin={{
+                                                                vertical: 'bottom',
+                                                                horizontal: 'left',
+                                                            }}
+                                                            transformOrigin={{
+                                                                vertical: 'top',
+                                                                horizontal: 'left',
+                                                            }}
+                                                            onClose={this.handlePopoverClose}
+                                                        >
+                                                            <Typography>{t("label.dialogs.add.error.exists", {contentPath: errorPath})}</Typography>
+                                                        </Popover>
+                                                    </div>)
+                                                    : ""
+                                                }
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                <Checkbox icon={<StarBorder/>} checkedIcon={<Star/>}
+                                                          onClick={(event) => {event.stopPropagation()}}
+                                                          onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}/>
+                                            </TableCell>
+                                            <TableCell padding={'none'}>
+                                                <LanguageMenu onClick={(event) => {event.stopPropagation()}}
+                                                              languages={availableLanguages}
+                                                              languageCode={ entry.language }
+                                                              onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })}
                             </TableBody>
                         </Table>
                     </Paper>
