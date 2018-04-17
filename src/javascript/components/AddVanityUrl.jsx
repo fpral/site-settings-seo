@@ -61,7 +61,7 @@ class AddVanityUrl extends React.Component {
 
     handleClickSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
-        vanityMutationsContext.add(path,_.map(_.filter(this.state.newMappings, 'url'), function(entry) { delete entry['index']; return entry}), this.props);
+        vanityMutationsContext.add(path,_.map(_.filter(this.state.newMappings, 'url'), function(entry) { delete entry['index']; return entry}));
         this.setState({
             newMappings: this._resetMap()
         });

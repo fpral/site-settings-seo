@@ -4,7 +4,7 @@ import { Component, Children } from "react";
 import {compose, graphql} from "react-apollo/index";
 import * as gqlMutations from "./gqlMutations";
 import * as _ from "lodash";
-import {TableQuery, TableQueryVariables} from "./gqlQueries";
+import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from "./gqlQueries";
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -62,14 +62,14 @@ class VanityMutationsProvider extends Component {
             }
         });
 
-        vanityMutationsContext.add = (path, vanityUrls, props) => addMutation({
+        vanityMutationsContext.add = (path, vanityUrls) => addMutation({
             variables: {
                 vanityUrls: vanityUrls,
                 path: path,
-                lang: contextJsParameters.uilang,
+                lang: contextJsParameters.uilang
             }, refetchQueries: [{
-                query: TableQuery,
-                variables: TableQueryVariables(props, props.path.substring(0, props.path.lastIndexOf("/")))
+                query: VanityUrlsByPath,
+                variables: VanityUrlsByPathVariables(path)
             }]
         });
     }
