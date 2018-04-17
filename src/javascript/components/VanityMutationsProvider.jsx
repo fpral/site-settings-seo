@@ -54,7 +54,7 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => updateMutation({
             variables: {
                 ids: ids,
-                defaultMapping: defaultMapping,
+                defaultMapping: language ? false : defaultMapping,
                 active: active,
                 language: language,
                 url: url,
