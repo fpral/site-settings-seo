@@ -32,10 +32,12 @@
         "publish": "Publish"
       },
       "delete": {
-        "title": "Delete confirmation",
-        "content": "Are you sure you want to delete vanity URLs selected?",
-        "cancel": "Cancel",
-        "delete": "Delete"
+        "title": "Default Mappings Löschen",
+        "headline": "Wollen Sie folgende Default URL Mappings wirklich löschen?",
+        "content": "Bitte beachten Sie, dass wenn Sie die URL-Mappings in einer anderen Seite verwenden wollen, wird es empfohlen, sie neu zuzuweisen statt löschen.",
+        "terms": "Ich verstehe, dass diese Operation nicht rückgängig gemacht werden kann",
+        "cancel": "Abbrechen",
+        "delete": "Löschen"
       },
       "move": {
         "title": "Move Mapping",

@@ -38,8 +38,10 @@
         "publish": "Publish"
       },
       "delete": {
-        "title": "Delete confirmation",
-        "content": "Are you sure you want to delete vanity URLs selected?",
+        "title": "Delete Default Mappings",
+        "headline": "Are you sure you want to delete the following Default URL mappings?",
+        "content": "Note: if you want to use this mapping on a different page, it is advised to reassign it instead of deleting it.",
+        "terms": "I understand that this operation cannot be undone",
         "cancel": "Cancel",
         "delete": "Delete"
       },
