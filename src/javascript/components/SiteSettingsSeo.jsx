@@ -49,6 +49,7 @@ const styles = (theme) => ({
 const SiteSettingsSeoConstants = {
     MAPPING_REG_EXP: new RegExp("^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$"),
     NB_NEW_MAPPING_ROWS: 5,
+    TABLE_POLLING_INTERVAL: 2000
 };
 
 class SiteSettingsSeoApp extends React.Component {

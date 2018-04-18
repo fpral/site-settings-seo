@@ -6,6 +6,7 @@ import {CircularProgress} from 'material-ui/Progress';
 import * as _ from "lodash";
 import ErrorSnackBar from "./ErrorSnackBar";
 import {TableQuery, TableQueryVariables} from "./gqlQueries";
+import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -20,7 +21,7 @@ let VanityUrlTableData = (props) => {
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
 
-    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)}>
+    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)} pollInterval={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}>
         { ({loading, error, data}) => {
 
             if (error) {

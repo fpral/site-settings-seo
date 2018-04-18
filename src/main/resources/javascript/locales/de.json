@@ -72,6 +72,7 @@
     "deletionConfirmed": "Deletion confirmed",
     "publicationDeletionConfirmed": "Deletion confirmed, publication job started in background",
     "newMappingCreated": "New mapping(s) added",
+    "newMappingCreatedAndPublished": "New mapping(s) added, publication job started in background",
     "moveConfirmed": "Move confirmed",
     "okGotIt": "OK, GOT IT",
     "importantInfo": "Important Info",
