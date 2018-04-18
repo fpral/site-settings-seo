@@ -15,14 +15,6 @@ const TableQuery = gql`
                     ...LiveVanityUrls
                 }
             }
-            nodeByPath(path: $path) {
-                site {
-                    languages {
-                        code: language
-                        name: displayName
-                    }
-                }
-            }
         }
     }
     ${DefaultVanityUrls}
