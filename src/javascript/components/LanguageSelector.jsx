@@ -25,7 +25,7 @@ class LanguageSelector extends React.Component {
             let selectedLanguageCodes = this.props.languages.map(language => language.code);
             this.props.onSelectionChange(selectedLanguageCodes);
         } else if (this.props.selectedLanguageCodes.length == this.props.languages.length) {
-            // The All Languages checkbox was has been unchecked while all languages were checked: deselect all languages.
+            // The All Languages checkbox has been unchecked while all languages were checked: deselect all languages.
             this.props.onSelectionChange([]);
         }
     }

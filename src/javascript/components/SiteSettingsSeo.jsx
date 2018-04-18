@@ -417,29 +417,38 @@ class SiteSettingsSeoApp extends React.Component {
                             languages={siteLanguages}
                         />
 
-                        <Move {...this.state}
-                              path={dxContext.mainResourcePath}
-                              onClose={this.closeMove} />
+                        <Move
+                            {...this.state}
+                            path={dxContext.mainResourcePath}
+                            onClose={this.closeMove}
+                        />
 
-                        <MoveInfo {...this.state.moveInfo}
-                                  onClose={this.closeMoveInfo}/>
+                        <MoveInfo
+                            {...this.state.moveInfo}
+                            onClose={this.closeMoveInfo}
+                        />
 
                         <Publication
                             {...this.state.publication}
-                            onClose={this.closePublication}/>
+                            onClose={this.closePublication}
+                        />
 
                         <Deletion
                             {...this.state.deletion}
-                            onClose={this.closeDeletion}/>
+                            onClose={this.closeDeletion}
+                        />
 
                         <PublishDeletion
                             {...this.state.publishDeletion}
-                            onClose={this.closePublishDeletion}/>
+                            onClose={this.closePublishDeletion}
+                        />
 
-                        <AddVanityUrl {...this.state.add}
-                                      filterText={''}
-                                      onClose={this.closeAdd}
-                                      defaultLanguage={contextJsParameters.lang}/>
+                        <AddVanityUrl
+                            {...this.state.add}
+                            filterText={''}
+                            onClose={this.closeAdd}
+                            defaultLanguage={contextJsParameters.lang}
+                        />
 
                     </SettingsLayout>
                 )
