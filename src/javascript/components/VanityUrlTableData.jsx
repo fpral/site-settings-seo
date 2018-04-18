@@ -3,7 +3,6 @@ import {VanityUrlTableView} from './VanityUrlTableView'
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {Query} from 'react-apollo';
 import {CircularProgress} from 'material-ui/Progress';
-import gql from "graphql-tag";
 import * as _ from "lodash";
 import ErrorSnackBar from "./ErrorSnackBar";
 import {TableQuery, TableQueryVariables} from "./gqlQueries";
