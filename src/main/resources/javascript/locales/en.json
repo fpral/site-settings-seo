@@ -3,6 +3,12 @@
     "title": "Vanity URL Dashboard",
     "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "languageSelector": {
+        "allLanguages": "All Languages",
+        "moreLanguages": "{{count}} more language(s)",
+        "partialLanguages": "{{names}}, {{nextName}}",
+        "languages": "{{names}} & {{lastName}}"
+    },
     "selection": {
       "count": "{{count}} mapping selected",
       "count_plural": "{{count}} mappings selected",
@@ -64,6 +70,7 @@
       }
     },
     "errors": {
+      "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
     },

@@ -2,7 +2,8 @@ import React from 'react';
 import {VanityUrlTableView} from './VanityUrlTableView'
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {Query} from 'react-apollo';
-import { CircularProgress } from 'material-ui/Progress';
+import {CircularProgress} from 'material-ui/Progress';
+import gql from "graphql-tag";
 import * as _ from "lodash";
 import ErrorSnackBar from "./ErrorSnackBar";
 import {TableQuery, TableQueryVariables} from "./gqlQueries";
@@ -15,7 +16,36 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     return _.values(urlPairs);
 }
 
+let query = gql`
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
+        jcr {
+            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
+                pageInfo {
+                    totalCount
+                }
+                nodes {
+                    ...NodeCacheRequiredFields
+                    displayName(language: $lang)
+                    ...DefaultVanityUrls
+                    ...LiveVanityUrls
+                }
+            }
+        }
+    }
+    ${DefaultVanityUrls}
+    ${LiveVanityUrls}
+`;
+
 let VanityUrlTableData = (props) => {
+    let variables = {
+        lang: contextJsParameters.uilang,
+        offset: (props.currentPage * props.pageSize),
+        limit: props.pageSize,
+        query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
+        filterText: props.filterText,
+        doFilter: !!props.filterText,
+        queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
+    };
 
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
@@ -24,7 +54,7 @@ let VanityUrlTableData = (props) => {
         { ({loading, error, data}) => {
 
             if (error) {
-                console.log("Error when fetching data : " + error);
+                console.log("Error when fetching data: " + error);
                 return <ErrorSnackBar error={props.t('label.errors.loadingVanityUrl')}/>
             }
 
@@ -53,9 +83,7 @@ let VanityUrlTableData = (props) => {
                 }
             });
 
-            let languages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
-
-            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows} languages={languages}/>
+            return <VanityUrlTableView {...props} totalCount={totalCount} numberOfPages={numberOfPages} rows={rows} languages={props.languages}/>
         }}
     </Query>
 };

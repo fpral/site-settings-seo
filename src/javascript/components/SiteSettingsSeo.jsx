@@ -1,6 +1,7 @@
 import React from 'react';
-import {Toolbar, Typography, withTheme, Button, IconButton} from 'material-ui';
+import {Toolbar, Typography, withTheme, withStyles, Button, IconButton, CircularProgress} from 'material-ui';
 import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
+import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
@@ -16,6 +17,34 @@ import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
 import AddVanityUrl from "./AddVanityUrl";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
+import gql from "graphql-tag";
+import {Query} from 'react-apollo';
+import ErrorSnackBar from "./ErrorSnackBar";
+
+const styles = (theme) => ({
+
+    title: {
+        width: '100%'
+    },
+
+    languageSelector: {
+
+        marginRight: theme.spacing.unit,
+        color: 'inherit',
+
+        // Disable any underlining.
+        '&:before': {
+            background: 'transparent !important'
+        },
+        '&:after': {
+            background: 'transparent'
+        }
+    },
+
+    languageSelectorIcon: {
+        color: 'inherit'
+    }
+});
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -25,6 +54,7 @@ class SiteSettingsSeoApp extends React.Component {
 
         this.state = {
             filterText: '',
+            languages: null,
             currentPage: 0,
             pageSize: 5,
             appBarStyle: {},
@@ -62,6 +92,7 @@ class SiteSettingsSeoApp extends React.Component {
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
+        this.onSelectedLanguagesChanged = this.onSelectedLanguagesChanged.bind(this);
 
         this.openMoveInfo = this.openMoveInfo.bind(this);
         this.closeMoveInfo = this.closeMoveInfo.bind(this);
@@ -285,62 +316,114 @@ class SiteSettingsSeoApp extends React.Component {
         })
     }
 
+    onSelectedLanguagesChanged(selectedLanguageCodes) {
+        this.setState({
+            languages: selectedLanguageCodes
+        });
+    }
+
     render() {
+
         let { dxContext, t, classes } = this.props;
-        return (
-            <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
-                <Toolbar>
-                    <Typography variant="title" color="inherit">
-                        {t('label.title')} - {dxContext.siteTitle}
-                    </Typography>
-                    <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
-                    <ThemeTester/>
-                </Toolbar>
-            }>
 
-                <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
+        let query = gql`
+            query LanguagesQuery($path: String!) {
+                jcr {
+                    nodeByPath(path: $path) {
+                        site {
+                            languages {
+                                code: language
+                                name: displayName
+                            }
+                        }
+                    }
+                }
+            }
+        `;
 
-                <VanityUrlTableData
-                    {...this.props}
-                    {...this.state}
-                    onChangeSelection={this.onChangeSelection}
-                    onChangePage={this.onChangePage}
-                    onChangeRowsPerPage={this.onChangeRowsPerPage}
-                    actions={this.actions}
-                    path={dxContext.mainResourcePath}
-                />
+        return <Query fetchPolicy={'network-only'} query={query} variables={{path: dxContext.mainResourcePath}}>{
+            ({loading, error, data}) => {
 
-                <Move {...this.state}
-                      path={dxContext.mainResourcePath}
-                      onClose={this.closeMove} />
+                if (error) {
+                    console.log("Error when loading site languages: " + error);
+                    return <ErrorSnackBar error={props.t('label.errors.loadingSiteLanguages')}/>
+                }
 
-                <MoveInfo {...this.state.moveInfo}
-                          onClose={this.closeMoveInfo}/>
+                if (loading) {
+                    return <CircularProgress/>
+                }
 
-                <Publication
-                    {...this.state.publication}
-                    onClose={this.closePublication}/>
+                let siteLanguages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
+                if (this.state.languages == null) {
+                    // The list of selected languages hasn't been initialized yet: select all site languages.
+                    this.state.languages = siteLanguages.map(language => language.code);
+                }
 
-                <Deletion
-                    {...this.state.deletion}
-                    onClose={this.closeDeletion}/>
+                return (
+                    <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
+                        <Toolbar>
+                            <Typography variant="title" color="inherit" className={classes.title}>
+                                {t('label.title')} - {dxContext.siteTitle}
+                            </Typography>
+                            <ThemeTester/>
+                            <LanguageSelector
+                                languages={siteLanguages}
+                                selectedLanguageCodes={this.state.languages}
+                                emptySelectionAllowed={false}
+                                className={classes.languageSelector}
+                                classes={{icon: classes.languageSelectorIcon}}
+                                onSelectionChange={this.onSelectedLanguagesChanged}
+                            />
+                            <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
+                        </Toolbar>
+                    }>
+                        <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
-                <PublishDeletion
-                    {...this.state.publishDeletion}
-                    onClose={this.closePublishDeletion}/>
+                        <VanityUrlTableData
+                            {...this.props}
+                            {...this.state}
+                            onChangeSelection={this.onChangeSelection}
+                            onChangePage={this.onChangePage}
+                            onChangeRowsPerPage={this.onChangeRowsPerPage}
+                            actions={this.actions}
+                            path={dxContext.mainResourcePath}
+                            languages={siteLanguages}
+                        />
 
-                <AddVanityUrl {...this.state.add}
-                              filterText={''}
-                     onClose={this.closeAdd}
-                     defaultLanguage={contextJsParameters.lang}/>
+                        <Move {...this.state}
+                              path={dxContext.mainResourcePath}
+                              onClose={this.closeMove} />
 
-            </SettingsLayout>
-        )
+                        <MoveInfo {...this.state.moveInfo}
+                                  onClose={this.closeMoveInfo}/>
+
+                        <Publication
+                            {...this.state.publication}
+                            onClose={this.closePublication}/>
+
+                        <Deletion
+                            {...this.state.deletion}
+                            onClose={this.closeDeletion}/>
+
+                        <PublishDeletion
+                            {...this.state.publishDeletion}
+                            onClose={this.closePublishDeletion}/>
+
+                        <AddVanityUrl {...this.state.add}
+                                      filterText={''}
+                                      onClose={this.closeAdd}
+                                      defaultLanguage={contextJsParameters.lang}/>
+
+                    </SettingsLayout>
+                )
+            }
+        }</Query>
     }
 }
 
 SiteSettingsSeoApp = compose(
     withTheme(),
+    withStyles(styles),
     withVanityMutationContext(),
     translate('site-settings-seo')
 )(SiteSettingsSeoApp);
