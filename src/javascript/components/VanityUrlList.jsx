@@ -95,18 +95,7 @@ class VanityUrlListDefault extends React.Component {
     }
 
     onMappingChanged(urlPair, actions, value, onSuccess, onError) {
-        actions.updateVanity.call({urlPair: urlPair, url: value})
-            .then(onSuccess)
-            .catch((errors) => {
-                onError();
-                _.each(errors.graphQLErrors, (error) => {
-                    if (error.errorType === "GqlConstraintException") {
-                        this.props.notificationContext.notify(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
-                    } else {
-                        this.props.notificationContext.notify(error.message);
-                    }
-                })
-            });
+        actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
     }
 
     render() {

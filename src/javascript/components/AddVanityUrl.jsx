@@ -23,8 +23,8 @@ import { FormControlLabel } from 'material-ui/Form';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {withNotifications} from '@jahia/react-dxcomponents';
-import Grow from 'material-ui/transitions/Grow';
 import * as _ from 'lodash';
+import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
 
 const styles = theme => ({
     textField: {
@@ -52,7 +52,6 @@ class AddVanityUrl extends React.Component {
         super(props);
         // get default language for the language selector
         this.defaultLanguage = this.props.defaultLanguage;
-        this.defaultRowsDiplayed = 5;
 
         this.state = {
             newMappings: this._resetMap(),
@@ -77,11 +76,11 @@ class AddVanityUrl extends React.Component {
 
     _resetMap = () => {
         let newMappings = [];
-        for (let i = this.defaultRowsDiplayed; i >= 0; i--) {
+        for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i >= 0; i--) {
             newMappings.push({language: this.defaultLanguage, defaultMapping: false})
         }
         return newMappings;
-    }
+    };
 
     handleClickSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;

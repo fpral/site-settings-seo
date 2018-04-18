@@ -63,6 +63,8 @@
       }
     },
     "errors": {
+      "Error": "An unexpected error has occurred",
+      "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
     },

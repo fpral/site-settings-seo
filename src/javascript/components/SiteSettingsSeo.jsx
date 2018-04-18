@@ -10,7 +10,6 @@ import {compose, graphql} from 'react-apollo';
 import {Add, Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
 import MoveInfo from "./MoveInfo";
-import {UpdateVanityMutation} from "./gqlMutations";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
 import PublishDeletion from "./PublishDeletion";
@@ -20,6 +19,7 @@ import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutati
 import gql from "graphql-tag";
 import {Query} from 'react-apollo';
 import ErrorSnackBar from "./ErrorSnackBar";
+import {withNotifications} from '@jahia/react-dxcomponents';
 
 const styles = (theme) => ({
 
@@ -46,11 +46,17 @@ const styles = (theme) => ({
     }
 });
 
+const SiteSettingsSeoConstants = {
+    MAPPING_REG_EXP: new RegExp("^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$"),
+    NB_NEW_MAPPING_ROWS: 5,
+};
+
 class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
-
         super(props);
+
+        let { notificationContext, t } = this.props;
 
         this.state = {
             filterText: '',
@@ -150,11 +156,32 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openAdd
             },
             updateVanity: {
-                call: (data) => props.vanityMutationsContext.update([data.urlPair.uuid],
-                    data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
-                    data.active != null ? data.active.toString() : undefined,
-                    data.language,
-                    data.url)
+                call: (data, onSuccess, onError) => {
+                    try {
+                        props.vanityMutationsContext.update([data.urlPair.uuid],
+                            data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
+                            data.active != null ? data.active.toString() : undefined,
+                            data.language,
+                            data.url)
+
+                            .then(onSuccess)
+                            .catch((errors) => {
+                                onError();
+                                _.each(errors.graphQLErrors, (error) => {
+                                    if (error.errorType === "GqlConstraintException") {
+                                        notificationContext.notify(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
+                                    } else {
+                                        notificationContext.notify(error.message);
+                                    }
+                                })
+                            });
+                    } catch (e) {
+                        if (e.name) {
+                            onError();
+                            notificationContext.notify(t("label.errors." + e.name));
+                        }
+                    }
+                }
             }
         }
     }
@@ -422,6 +449,7 @@ class SiteSettingsSeoApp extends React.Component {
 }
 
 SiteSettingsSeoApp = compose(
+    withNotifications(),
     withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
@@ -438,4 +466,4 @@ let SiteSettingsSeo = function (props) {
     );
 };
 
-export {SiteSettingsSeo};
+export {SiteSettingsSeo, SiteSettingsSeoConstants};

@@ -5,6 +5,8 @@ import {compose, graphql} from "react-apollo/index";
 import * as gqlMutations from "./gqlMutations";
 import * as _ from "lodash";
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from "./gqlQueries";
+import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
+import {InvalidMappingError} from "./Errors";
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -51,16 +53,23 @@ class VanityMutationsProvider extends Component {
             }
         });
 
-        vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => updateMutation({
-            variables: {
-                ids: ids,
-                defaultMapping: language ? false : defaultMapping,
-                active: active,
-                language: language,
-                url: url,
-                lang: contextJsParameters.uilang
+        vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
+
+            if (url && !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(url)) {
+                throw new InvalidMappingError("Mapping: " + url + " is not valid")
             }
-        });
+
+            return updateMutation({
+                variables: {
+                    ids: ids,
+                    defaultMapping: language ? false : defaultMapping,
+                    active: active,
+                    language: language,
+                    url: url,
+                    lang: contextJsParameters.uilang
+                }
+            })
+        };
 
         vanityMutationsContext.add = (path, vanityUrls) => addMutation({
             variables: {
