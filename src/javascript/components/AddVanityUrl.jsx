@@ -62,6 +62,8 @@ class AddVanityUrl extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handlePublishCheckboxChange = this.handlePublishCheckboxChange.bind(this);
+        this.handleErrorPopoverOpen = this.handleErrorPopoverOpen.bind(this);
+        this.handleErrorPopoverClose = this.handleErrorPopoverClose.bind(this);
     }
 
     _resetMap = () => {
