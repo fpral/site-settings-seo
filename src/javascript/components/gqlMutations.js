@@ -51,6 +51,9 @@ const AddVanityMutation = gql`
             mutateNode(pathOrId: $path) {
                 addVanityUrl(vanityUrlInputList: $vanityUrls)
             }
+            modifiedNodes{
+                uuid
+            }
         }
     }
 `;

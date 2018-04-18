@@ -57,22 +57,15 @@ class AddVanityUrl extends React.Component {
             newMappings: this._resetMap(),
             errors:[],
             anchorEl: null,
-            popperOpen: false
+            popperOpen: false,
+            doPublish: false
         };
 
         this.handleClickSave = this.handleClickSave.bind(this);
         this.handleClickCancel = this.handleClickCancel.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-
+        this.handlePublishCheckboxChange = this.handlePublishCheckboxChange.bind(this);
     }
-
-    handlePopoverOpen = event => {
-        this.setState({ anchorEl: event.target });
-    };
-
-    handlePopoverClose = () => {
-        this.setState({ anchorEl: null });
-    };
 
     _resetMap = () => {
         let newMappings = [];
@@ -82,13 +75,27 @@ class AddVanityUrl extends React.Component {
         return newMappings;
     };
 
+    handlePopoverOpen = event => {
+        this.setState({ anchorEl: event.target });
+    };
+
+    handlePopoverClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
     handleClickSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
         vanityMutationsContext.add(path, _.filter(this.state.newMappings,(entry) =>  entry.url)).then((result) =>
         {
+            if (this.state.doPublish) {
+                vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid));
+            }
             this.setState({
                 newMappings: this._resetMap(),
-                errors: []
+                errors:[],
+                anchorEl: null,
+                popperOpen: false,
+                doPublish: false
             });
             this.props.onClose(event);
             notificationContext.notify(t('label.newMappingCreated'));
@@ -103,7 +110,11 @@ class AddVanityUrl extends React.Component {
 
     handleClickCancel = (event) => {
         this.setState({
-            newMappings: this._resetMap()
+            newMappings: this._resetMap(),
+            errors:[],
+            anchorEl: null,
+            popperOpen: false,
+            doPublish: false
         });
         this.props.onClose(event);
     };
@@ -119,6 +130,12 @@ class AddVanityUrl extends React.Component {
 
         });
     };
+
+    handlePublishCheckboxChange = (checked) => {
+        this.setState({
+            doPublish: checked
+        })
+    }
 
     render() {
         let { t, open, path, onClose, availableLanguages, classes } = this.props;
@@ -161,32 +178,33 @@ class AddVanityUrl extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'}>
                                                 { error ?
-                                                    (   <div>
-                                                        <Info color="error" className={classes.error} aria-label="error"
-                                                              onMouseOver={error ? this.handlePopoverOpen : null}
-                                                              onMouseOut={error ? this.handlePopoverClose : null}>
-                                                        </Info>
+                                                    (
+                                                        <div>
+                                                            <Info color="error" className={classes.error} aria-label="error"
+                                                                  onMouseOver={error ? this.handlePopoverOpen : null}
+                                                                  onMouseOut={error ? this.handlePopoverClose : null}>
+                                                            </Info>
 
-                                                        <Popover
-                                                            className={classes.popover}
-                                                            classes={{
-                                                                paper: classes.paper,
-                                                            }}
-                                                            open={openPP}
-                                                            anchorEl={anchorEl}
-                                                            anchorOrigin={{
-                                                                vertical: 'bottom',
-                                                                horizontal: 'left',
-                                                            }}
-                                                            transformOrigin={{
-                                                                vertical: 'top',
-                                                                horizontal: 'left',
-                                                            }}
-                                                            onClose={this.handlePopoverClose}
-                                                        >
-                                                            <Typography>{t("label.dialogs.add.error.exists", {contentPath: errorPath})}</Typography>
-                                                        </Popover>
-                                                    </div>)
+                                                            <Popover
+                                                                className={classes.popover}
+                                                                classes={{
+                                                                    paper: classes.paper,
+                                                                }}
+                                                                open={openPP}
+                                                                anchorEl={anchorEl}
+                                                                anchorOrigin={{
+                                                                    vertical: 'bottom',
+                                                                    horizontal: 'left',
+                                                                }}
+                                                                transformOrigin={{
+                                                                    vertical: 'top',
+                                                                    horizontal: 'left',
+                                                                }}
+                                                                onClose={this.handlePopoverClose}
+                                                            >
+                                                                <Typography>{t("label.dialogs.add.error.exists", {contentPath: errorPath})}</Typography>
+                                                            </Popover>
+                                                        </div>)
                                                     : ""
                                                 }
                                             </TableCell>
@@ -212,11 +230,7 @@ class AddVanityUrl extends React.Component {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={(event) => {event.stopPropagation()}}
-                                checked=""
-                                onChange=""
-                                value="checkedB"
-                                color="primary"
+                                onChange={(event, checked) => this.handlePublishCheckboxChange(checked)}
                             />
                         }
                         label={t('label.dialogs.add.check')}
