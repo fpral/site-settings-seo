@@ -42,6 +42,14 @@ const styles = theme => ({
     popover: {
         pointerEvents: 'none',
     },
+    leftControl: {
+        marginRight: "auto",
+        paddingLeft: "16px"
+    },
+    rowDisabled: {
+        backgroundColor: theme.palette.background.global,
+        color: theme.palette.getContrastText(theme.palette.background.global),
+    }
 });
 
 class AddVanityUrl extends React.Component {
@@ -69,7 +77,7 @@ class AddVanityUrl extends React.Component {
     _resetMap = () => {
         let newMappings = [];
         for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i >= 0; i--) {
-            newMappings.push({language: this.defaultLanguage, defaultMapping: false})
+            newMappings.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false})
         }
         return newMappings;
     };
@@ -84,7 +92,11 @@ class AddVanityUrl extends React.Component {
 
     handleSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
-        vanityMutationsContext.add(path, _.filter(this.state.newMappings,(entry) =>  entry.url)).then((result) =>
+        let newMappings = _.map(_.filter(this.state.newMappings,(entry) =>  entry.url), (entry) => {
+            delete entry.focus;
+            return entry;
+        });
+        vanityMutationsContext.add(path, newMappings).then((result) =>
         {
             if (this.state.doPublish) {
                 vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
@@ -124,7 +136,7 @@ class AddVanityUrl extends React.Component {
         this.setState(function (previous) {
             previous.newMappings[index][field] = value;
             if (field === "url" && _.filter(previous.newMappings, entry => entry.url).length === previous.newMappings.length) {
-                previous.newMappings.push({ language: this.defaultLanguage, defaultMapping: false });
+                previous.newMappings.push({ language: this.defaultLanguage, defaultMapping: false, active: true, focus: false });
             }
             return {newMappings: previous.newMappings};
 
@@ -143,30 +155,33 @@ class AddVanityUrl extends React.Component {
 
         return (
             <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
-                <DialogTitle id="label.dialogs.add.title"  onClick={(event) => {event.stopPropagation()}}><Typography>{t('label.dialogs.add.title')}</Typography></DialogTitle>
-                <DialogContent  onClick={(event) => {event.stopPropagation()}}>
-                    <DialogContentText id="label.dialogs.add.content" >
+                <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
                         {path}
                     </DialogContentText>
                 </DialogContent>
-                <DialogContent  onClick={(event) => {event.stopPropagation()}}>
+                <DialogContent>
                     <Paper elevation={2}>
                         <Table>
                             <TableBody>
                                 {newMappings.map((entry, index) => {
                                     let errorForRow = _.find(errors, error =>  error.urlMapping === entry.url);
                                     return (
-                                        <TableRow key={index}>
+                                        <TableRow key={index} classes={{
+                                            root: (!!entry.url || entry.focus ? '' : classes.rowDisabled)
+                                        }}>
                                             <TableCell padding={'none'}>
                                                 <Switch
-                                                    onClick={(event) => {event.stopPropagation()}}
+                                                    checked={entry.active}
                                                     onChange={(event, checked) => this.handleFieldChange("active", index, checked)}/>
                                             </TableCell>
-                                            <TableCell padding={'none'} onClick={(event) => {event.stopPropagation()}}>
+                                            <TableCell padding={'none'}>
                                                 <Input
                                                     error={ !!errorForRow }
                                                     placeholder={t("label.dialogs.add.text")}
-                                                    onClick={(event) => {event.stopPropagation()}}
+                                                    onFocus={() => this.handleFieldChange("focus", index, true)}
+                                                    onBlur={() => this.handleFieldChange("focus", index, false)}
                                                     onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
                                                 />
 
@@ -195,13 +210,13 @@ class AddVanityUrl extends React.Component {
                                                 }
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Checkbox icon={<StarBorder/>} checkedIcon={<Star/>}
-                                                          onClick={(event) => {event.stopPropagation()}}
+                                                <Checkbox checked={entry.defaultMapping}
+                                                          icon={<StarBorder/>}
+                                                          checkedIcon={<Star/>}
                                                           onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <LanguageMenu onClick={(event) => {event.stopPropagation()}}
-                                                              languages={availableLanguages}
+                                                <LanguageMenu languages={availableLanguages}
                                                               languageCode={ entry.language }
                                                               onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
                                             </TableCell>
@@ -213,7 +228,7 @@ class AddVanityUrl extends React.Component {
                     </Paper>
                 </DialogContent>
                 <DialogActions>
-                    <FormControlLabel
+                    <FormControlLabel classes={{ root: classes.leftControl }}
                         control={
                             <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} />
                         }
