@@ -67,7 +67,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <jahia-depends>default,siteSettings,react-dxcomponents</jahia-depends>
+        <jahia-depends>default,siteSettings,graphql-dxm-provider,react-dxcomponents</jahia-depends>
     </properties>
     <repositories>
         <repository>
