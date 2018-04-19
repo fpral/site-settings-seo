@@ -81,15 +81,15 @@ class PublishDeletion extends React.Component {
                             control={
                                 <Checkbox />
                             }
-                            label={t('label.dialogs.publishdeletion.terms')}
+                            label={t('label.dialogs.delete.terms')}
                             onChange={this.handleDeleteDisabled}
                             checked={!this.state.deleteButtonState}
                         />
                         <Button onClick={this.handleClose} color="primary">
-                            {t('label.dialogs.publish.cancel')}
+                            {t('label.cancel')}
                         </Button>
                         <Button onClick={() => {this.publish()}} color="primary" disabled={this.state.deleteButtonState} autoFocus>
-                            {t('label.dialogs.publishdeletion.delete')}
+                            {t('label.delete')}
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -34,7 +34,7 @@ class Publication extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={onClose} color="primary">
-                            {t('label.dialogs.publish.cancel')}
+                            {t('label.cancel')}
                         </Button>
                         <Button onClick={() => {this.publish()}} color="primary" autoFocus>
                             {t('label.dialogs.publish.publish')}

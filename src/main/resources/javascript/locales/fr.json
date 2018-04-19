@@ -32,10 +32,10 @@
         "publish": "Publier"
       },
       "delete": {
-        "title": "Delete confirmation",
-        "content": "Are you sure you want to delete vanity URLs selected?",
-        "cancel": "Cancel",
-        "delete": "Delete"
+        "title": "Delete Default Mappings",
+        "headline": "Are you sure you want to delete the following Default URL mappings?",
+        "content": "Note: if you want to use this mapping on a different page, it is advised to reassign it instead of deleting it.",
+        "terms": "I understand that this operation cannot be undone"
       },
       "move": {
         "title": "Move Mapping",
@@ -44,13 +44,11 @@
         "confirm": "I understand that this move is a one way ticket !!",
         "cancel": "Cancel",
         "move": "Move"
-      }
+      },
       "publishdeletion": {
         "title": "Confirmation de suppression",
         "headline": "Vous êtes sur le point de supprimer plusieurs vanity URLs publiées",
-        "content": "Il n'est pas possible de supprimer les vanity URLs publiées individuellement, donc veuillez noter que toutes les vanity URLs publiées suivantes seront supprimées",
-        "terms": "Je comprends qu'une fois qu'elles ont été supprimées, elles sont parties. Pour toujours.",
-        "delete": "Supprimer"
+        "content": "Il n'est pas possible de supprimer les vanity URLs publiées individuellement, donc veuillez noter que toutes les vanity URLs publiées suivantes seront supprimées"
       },
       "add": {
         "title": "Ajouter Mapping",
@@ -69,6 +67,8 @@
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
     },
+    "cancel": "Annuler",
+    "delete": "Supprimer",
     "publicationStarted": "Job de publication lancé en arrière plan",
     "deletionConfirmed": "Suppression confirmée",
     "publicationDeletionConfirmed": "Suppression confirmée, Job de publication lancé en arrière plan",

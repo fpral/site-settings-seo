@@ -221,7 +221,7 @@ class AddVanityUrl extends React.Component {
                         label={t('label.dialogs.add.check')}
                     />
                     <Button onClick={this.handleClose} color="primary">
-                        {t('label.dialogs.add.cancel')}
+                        {t('label.cancel')}
                     </Button>
                     <Button onClick={this.handleSave} color="primary" autoFocus>
                         {t('label.dialogs.add.save')}

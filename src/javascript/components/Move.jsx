@@ -82,7 +82,7 @@ class Move extends React.Component {
                                 }
                                 label={t("label.dialogs.move.confirm")}
                             />
-                            <Button onClick={this.handleClose} color="primary">{t("label.dialogs.move.cancel")}</Button>
+                            <Button onClick={this.handleClose} color="primary">{t("label.cancel")}</Button>
                             <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0}>{t("label.dialogs.move.move")}</Button>
                         </span>
                     </DialogActions>

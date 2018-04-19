@@ -41,9 +41,7 @@
         "title": "Delete Default Mappings",
         "headline": "Are you sure you want to delete the following Default URL mappings?",
         "content": "Note: if you want to use this mapping on a different page, it is advised to reassign it instead of deleting it.",
-        "terms": "I understand that this operation cannot be undone",
-        "cancel": "Cancel",
-        "delete": "Delete"
+        "terms": "I understand that this operation cannot be undone"
       },
       "move": {
         "title": "Move Mapping",
@@ -66,9 +64,7 @@
       "publishdeletion": {
         "title": "Delete Live Mappings",
         "headline": "You are about to delete multiple Live Mapping URLs",
-        "content": "It is not possible to delete Live Mappings individually, so please note that all of the following Live Mappings will be removed",
-        "terms": "I understand that once it has been deleted, it is gone. Forever.",
-        "delete": "Delete"
+        "content": "It is not possible to delete Live Mappings individually, so please note that all of the following Live Mappings will be removed"
       }
     },
     "errors": {
@@ -78,6 +74,8 @@
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
     },
+    "cancel": "Cancel",
+    "delete": "Delete",
     "publicationStarted": "Publication job started in background",
     "deletionConfirmed": "Deletion confirmed",
     "publicationDeletionConfirmed": "Deletion confirmed, publication job started in background",

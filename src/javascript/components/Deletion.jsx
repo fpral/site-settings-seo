@@ -77,10 +77,10 @@ class Deletion extends React.Component {
                                 label={t("label.dialogs.delete.terms")}
                             />
 	                        <Button onClick={this.handleClose} color="primary">
-	                            {t('label.dialogs.delete.cancel')}
+	                            {t('label.cancel')}
 	                        </Button>
 	                        <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled}>
-	                            {t('label.dialogs.delete.delete')}
+	                            {t('label.delete')}
 	                        </Button>
                         </span>
                     </DialogActions>
