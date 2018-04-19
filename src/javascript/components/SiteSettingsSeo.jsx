@@ -1,6 +1,6 @@
 import React from 'react';
 import {Toolbar, Typography, withTheme, withStyles, Button, IconButton, CircularProgress} from 'material-ui';
-import {DxContextProvider, SearchBar, SettingsLayout, ThemeTester} from '@jahia/react-dxcomponents';
+import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
 import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableData} from "./VanityUrlTableData";
 import {PredefinedFragments} from "@jahia/apollo-dx";
