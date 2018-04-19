@@ -25,21 +25,25 @@ class Move extends React.Component {
 
     handleMove() {
         let { vanityMutationsContext, notificationContext, t } = this.props;
-        vanityMutationsContext.move(_.map(this.props.move.urlPairs, "uuid"), this.state.targetPath, this.props)
-            .then(() => {
-                this.handleClose();
-                notificationContext.notify(t("label.moveConfirmed"));
-            })
-            .catch((errors) => {
-                if (errors.graphQLErrors) {
-                    _.each(errors.graphQLErrors, (error) => {
-                        notificationContext.notify(error.message);
-                    })
-                } else {
-                    notificationContext.notify(t("label.errors.Error"));
-                }
-                console.log(errors)
-            });
+        try {
+            vanityMutationsContext.move(_.map(this.props.move.urlPairs, "uuid"), this.state.targetPath, this.props)
+                .then(() => {
+                    this.handleClose();
+                    notificationContext.notify(t("label.moveConfirmed"));
+                })
+                .catch((errors) => {
+                    if (errors.graphQLErrors) {
+                        _.each(errors.graphQLErrors, (error) => {
+                            notificationContext.notify(error.message);
+                        })
+                    } else {
+                        notificationContext.notify(t("label.errors.Error"));
+                    }
+                    console.log(errors)
+                });
+        } catch (e) {
+            notificationContext.notify(t("label.errors." + (e.name ? e.name : "Error")));
+        }
     };
 
     handleSaveDisabled() {

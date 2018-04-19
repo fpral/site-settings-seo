@@ -6,7 +6,7 @@ import * as gqlMutations from "./gqlMutations";
 import * as _ from "lodash";
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from "./gqlQueries";
 import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
-import {InvalidMappingError} from "./Errors";
+import {InvalidMappingError, MoveSiteError} from "./Errors";
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -36,6 +36,11 @@ class VanityMutationsProvider extends Component {
         });
 
         vanityMutationsContext.move = (pathsOrIds, target, props) => {
+
+            if (!_.startsWith(target, props.path)) {
+                throw new MoveSiteError("Moving vanity mapping in an other site is not allowed")
+            }
+
             return moveMutation({
                 variables: {
                     pathsOrIds: pathsOrIds,

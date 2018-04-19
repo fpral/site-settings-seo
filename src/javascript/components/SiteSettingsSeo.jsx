@@ -177,10 +177,8 @@ class SiteSettingsSeoApp extends React.Component {
                                 })
                             });
                     } catch (e) {
-                        if (e.name) {
-                            onError();
-                            notificationContext.notify(t("label.errors." + e.name));
-                        }
+                        onError();
+                        notificationContext.notify(t("label.errors." + (e.name ? e.name : "Error")));
                     }
                 }
             }

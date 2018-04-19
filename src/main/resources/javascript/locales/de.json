@@ -64,7 +64,8 @@
       "Error": "An unexpected error has occurred",
       "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
       "loadingVanityUrl": "Error loading vanity URLs",
-      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}"
+      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}",
+      "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed"
     },
     "cancel": "Abbrechen",
     "delete": "Löschen",
