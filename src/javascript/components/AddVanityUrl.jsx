@@ -99,7 +99,7 @@ class AddVanityUrl extends React.Component {
                 notificationContext.notify(t('label.newMappingCreated'));
             }
         }, (error) => {
-            if (error.graphQLErrors) {
+            if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                 this.setState(
                     { errors: _.map(error.graphQLErrors[0].extensions, (value) => value) }
                 )
@@ -107,7 +107,6 @@ class AddVanityUrl extends React.Component {
                 notificationContext.notify(t('label.errors.Error'));
                 console.log(error)
             }
-
         })
     };
 
