@@ -391,7 +391,6 @@ class SiteSettingsSeoApp extends React.Component {
                             <Typography variant="title" color="inherit" className={classes.title}>
                                 {t('label.title')} - {dxContext.siteTitle}
                             </Typography>
-                            <ThemeTester/>
                             <LanguageSelector
                                 languages={siteLanguages}
                                 selectedLanguageCodes={this.state.languages}
