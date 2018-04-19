@@ -21,7 +21,7 @@ let VanityUrlTableData = (props) => {
     // let fetchPolicy = props.filterText ? 'no-cache' : 'cache-first';
     let fetchPolicy = 'network-only';
 
-    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)} pollInterval={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}>
+    return <Query fetchPolicy={fetchPolicy} query={TableQuery} variables={TableQueryVariables(props)} pollInterval={props.poll ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}>
         { ({loading, error, data}) => {
 
             if (error) {

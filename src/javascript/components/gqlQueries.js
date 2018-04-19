@@ -1,4 +1,5 @@
 import {DefaultVanityUrls, LiveVanityUrls} from "./gqlFragments";
+import {PredefinedFragments} from "@jahia/apollo-dx";
 import gql from "graphql-tag";
 
 const TableQuery = gql`
@@ -21,8 +22,8 @@ const TableQuery = gql`
     ${LiveVanityUrls}
 `;
 
-const TableQueryVariables = (props, path) => ({
-    lang: contextJsParameters.uilang,
+const TableQueryVariables = (props) => ({
+    lang: props.lang,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
     query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
@@ -46,11 +47,24 @@ const VanityUrlsByPath = gql`
     ${LiveVanityUrls}
 `;
 
-const VanityUrlsByPathVariables = (paths) => ({
+const VanityUrlsByPathVariables = (paths, lang) => ({
     paths: paths,
     filterText: '',
     doFilter: false,
-    lang: contextJsParameters.uilang
+    lang: lang
 });
 
-export {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};
+const GetNodeQuery = gql`
+    query GetNodeQuery($path:String!) { 
+        jcr { 
+            nodeByPath(path:$path) { 
+                ...NodeCacheRequiredFields 
+                inPicker : isNodeType(type: {types:["jnt:page"]})
+            } 
+        } 
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
+
+export {TableQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};

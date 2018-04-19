@@ -1,11 +1,24 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel, TextField} from 'material-ui';
+import {Button, Checkbox, FormControlLabel, TextField, Paper, withStyles} from 'material-ui';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
-import {withNotifications} from '@jahia/react-dxcomponents';
+import {withNotifications, Picker, PickerViewMaterial} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
+import {Note} from 'material-ui-icons'
+import {GetNodeQuery} from "./gqlQueries";
+import {Query} from 'react-apollo';
+
+let styles = (theme) => ({
+    pickerRoot: {
+        maxHeight: "calc(100% - 350px)",
+        overflowY: "scroll"
+    },
+    inputError: {
+        color: theme.palette.error.main
+    }
+});
 
 class Move extends React.Component {
 
@@ -63,27 +76,46 @@ class Move extends React.Component {
     }
 
     render() {
-        const { t } = this.props;
+        const { t, classes, lang, path } = this.props;
+
         return (
             <div>
+                <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path:this.state.targetPath}}>
+                    {({ loading, error, data }) =>
                 <Dialog
                     open={this.props.move.open}
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="targetPath"
-                            label={t("label.dialogs.move.target")}
-                            type="text"
-                            value={this.state.targetPath} onChange={this.handleTargetPathChange}
-                            fullWidth
-                        />
-                    </DialogContent>
+                        <DialogContent>
+                            <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="targetPath"
+                                label={t("label.dialogs.move.target")}
+                                type="text"
+                                value={this.state.targetPath} onChange={this.handleTargetPathChange}
+                                fullWidth
+                                InputProps={{classes: error ? {root: classes.inputError} : {}}}
+                            />
+                            <Paper elevation={4} classes={{root:classes.pickerRoot}}>
+                                <Picker fragments={["displayName"]}
+                                        render={PickerViewMaterial}
+                                        rootPaths={[path]}
+                                        defaultOpenPaths={[path]}
+                                        openableTypes={['jnt:page', 'jnt:virtualsite']}
+                                        selectableTypes={['jnt:page']}
+                                        queryVariables={{lang: lang}}
+                                        textRenderer={(entry) => entry.node.displayName}
+                                        iconRenderer={(entry) => <Note/>}
+                                        selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
+                                        onSelectItem={(path) => {
+                                            this.setState({targetPath: path});
+                                        }}/>
+                            </Paper>
+                        </DialogContent>
                     <DialogActions>
                         <span>
                             <FormControlLabel
@@ -94,16 +126,19 @@ class Move extends React.Component {
                                 label={t("label.dialogs.move.confirm")}
                             />
                             <Button onClick={this.handleClose} color="primary">{t("label.cancel")}</Button>
-                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0}>{t("label.dialogs.move.move")}</Button>
+                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error}>{t("label.dialogs.move.move")}</Button>
                         </span>
                     </DialogActions>
                 </Dialog>
+                    }
+                </Query>
             </div>
         );
     }
 }
 
 Move = compose(
+    withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
     (translate('site-settings-seo'))

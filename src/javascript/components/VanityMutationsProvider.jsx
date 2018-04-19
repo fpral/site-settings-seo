@@ -71,7 +71,7 @@ class VanityMutationsProvider extends Component {
                     active: active,
                     language: language,
                     url: url,
-                    lang: contextJsParameters.uilang
+                    lang: props.lang
                 }
             })
         };
@@ -80,10 +80,10 @@ class VanityMutationsProvider extends Component {
             variables: {
                 vanityUrls: vanityUrls,
                 path: path,
-                lang: contextJsParameters.uilang
+                lang: props.lang
             }, refetchQueries: [{
                 query: VanityUrlsByPath,
-                variables: VanityUrlsByPathVariables(path)
+                variables: VanityUrlsByPathVariables(path, props.lang)
             }]
         });
     }

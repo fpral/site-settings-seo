@@ -412,12 +412,15 @@ class SiteSettingsSeoApp extends React.Component {
                             onChangeRowsPerPage={this.onChangeRowsPerPage}
                             actions={this.actions}
                             path={dxContext.mainResourcePath}
+                            lang={dxContext.lang}
                             languages={siteLanguages}
+                            poll={!this.state.publication.open && !this.state.deletion.open && !this.state.move.open && !this.state.moveInfo.open && !this.state.publishDeletion.open && !this.state.add.open}
                         />
 
                         <Move
                             {...this.state}
                             path={dxContext.mainResourcePath}
+                            lang={dxContext.lang}
                             onClose={this.closeMove}
                         />
 
@@ -445,7 +448,7 @@ class SiteSettingsSeoApp extends React.Component {
                             {...this.state.add}
                             filterText={''}
                             onClose={this.closeAdd}
-                            defaultLanguage={contextJsParameters.lang}
+                            defaultLanguage={dxContext.lang}
                         />
 
                     </SettingsLayout>
@@ -466,7 +469,7 @@ SiteSettingsSeoApp = compose(
 let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
-            <VanityMutationsProvider vanityMutationsContext={{}}>
+            <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                 <SiteSettingsSeoApp {...props}/>
             </VanityMutationsProvider>
         </DxContextProvider>
