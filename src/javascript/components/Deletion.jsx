@@ -5,7 +5,6 @@ import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {Table, TableBody, TableRow, TableCell} from 'material-ui';
-import {query} from './VanityUrlTableData';
 import {withNotifications} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 
@@ -39,7 +38,7 @@ class Deletion extends React.Component {
         this.props.onClose()
     }
 
-	render() {
+    render() {
         const { open, classes, onClose, t } = this.props;
         return (
             <div>
@@ -51,7 +50,7 @@ class Deletion extends React.Component {
                             {t('label.dialogs.delete.headline')}
                         </DialogContentText><br/>
                         <DialogContentText id="alert-dialog-content">
-                          	{t('label.dialogs.delete.content')}
+                              {t('label.dialogs.delete.content')}
                         </DialogContentText>
                     </DialogContent>
                     <DialogContent>
@@ -76,12 +75,12 @@ class Deletion extends React.Component {
                                 }
                                 label={t("label.dialogs.delete.terms")}
                             />
-	                        <Button onClick={this.handleClose} color="primary">
-	                            {t('label.cancel')}
-	                        </Button>
-	                        <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled}>
-	                            {t('label.delete')}
-	                        </Button>
+                            <Button onClick={this.handleClose} color="primary">
+                                {t('label.cancel')}
+                            </Button>
+                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled}>
+                                {t('label.delete')}
+                            </Button>
                         </span>
                     </DialogActions>
                 </Dialog>

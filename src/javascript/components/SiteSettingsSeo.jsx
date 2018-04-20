@@ -2,7 +2,7 @@ import React from 'react';
 import {Toolbar, Typography, withTheme, withStyles, Button, IconButton, CircularProgress} from 'material-ui';
 import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
 import {LanguageSelector} from "./LanguageSelector";
-import {VanityUrlTableData} from "./VanityUrlTableData";
+import {VanityUrlTableView} from "./VanityUrlTableView";
 import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
@@ -16,8 +16,8 @@ import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
 import AddVanityUrl from "./AddVanityUrl";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
-import gql from "graphql-tag";
 import {Query} from 'react-apollo';
+import {TableQuery, TableQueryVariables} from "./gqlQueries";
 import ErrorSnackBar from "./ErrorSnackBar";
 import {withNotifications} from '@jahia/react-dxcomponents';
 
@@ -51,6 +51,14 @@ const SiteSettingsSeoConstants = {
     NB_NEW_MAPPING_ROWS: 5,
     TABLE_POLLING_INTERVAL: 2000
 };
+
+function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
+    let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
+    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
+    let urlPairs = _.merge(defaultUrls, liveUrls);
+    urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
+    return _.values(urlPairs);
+}
 
 class SiteSettingsSeoApp extends React.Component {
 
@@ -355,32 +363,49 @@ class SiteSettingsSeoApp extends React.Component {
 
         let { dxContext, t, classes } = this.props;
 
-        let query = gql`
-            query LanguagesQuery($path: String!) {
-                jcr {
-                    nodeByPath(path: $path) {
-                        site {
-                            languages {
-                                code: language
-                                name: displayName
-                            }
-                        }
-                    }
-                }
-            }
-        `;
+        let params = {
+            lang: dxContext.lang,
+            currentPage: this.state.currentPage,
+            pageSize: this.state.pageSize,
+            path: dxContext.mainResourcePath,
+            filterText: this.state.filterText
+        }
 
-        return <Query fetchPolicy={'network-only'} query={query} variables={{path: dxContext.mainResourcePath}}>{
+        let poll = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.moveInfo.open || this.state.publishDeletion.open || this.state.add.open);
+
+        return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(params)} pollInterval={poll ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}>{
+
             ({loading, error, data}) => {
 
                 if (error) {
                     console.log("Error when loading site languages: " + error);
-                    return <ErrorSnackBar error={t('label.errors.loadingSiteLanguages')}/>
+                    return <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/>
                 }
 
                 if (loading) {
                     return <CircularProgress/>
                 }
+
+                let totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+                let numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.props.pageSize);
+
+                let rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+
+                    let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
+                    let allUrlPairs;
+                    if (this.props.filterText) {
+                        allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                        urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
+                    }
+
+                    return {
+                        path: contentNode.path,
+                        uuid: contentNode.uuid,
+                        displayName: contentNode.displayName,
+                        urls: urlPairs,
+                        allUrls: allUrlPairs
+                    }
+                });
 
                 let siteLanguages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
                 if (this.state.languages == null) {
@@ -389,6 +414,7 @@ class SiteSettingsSeoApp extends React.Component {
                 }
 
                 return (
+
                     <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
                         <Toolbar>
                             <Typography variant="title" color="inherit" className={classes.title}>
@@ -405,19 +431,21 @@ class SiteSettingsSeoApp extends React.Component {
                             <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
                         </Toolbar>
                     }>
+
                         <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
-                        <VanityUrlTableData
-                            {...this.props}
+                        <VanityUrlTableView
                             {...this.state}
-                            onChangeSelection={this.onChangeSelection}
-                            onChangePage={this.onChangePage}
-                            onChangeRowsPerPage={this.onChangeRowsPerPage}
-                            actions={this.actions}
                             path={dxContext.mainResourcePath}
                             lang={dxContext.lang}
                             languages={siteLanguages}
-                            poll={!this.state.publication.open && !this.state.deletion.open && !this.state.move.open && !this.state.moveInfo.open && !this.state.publishDeletion.open && !this.state.add.open}
+                            totalCount={totalCount}
+                            numberOfPages={numberOfPages}
+                            rows={rows}
+                            actions={this.actions}
+                            onChangeSelection={this.onChangeSelection}
+                            onChangePage={this.onChangePage}
+                            onChangeRowsPerPage={this.onChangeRowsPerPage}
                         />
 
                         <Move
