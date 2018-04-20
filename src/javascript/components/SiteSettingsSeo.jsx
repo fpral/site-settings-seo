@@ -372,7 +372,7 @@ class SiteSettingsSeoApp extends React.Component {
 
                 if (error) {
                     console.log("Error when loading site languages: " + error);
-                    return <ErrorSnackBar error={props.t('label.errors.loadingSiteLanguages')}/>
+                    return <ErrorSnackBar error={t('label.errors.loadingSiteLanguages')}/>
                 }
 
                 if (loading) {
