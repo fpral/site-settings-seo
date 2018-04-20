@@ -62,7 +62,7 @@ class AddVanityUrl extends React.Component {
         this.state = {
             newMappings: this._resetMap(),
             errors:[],
-            errorPopoverAnchorEl: null,
+            errorPopover: null,
             doPublish: false
         };
 
@@ -82,12 +82,12 @@ class AddVanityUrl extends React.Component {
         return newMappings;
     };
 
-    handleErrorPopoverOpen = event => {
-        this.setState({ errorPopoverAnchorEl: event.target });
+    handleErrorPopoverOpen = (event, message) => {
+        this.setState({ errorPopover: {anchorEl: event.target, message: message} });
     };
 
     handleErrorPopoverClose = () => {
-        this.setState({ errorPopoverAnchorEl: null });
+        this.setState({ errorPopover: null });
     };
 
     handleSave = (event) => {
@@ -186,98 +186,102 @@ class AddVanityUrl extends React.Component {
 
     render() {
         let { t, open, path, onClose, availableLanguages, classes } = this.props;
-        const { errors, newMappings, errorPopoverAnchorEl } = this.state;
+        const { errors, newMappings, errorPopover } = this.state;
 
         return (
-            <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
-                <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {path}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogContent>
-                    <Paper elevation={2}>
-                        <Table>
-                            <TableBody>
-                                {newMappings.map((entry, index) => {
-                                    let errorForRow = _.find(errors, error =>  error.url === entry.url);
-                                    let lineEnabled = !!entry.url || entry.focus;
-                                    return (
-                                        <TableRow key={index} classes={{
-                                            root: (lineEnabled ? '' : classes.rowDisabled)
-                                        }}>
-                                            <TableCell padding={'none'}>
-                                                <Switch
-                                                    checked={entry.active}
-                                                    onChange={(event, checked) => this.handleFieldChange("active", index, checked)}/>
-                                            </TableCell>
-                                            <TableCell padding={'none'}>
-                                                <Input
-                                                    error={ !!errorForRow }
-                                                    placeholder={t("label.dialogs.add.text")}
-                                                    onFocus={() => this.handleFieldChange("focus", index, true)}
-                                                    onBlur={() => this.handleFieldChange("focus", index, false)}
-                                                    onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
-                                                />
+            <div>
+                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
+                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {path}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogContent>
+                        <Paper elevation={2}>
+                            <Table>
+                                <TableBody>
+                                    {newMappings.map((entry, index) => {
+                                        let errorForRow = _.find(errors, error =>  error.url === entry.url);
+                                        let lineEnabled = !!entry.url || entry.focus;
+                                        return (
+                                            <TableRow key={index} classes={{
+                                                root: (lineEnabled ? '' : classes.rowDisabled)
+                                            }}>
+                                                <TableCell padding={'none'}>
+                                                    <Switch
+                                                        checked={entry.active}
+                                                        onChange={(event, checked) => this.handleFieldChange("active", index, checked)}/>
+                                                </TableCell>
+                                                <TableCell padding={'none'}>
+                                                    <Input
+                                                        error={ !!errorForRow }
+                                                        placeholder={t("label.dialogs.add.text")}
+                                                        onFocus={() => this.handleFieldChange("focus", index, true)}
+                                                        onBlur={() => this.handleFieldChange("focus", index, false)}
+                                                        onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
+                                                    />
 
-                                            </TableCell>
-                                            <TableCell padding={'none'}>
-                                                { errorForRow ?
-                                                    (
-                                                        <div>
+                                                </TableCell>
+                                                <TableCell padding={'none'}>
+                                                    { errorForRow ?
+                                                        (
                                                             <Info color="error" className={classes.error} aria-label="error"
-                                                                  onMouseOver={this.handleErrorPopoverOpen}
-                                                                  onMouseOut={this.handleErrorPopoverClose} />
+                                                                  onMouseOver={(event) => this.handleErrorPopoverOpen(event, errorForRow.message)}
+                                                                  onMouseOut={this.handleErrorPopoverClose} />)
+                                                        : ""
+                                                    }
+                                                </TableCell>
+                                                <TableCell padding={'none'}>
+                                                    <Checkbox checked={entry.defaultMapping}
+                                                              icon={<StarBorder/>}
+                                                              checkedIcon={<Star/>}
+                                                              onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}/>
+                                                </TableCell>
+                                                <TableCell padding={'none'}>
+                                                    <LanguageMenu languages={availableLanguages}
+                                                                  languageCode={ entry.language }
+                                                                  onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </DialogContent>
+                    <DialogActions>
+                        <FormControlLabel classes={{ root: classes.leftControl }}
+                                          control={
+                                              <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} />
+                                          }
+                                          label={t('label.dialogs.add.check')}
+                        />
+                        <Button onClick={this.handleClose} color="primary">
+                            {t('label.cancel')}
+                        </Button>
+                        <Button onClick={this.handleSave} color="primary" autoFocus>
+                            {t('label.dialogs.add.save')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
-                                                            <Popover
-                                                                className={classes.popover}
-                                                                classes={{ paper: classes.paper }}
-                                                                open={!!errorPopoverAnchorEl}
-                                                                anchorEl={errorPopoverAnchorEl}
-                                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
-                                                                transformOrigin={{ vertical: 'top', horizontal: 'left', }}
-                                                                onClose={this.handleErrorPopoverClose}
-                                                            >
-                                                                <Typography>{errorForRow.message}</Typography>
-                                                            </Popover>
-                                                        </div>)
-                                                    : ""
-                                                }
-                                            </TableCell>
-                                            <TableCell padding={'none'}>
-                                                <Checkbox checked={entry.defaultMapping}
-                                                          icon={<StarBorder/>}
-                                                          checkedIcon={<Star/>}
-                                                          onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}/>
-                                            </TableCell>
-                                            <TableCell padding={'none'}>
-                                                <LanguageMenu languages={availableLanguages}
-                                                              languageCode={ entry.language }
-                                                              onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
-                    </Paper>
-                </DialogContent>
-                <DialogActions>
-                    <FormControlLabel classes={{ root: classes.leftControl }}
-                        control={
-                            <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} />
-                        }
-                        label={t('label.dialogs.add.check')}
-                    />
-                    <Button onClick={this.handleClose} color="primary">
-                        {t('label.cancel')}
-                    </Button>
-                    <Button onClick={this.handleSave} color="primary" autoFocus>
-                        {t('label.dialogs.add.save')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                { errorPopover ?
+                    (
+                        <Popover
+                            className={classes.popover}
+                            classes={{ paper: classes.paper }}
+                            open={true}
+                            anchorEl={errorPopover.anchorEl}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'left', }}
+                            onClose={this.handleErrorPopoverClose}
+                        >
+                            <Typography>{errorPopover.message}</Typography>
+                        </Popover>)
+                    : ""
+                }
+            </div>
         )
     }
 }
