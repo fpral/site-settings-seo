@@ -134,6 +134,20 @@ class AddVanityUrl extends React.Component {
 
     handleFieldChange = (field, index, value) => {
         this.setState(function (previous) {
+
+            let mappingToDisableDefaultFlag;
+            if ((field === "defaultMapping" && value === true)) {
+                mappingToDisableDefaultFlag = _.find(previous.newMappings, mapping =>  (mapping.defaultMapping && mapping.language === previous.newMappings[index].language));
+            }
+
+            if ((field === "language" && previous.newMappings[index].defaultMapping)) {
+                mappingToDisableDefaultFlag = _.find(previous.newMappings, mapping =>  (mapping.defaultMapping && mapping.language === value)) ? previous.newMappings[index] : undefined;
+            }
+
+            if (mappingToDisableDefaultFlag) {
+                mappingToDisableDefaultFlag.defaultMapping = false;
+            }
+
             previous.newMappings[index][field] = value;
             if (field === "url" && _.filter(previous.newMappings, entry => entry.url).length === previous.newMappings.length) {
                 previous.newMappings.push({ language: this.defaultLanguage, defaultMapping: false, active: true, focus: false });
@@ -167,9 +181,10 @@ class AddVanityUrl extends React.Component {
                             <TableBody>
                                 {newMappings.map((entry, index) => {
                                     let errorForRow = _.find(errors, error =>  error.urlMapping === entry.url);
+                                    let lineEnabled = !!entry.url || entry.focus;
                                     return (
                                         <TableRow key={index} classes={{
-                                            root: (!!entry.url || entry.focus ? '' : classes.rowDisabled)
+                                            root: (lineEnabled ? '' : classes.rowDisabled)
                                         }}>
                                             <TableCell padding={'none'}>
                                                 <Switch
