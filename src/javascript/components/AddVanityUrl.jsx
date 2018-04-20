@@ -184,13 +184,17 @@ class AddVanityUrl extends React.Component {
         })
     };
 
+    handleDialogEntered = () => {
+        this.firstMappingInputRef.focus()
+    };
+
     render() {
         let { t, open, path, onClose, availableLanguages, classes } = this.props;
         const { errors, newMappings, errorPopover } = this.state;
 
         return (
             <div>
-                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}>
+                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true} onEntered={this.handleDialogEntered}>
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -215,6 +219,7 @@ class AddVanityUrl extends React.Component {
                                                 </TableCell>
                                                 <TableCell padding={'none'}>
                                                     <Input
+                                                        inputRef={(input) => { if(index === 0) {this.firstMappingInputRef = input;} }}
                                                         error={ !!errorForRow }
                                                         placeholder={t("label.dialogs.add.text")}
                                                         onFocus={() => this.handleFieldChange("focus", index, true)}
