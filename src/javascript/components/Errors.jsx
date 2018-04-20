@@ -1,7 +1,9 @@
 class InvalidMappingError extends Error {
-    constructor(...params) {
+    constructor(invalidMappings, ...params) {
         super(...params);
+
         this.name = "InvalidMappingError";
+        this.invalidMappings = invalidMappings;
     }
 }
 

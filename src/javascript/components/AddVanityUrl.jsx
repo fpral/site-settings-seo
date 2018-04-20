@@ -96,30 +96,51 @@ class AddVanityUrl extends React.Component {
             delete entry.focus;
             return entry;
         });
-        vanityMutationsContext.add(path, newMappings).then((result) =>
-        {
-            if (this.state.doPublish) {
-                vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
+        try {
+            vanityMutationsContext.add(path, newMappings).then((result) =>
+            {
+                if (this.state.doPublish) {
+                    vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
+                        this.handleClose(event);
+                        notificationContext.notify(t('label.newMappingCreatedAndPublished'));
+                    }, (error) => {
+                        notificationContext.notify(t('label.errors.Error'));
+                        console.log(error)
+                    })
+                } else {
                     this.handleClose(event);
-                    notificationContext.notify(t('label.newMappingCreatedAndPublished'));
-                }, (error) => {
+                    notificationContext.notify(t('label.newMappingCreated'));
+                }
+            }, (error) => {
+                if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
+                    this.setState({
+                        errors: _.map(error.graphQLErrors[0].extensions, (value) => {
+                            return {
+                                url: value.urlMapping,
+                                message: t("label.dialogs.add.error.exists", {contentPath: value.existingNodePath})
+                            }
+                        })
+                    });
+                } else {
                     notificationContext.notify(t('label.errors.Error'));
                     console.log(error)
-                })
+                }
+            })
+        } catch (e) {
+            if (e.invalidMappings) {
+                this.setState({
+                    errors: _.map(e.invalidMappings, (invalidMapping) => {
+                        return {
+                            url: invalidMapping,
+                            message: t("label.dialogs.add.error.invalid")
+                        }
+                    })
+                });
             } else {
-                this.handleClose(event);
-                notificationContext.notify(t('label.newMappingCreated'));
+                notificationContext.notify(t("label.errors." + (e.name ? e.name : "Error")));
             }
-        }, (error) => {
-            if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
-                this.setState(
-                    { errors: _.map(error.graphQLErrors[0].extensions, (value) => value) }
-                )
-            } else {
-                notificationContext.notify(t('label.errors.Error'));
-                console.log(error)
-            }
-        })
+        }
+
     };
 
     handleClose = (event) => {
@@ -180,7 +201,7 @@ class AddVanityUrl extends React.Component {
                         <Table>
                             <TableBody>
                                 {newMappings.map((entry, index) => {
-                                    let errorForRow = _.find(errors, error =>  error.urlMapping === entry.url);
+                                    let errorForRow = _.find(errors, error =>  error.url === entry.url);
                                     let lineEnabled = !!entry.url || entry.focus;
                                     return (
                                         <TableRow key={index} classes={{
@@ -218,7 +239,7 @@ class AddVanityUrl extends React.Component {
                                                                 transformOrigin={{ vertical: 'top', horizontal: 'left', }}
                                                                 onClose={this.handleErrorPopoverClose}
                                                             >
-                                                                <Typography>{t("label.dialogs.add.error.exists", {contentPath: errorForRow.existingNodePath})}</Typography>
+                                                                <Typography>{errorForRow.message}</Typography>
                                                             </Popover>
                                                         </div>)
                                                     : ""

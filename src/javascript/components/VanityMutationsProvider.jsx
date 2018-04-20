@@ -61,7 +61,7 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
 
             if (url && !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(url)) {
-                throw new InvalidMappingError("Mapping: " + url + " is not valid")
+                throw new InvalidMappingError([url])
             }
 
             return updateMutation({
@@ -76,16 +76,25 @@ class VanityMutationsProvider extends Component {
             })
         };
 
-        vanityMutationsContext.add = (path, vanityUrls) => addMutation({
-            variables: {
-                vanityUrls: vanityUrls,
-                path: path,
-                lang: props.lang
-            }, refetchQueries: [{
-                query: VanityUrlsByPath,
-                variables: VanityUrlsByPathVariables(path, props.lang)
-            }]
-        });
+        vanityMutationsContext.add = (path, vanityUrls) => {
+
+            let invalidMappings = _.filter(vanityUrls, (mapping) => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
+
+            if (invalidMappings && invalidMappings.length > 0) {
+                throw new InvalidMappingError(_.map(invalidMappings, (mapping) => mapping.url))
+            }
+
+            return addMutation({
+                variables: {
+                    vanityUrls: vanityUrls,
+                    path: path,
+                    lang: props.lang
+                }, refetchQueries: [{
+                    query: VanityUrlsByPath,
+                    variables: VanityUrlsByPathVariables(path, props.lang)
+                }]
+            })
+        };
     }
 
     getChildContext() {

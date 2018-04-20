@@ -3,6 +3,12 @@
     "title": "Vanity URL Dashboard",
     "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "languageSelector": {
+      "allLanguages": "All Languages",
+      "moreLanguages": "{{count}} more language(s)",
+      "partialLanguages": "{{names}}, {{nextName}}",
+      "languages": "{{names}} & {{lastName}}"
+    },
     "selection": {
       "count": "{{count}} mapping selected",
       "count_plural": "{{count}} mappings selected",
@@ -45,13 +51,15 @@
         "cancel": "Cancel",
         "move": "Move"
       },
-      "vanity": {
-        "add": {
-          "title": "Add Mapping",
-          "cancel": "Cancel",
-          "save": "Save",
-          "check": "Automatic publish on save",
-          "text": "Enter mapping URL"
+      "add": {
+        "title": "Add Mapping",
+        "cancel": "Cancel",
+        "save": "Save",
+        "check": "Automatic publish on save",
+        "text": "Enter mapping URL",
+        "error": {
+          "exists": "This mapping already set to {{contentPath}}",
+          "invalid": "This mapping is invalid: only letters, digits, dots (.), dashes (-) and no consecutive slashes (/) are allowed"
         }
       },
       "publishdeletion": {
@@ -63,6 +71,7 @@
     "errors": {
       "Error": "An unexpected error has occurred",
       "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
+      "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}",
       "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed"

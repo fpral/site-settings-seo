@@ -3,6 +3,12 @@
     "title": "URL personnalisées",
     "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "languageSelector": {
+      "allLanguages": "All Languages",
+      "moreLanguages": "{{count}} more language(s)",
+      "partialLanguages": "{{names}}, {{nextName}}",
+      "languages": "{{names}} & {{lastName}}"
+    },
     "selection": {
       "count": "{{count}} mapping selected",
       "count_plural": "{{count}} mappings selected",
@@ -45,11 +51,6 @@
         "cancel": "Cancel",
         "move": "Move"
       },
-      "publishdeletion": {
-        "title": "Confirmation de suppression",
-        "headline": "Vous êtes sur le point de supprimer plusieurs vanity URLs publiées",
-        "content": "Il n'est pas possible de supprimer les vanity URLs publiées individuellement, donc veuillez noter que toutes les vanity URLs publiées suivantes seront supprimées"
-      },
       "add": {
         "title": "Ajouter Mapping",
         "cancel": "Annuler",
@@ -57,13 +58,20 @@
         "check": "Publier automatiquement",
         "text": "Entrer une URL",
         "error": {
-          "exists": "Le Mapping existe déjà pour la page {{contentPath}}"
+          "exists": "Le Mapping existe déjà pour la page {{contentPath}}",
+          "invalid": "This mapping is invalid: only letters, digits, dots (.), dashes (-) and no consecutive slashes (/) are allowed"
         }
+      },
+      "publishdeletion": {
+        "title": "Delete Live Mappings",
+        "headline": "You are about to delete multiple Live Mapping URLs",
+        "content": "It is not possible to delete Live Mappings individually, so please note that all of the following Live Mappings will be removed"
       }
     },
     "errors": {
       "Error": "An unexpected error has occurred",
       "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
+      "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}",
       "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed"
