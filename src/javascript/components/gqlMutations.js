@@ -26,13 +26,20 @@ const PublishMutation = gql`
 `;
 
 const DeleteVanity = gql`
-    mutation deleteVanityUrls($pathsOrIds: [String!]!) {
-        jcr{
+    mutation deleteVanityUrls($pathsOrIds: [String!]!, $newDefaults: [String!]!, $lang: String!) {
+        jcr {
             mutateNodes(pathsOrIds: $pathsOrIds){
                 delete
             }
+            mutateVanityUrls(pathsOrIds: $newDefaults) {
+                update(defaultMapping:true)
+            }
+            modifiedNodes {
+              ...DefaultVanityUrlFields
+            }
         }
-    }         
+    }    
+    ${DefaultVanityUrlFields}
 `;
 
 const MoveMutation = gql`

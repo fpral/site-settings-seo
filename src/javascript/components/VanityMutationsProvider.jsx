@@ -14,9 +14,11 @@ class VanityMutationsProvider extends Component {
 
         let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
-        vanityMutationsContext.delete = (pathsOrIds, parents) => deleteMutation({
+        vanityMutationsContext.delete = (pathsOrIds, parents, newDefaults) => deleteMutation({
             variables: {
-                pathsOrIds: pathsOrIds
+                pathsOrIds: pathsOrIds,
+                newDefaults: newDefaults,
+                lang: props.lang
             },
             update:(proxy) => {
                 // Manually clean cache from parent list

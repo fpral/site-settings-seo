@@ -14,9 +14,17 @@ class Deletion extends React.Component {
         super(props);
 
         let { vanityMutationsContext, notificationContext, t } = this.props;
-
         this.delete = function() {
-            vanityMutationsContext.delete(_.map(this.props.urlPairs, "uuid"), _.map(this.props.urlPairs, "default.targetNode.uuid"));
+            let switchToDefault = [];
+            _.each(this.props.urlPairs, (pair => {
+                if (pair.default.default) {
+                    let remaining = _.find(pair.content.urls, otherPair => otherPair.default && otherPair.default.language === pair.default.language && !this.props.urlPairs.find(deletedPair => deletedPair.uuid === otherPair.uuid));
+					if (remaining) {
+						switchToDefault.push(remaining.default.uuid);
+					}
+                }
+            }));
+            vanityMutationsContext.delete(_.map(this.props.urlPairs, "uuid"), _.map(this.props.urlPairs, "default.targetNode.uuid"), switchToDefault);
             props.onClose();
             notificationContext.notify(t('label.deletionConfirmed'));
         };
