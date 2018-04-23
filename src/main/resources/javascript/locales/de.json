@@ -1,93 +1,93 @@
 {
   "label": {
     "title": "Vanity URL Dashboard",
-    "filterPlaceholder": "Filter by keywords",
-    "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
+    "filterPlaceholder": "Nach Keywords filtern",
+    "filterMatch": "Treffer: {{count}} von {{totalCount}} Mappings",
     "languageSelector": {
-      "allLanguages": "All Languages",
-      "moreLanguages": "{{count}} more language(s)",
-      "partialLanguages": "{{names}}, {{nextName}}",
-      "languages": "{{names}} & {{lastName}}"
+        "allLanguages": "Alle Sprachen",
+        "moreLanguages": "{{count}} weitere Sprache(n)",
+        "partialLanguages": "{{names}}, {{nextName}}",
+        "languages": "{{names}} & {{lastName}}"
     },
     "selection": {
-      "count": "{{count}} mapping selected",
-      "count_plural": "{{count}} mappings selected",
-      "clear": "Clear"
+      "count": "{{count}} Mapping ausgewählt",
+      "count_plural": "{{count}} Mappings ausgewählt",
+      "clear": "Löschen"
     },
     "localFilter": {
-      "switchOn": "Show matches only",
-      "switchOff": "Show all"
+      "switchOn": "Nur Treffer anzeigen",
+      "switchOff": "Alle anzeigen"
     },
     "actions": {
-      "move": "Move",
-      "publish": "Publish",
-      "delete": "Delete"
+      "move": "Verschieben",
+      "publish": "Veröffentlichen",
+      "delete": "Löschen"
     },
     "mappings": {
-      "default": "Default mappings",
-      "live": "Live mappings"
+      "default": "Default Mappings",
+      "live": "Live Mappings"
     },
     "dialogs": {
       "moveInfo": {
-        "content": "Mapping to this page will be removed on publication of {{pagePath}}"
+        "content": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}"
       },
       "publish": {
-        "title": "Publish confirmation",
-        "content": "Are you sure you want to publish vanity URLs selected? The publication will be started as a background job.",
-        "cancel": "Cancel",
-        "publish": "Publish"
+        "title": "Veröffentlichung bestätigen",
+        "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity URLs veröffentlichen wollen? Die Veröffentlichung wird als Hintergrundjob gestartet.",
+        "cancel": "Abbrechen",
+        "publish": "Veröffentlichen"
       },
       "delete": {
-        "title": "Default Mappings Löschen",
-        "headline": "Wollen Sie folgende Default URL Mappings wirklich löschen?",
-        "content": "Bitte beachten Sie, dass wenn Sie die URL-Mappings in einer anderen Seite verwenden wollen, wird es empfohlen, sie neu zuzuweisen statt löschen.",
-        "terms": "Ich verstehe, dass diese Operation nicht rückgängig gemacht werden kann"
+        "title": "Löschen bestätigen",
+        "content": "Sind Sie sicher, dass die ausgewählten Vanity URLs gelöscht werden sollen?",
+        "cancel": "Abbrechen",
+        "delete": "Löschen"
       },
       "move": {
-        "title": "Move Mapping",
-        "content": "Please enter the path to where you want to point ...",
-        "target": "Target node path",
-        "confirm": "I understand that this move is a one way ticket !!",
-        "cancel": "Cancel",
-        "move": "Move"
-      },
-      "add": {
-        "title": "Add Mapping",
-        "cancel": "Cancel",
-        "save": "Save",
-        "check": "Automatic publish on save",
-        "text": "Enter mapping URL",
-        "error": {
-          "exists": "This mapping already set to {{contentPath}}",
-          "invalid": "This mapping is invalid: only letters, digits, dots (.), dashes (-) and no consecutive slashes (/) are allowed"
+        "title": "Mapping verschieben",
+        "content": "Bitte geben Sie den Pfad ein, wohin die URL verschoben werden soll:",
+        "target": "Pfad des Ziel-Knotens",
+        "confirm": "Ich verstehe, dass das Verschieben nicht rückgängig gemacht werden kann.",
+        "cancel": "Abbrechen",
+        "move": "Verschieben"
+      },     
+        "add": {
+          "title": "Mapping hinzufügen",
+          "cancel": "Abbrechen",
+          "save": "Speichern",
+          "check": "Automatisch veröffentlichen beim Speichern",
+          "text": "Mapping URL eingeben",
+          "error": {
+          "exists": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}",
+          "invalid": "Dieses Mapping ist ungültig: nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) sind erlaubt"
         }
       },
       "publishdeletion": {
-        "title": "Delete Live Mappings",
-        "headline": "You are about to delete multiple Live Mapping URLs",
-        "content": "It is not possible to delete Live Mappings individually, so please note that all of the following Live Mappings will be removed"
+        "title": "Live Mappings Löschen",
+        "headline": "Sie sind dabei, mehrere Live Mappings zu löschen",
+        "content": "Es ist nicht möglich einzelne Live Mappings zu löschen, bitte beachten Sie daher, dass all die folgenden Live Mappings gelöscht werden"
       }
     },
     "errors": {
-      "Error": "An unexpected error has occurred",
-      "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
-      "loadingSiteLanguages": "Error loading site languages",
-      "loadingVanityUrl": "Error loading vanity URLs",
-      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}",
-      "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed"
+    "Error": "Ein unerwarteter Fehler ist aufgetreten.",
+      "InvalidMappingError": "Die Vanity URL darf nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) beinhalten.",
+      "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen",
+      "loadingVanityUrl": "Fehler beim Laden der Vanity URLs",
+      "mappingAlreadyExist": "URL Mapping wird bereits verwendet von {{existingNodePath}}",
+      "MoveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt."
     },
     "cancel": "Abbrechen",
     "delete": "Löschen",
-    "publicationStarted": "Publication job started in background",
-    "deletionConfirmed": "Deletion confirmed",
-    "publicationDeletionConfirmed": "Deletion confirmed, publication job started in background",
-    "newMappingCreated": "New mapping(s) added",
-    "newMappingCreatedAndPublished": "New mapping(s) added, publication job started in background",
-    "moveConfirmed": "Move confirmed",
-    "okGotIt": "OK, GOT IT",
-    "importantInfo": "Important Info",
+    "publicationStarted": "Veröffentlichung wurde als Hintergrundjob gestartet",
+    "deletionConfirmed": "Löschen bestätigt",
+    "publicationDeletionConfirmed": "Löschen bestätigt, Veröffentlichung wurde als Hintergrundjob gestartet.",
+    "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt",
+    "newMappingCreatedAndPublished": "Neue(s) Mapping(s) hinzugefügt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
+    "moveConfirmed": "Verschieben bestätigt",
+    "okGotIt": "OK, ich habe es verstanden.",
+    "importantInfo": "Wichtige Information",
     "missingDefault": "{{vanityUrl}} gelöscht",
-    "movedDefault": "Moved to {{page}}",
+    "movedDefault": "Verschoben zu {{page}}",
     "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
   }
 }
