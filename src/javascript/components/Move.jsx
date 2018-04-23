@@ -90,6 +90,9 @@ class Move extends React.Component {
                     <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
+
+                            {error ? <div><br/><DialogContentText className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText></div> : ''}
+
                             <TextField
                                 autoFocus
                                 margin="dense"

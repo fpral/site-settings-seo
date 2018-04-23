@@ -49,7 +49,8 @@
         "target": "Pfad des Ziel-Knotens",
         "confirm": "Ich verstehe, dass das Verschieben nicht rückgängig gemacht werden kann.",
         "cancel": "Abbrechen",
-        "move": "Verschieben"
+        "move": "Verschieben",
+        "error": "Sieht so aus, als ob dieser Pfad nirgendwohin führt. Bitte überprüfen Sie ihn erneut und versuchen Sie es erneut."
       },     
         "add": {
           "title": "Mapping hinzufügen",

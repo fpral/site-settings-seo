@@ -49,7 +49,8 @@
         "target": "Chemin du contenu de destination",
         "confirm": "Cette opération ne peut être annulée.",
         "cancel": "Annuler",
-        "move": "Déplacer"
+        "move": "Déplacer",
+        "error": "Il semblerait que ce chemin ne mène nulle part, s'il vous plaît vérifiez et réessayez."
       },
       "add": {
         "title": "Ajouter URL",

@@ -49,7 +49,8 @@
         "target": "Target node path",
         "confirm": "I understand that this move is a one way ticket !!",
         "cancel": "Cancel",
-        "move": "Move"
+        "move": "Move",
+        "error": "Looks like this path leads nowhere, please double check and try again."
       },
       "add": {
         "title": "Add Mapping",
