@@ -6,7 +6,7 @@ import {AddVanityUrl} from "./AddVanityUrl";
 
 import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
 
-import {ExpandLess, ExpandMore} from 'material-ui-icons';
+import {KeyboardArrowDown, KeyboardArrowRight} from 'material-ui-icons';
 
 const styles = theme => ({
     root: {
@@ -79,7 +79,9 @@ class VanityUrlEnabledContent extends React.Component {
             <div className={this.props.classes.root}>
                 <Paper elevation={1}>
                     <ListItem onClick={() => this.handleExpandCollapseClick()} >
-                        <ListItemIcon>{this.state.expanded ? <ExpandLess/> : <ExpandMore/>}</ListItemIcon>
+
+                        {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'}/>}
+
                         <ListItemText inset primary={content.displayName} secondary={content.path}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
