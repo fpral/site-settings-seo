@@ -3,7 +3,12 @@ import * as _ from 'lodash';
 import {translate} from 'react-i18next';
 import {Checkbox, FormControl, FormControlLabel, Input, ListItem, ListItemText, MenuItem, Select, withStyles} from 'material-ui';
 
-const maxSelectedLanguageNamesDisplayed = 2;
+const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
+
+function getSelectedLanguageCodes(selected) {
+    // Filter out the All Languages fake (null) language code when handling menu events.
+    return _.filter(selected, (selected => selected != null));
+}
 
 class LanguageSelector extends React.Component {
 
@@ -16,7 +21,6 @@ class LanguageSelector extends React.Component {
         this.onAllLanguagesChange = this.onAllLanguagesChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.getSelectedLanguagesValue = this.getSelectedLanguagesValue.bind(this);
-        this.getSelectedLanguageCodes = this.getSelectedLanguageCodes.bind(this);
     }
 
     onAllLanguagesChange(event, checked) {
@@ -31,13 +35,13 @@ class LanguageSelector extends React.Component {
     }
 
     onChange(event) {
-        let selectedLanguageCodes = this.getSelectedLanguageCodes(event.target.value);
+        let selectedLanguageCodes = getSelectedLanguageCodes(event.target.value);
         this.props.onSelectionChange(selectedLanguageCodes);
     }
 
     getSelectedLanguagesValue(selected) {
 
-        let selectedLanguageCodes = _.sortBy(this.getSelectedLanguageCodes(selected));
+        let selectedLanguageCodes = _.sortBy(getSelectedLanguageCodes(selected));
 
         if (selectedLanguageCodes.length == this.props.languages.length) {
             // All languages selected.
@@ -45,9 +49,9 @@ class LanguageSelector extends React.Component {
         } else {
 
             let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => this.languageByCode[selectedLanguageCode].name);
-            if (selectedLanguageNames.length > maxSelectedLanguageNamesDisplayed) {
+            if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
                 // (Too) many languages selected: will display a part of them, plus "N more languages".
-                selectedLanguageNames = selectedLanguageNames.slice(0, maxSelectedLanguageNamesDisplayed - 1);
+                selectedLanguageNames = selectedLanguageNames.slice(0, MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED - 1);
                 selectedLanguageNames[selectedLanguageNames.length] = this.props.t('label.languageSelector.moreLanguages', {count: (selectedLanguageCodes.length - selectedLanguageNames.length)});
             }
 
@@ -68,11 +72,6 @@ class LanguageSelector extends React.Component {
             }
             return languages;
         }
-    }
-
-    getSelectedLanguageCodes(selected) {
-        // Filter out the All Languages fake (null) language code when handling menu events.
-        return _.filter(selected, (selected => selected != null));
     }
 
     render() {

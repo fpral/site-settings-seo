@@ -387,13 +387,13 @@ class SiteSettingsSeoApp extends React.Component {
                 }
 
                 let totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-                let numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.props.pageSize);
+                let numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.state.pageSize);
 
                 let rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
                     let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
                     let allUrlPairs;
-                    if (this.props.filterText) {
+                    if (this.state.filterText) {
                         allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
                         urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
                     }
