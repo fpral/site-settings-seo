@@ -96,6 +96,9 @@ const styles = (theme) => ({
     },
     tableTitle: {
         paddingBottom: "10px"
+    },
+    text: {
+        width: "260px"
     }
 });
 
@@ -156,9 +159,9 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'}>
                                                 <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive}>
+                                            <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
-                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <span>{props.value}</span>) }
+                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{props.value}</Typography>) }
                                                           input={ ({onSave, ...props}) => <Input {...props} onBlur={(e)=>onSave(e)} onKeyPress={(e)=>{if (e.key === 'Enter') { onSave(e) } }} classes={ {root:classes.textInput}}/> }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
@@ -236,7 +239,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + (urlPair.default ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell padding={'dense'} className={classInactive}>
-                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : url.url}
+                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{url.url}</Typography>}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
