@@ -79,51 +79,51 @@ class Move extends React.Component {
         const {t, classes, lang, path} = this.props;
 
         return (
-            <div>
-                <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path: this.state.targetPath}}>
-                    {({loading, error, data}) =>
-                        <Dialog
-                            open={this.props.move.open}
-                            onClose={this.handleClose}
-                            aria-labelledby="form-dialog-title"
-                        >
-                            <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
+            this.props.move.open &&
+            <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path: this.state.targetPath}}>
+                {({loading, error, data}) =>
+                    <Dialog
+                        open={this.props.move.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="form-dialog-title"
+                    >
+                        <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
 
-                                {error ? <div><br/><DialogContentText
-                                    className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText>
-                                </div> : ''}
+                            {error ? <div><br/><DialogContentText
+                                className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText>
+                            </div> : ''}
 
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="targetPath"
-                                    label={t("label.dialogs.move.target")}
-                                    type="text"
-                                    value={this.state.targetPath} onChange={this.handleTargetPathChange}
-                                    fullWidth
-                                    InputProps={{classes: error ? {root: classes.inputError} : {}}}
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="targetPath"
+                                label={t("label.dialogs.move.target")}
+                                type="text"
+                                value={this.state.targetPath} onChange={this.handleTargetPathChange}
+                                fullWidth
+                                InputProps={{classes: error ? {root: classes.inputError} : {}}}
+                            />
+                            <Paper elevation={4} classes={{root: classes.pickerRoot}}>
+                                <Picker fragments={["displayName"]}
+                                        render={PickerViewMaterial}
+                                        rootPaths={[path]}
+                                        defaultOpenPaths={[path]}
+                                        openableTypes={['jnt:page', 'jnt:virtualsite']}
+                                        selectableTypes={['jnt:page']}
+                                        queryVariables={{lang: lang}}
+                                        textRenderer={(entry) => entry.node.displayName}
+                                        iconRenderer={(entry) => <Note/>}
+                                        selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
+                                        onSelectItem={(path) => {
+                                            this.setState({targetPath: path});
+                                        }}
+                                        loading={loading}
                                 />
-                                <Paper elevation={4} classes={{root: classes.pickerRoot}}>
-                                    <Picker fragments={["displayName"]}
-                                            render={PickerViewMaterial}
-                                            rootPaths={[path]}
-                                            defaultOpenPaths={[path]}
-                                            openableTypes={['jnt:page', 'jnt:virtualsite']}
-                                            selectableTypes={['jnt:page']}
-                                            queryVariables={{lang: lang}}
-                                            textRenderer={(entry) => entry.node.displayName}
-                                            iconRenderer={(entry) => <Note/>}
-                                            selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
-                                            onSelectItem={(path) => {
-                                                this.setState({targetPath: path});
-                                            }}
-                                            loading={loading}
-                                    />
-                                </Paper>
-                            </DialogContent>
-                            <DialogActions>
+                            </Paper>
+                        </DialogContent>
+                        <DialogActions>
                         <span>
                             <FormControlLabel
                                 control={
@@ -136,11 +136,10 @@ class Move extends React.Component {
                             <Button onClick={this.handleMove} color="primary"
                                     disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error}>{t("label.dialogs.move.move")}</Button>
                         </span>
-                            </DialogActions>
-                        </Dialog>
-                    }
-                </Query>
-            </div>
+                        </DialogActions>
+                    </Dialog>
+                }
+            </Query>
         );
     }
 }
