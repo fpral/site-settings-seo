@@ -125,19 +125,16 @@ class SiteSettingsSeoApp extends React.Component {
         this.openAdd = this.openAdd.bind(this);
         this.closeAdd = this.closeAdd.bind(this);
 
-        this.mutationPlaceholder = function(selection, event) {
-            console.log(selection);
-            console.log(event);
-        };
-
         this.actions = {
             deleteAction: {
+                priority: 3,
                 buttonLabel: "Delete",
                 buttonIcon: <Delete/>,
                 className: "delete",
                 call: this.openDeletion
             },
             publishAction: {
+                priority: 2,
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 className: "publish",
@@ -149,6 +146,7 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openPublishDeletion
             },
             moveAction: {
+                priority: 1,
                 buttonLabel: "Move",
                 buttonIcon: <SwapHoriz/>,
                 className: "move",
