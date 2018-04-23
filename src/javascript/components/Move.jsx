@@ -37,9 +37,9 @@ class Move extends React.Component {
     }
 
     handleMove() {
-        let {vanityMutationsContext, notificationContext, t} = this.props;
+        let { vanityMutationsContext, notificationContext, t } = this.props;
         try {
-            vanityMutationsContext.move(_.map(this.props.move.urlPairs, "uuid"), this.state.targetPath, this.props)
+            vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath, this.props)
                 .then(() => {
                     this.handleClose();
                     notificationContext.notify(t("label.moveConfirmed"));
@@ -76,24 +76,22 @@ class Move extends React.Component {
     }
 
     render() {
-        const {t, classes, lang, path} = this.props;
+        const { t, classes, lang, path } = this.props;
 
         return (
-            this.props.move.open &&
-            <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path: this.state.targetPath}}>
-                {({loading, error, data}) =>
-                    <Dialog
-                        open={this.props.move.open}
-                        onClose={this.handleClose}
-                        aria-labelledby="form-dialog-title"
-                    >
-                        <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
+            <div>
+                <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path:this.state.targetPath}}>
+                    {({ loading, error, data }) =>
+                <Dialog
+                    open={this.props.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
 
-                            {error ? <div><br/><DialogContentText
-                                className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText>
-                            </div> : ''}
+                            {error ? <div><br/><DialogContentText className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText></div> : ''}
 
                             <TextField
                                 autoFocus
@@ -105,7 +103,7 @@ class Move extends React.Component {
                                 fullWidth
                                 InputProps={{classes: error ? {root: classes.inputError} : {}}}
                             />
-                            <Paper elevation={4} classes={{root: classes.pickerRoot}}>
+                            <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}
                                         render={PickerViewMaterial}
                                         rootPaths={[path]}
@@ -118,28 +116,26 @@ class Move extends React.Component {
                                         selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                         onSelectItem={(path) => {
                                             this.setState({targetPath: path});
-                                        }}
-                                        loading={loading}
-                                />
+                                        }}/>
                             </Paper>
                         </DialogContent>
-                        <DialogActions>
+                    <DialogActions>
                         <span>
                             <FormControlLabel
                                 control={
                                     <Checkbox checked={!this.state.saveDisabled}
-                                              onChange={() => this.handleSaveDisabled()}/>
+                                              onChange={() => this.handleSaveDisabled()} />
                                 }
                                 label={t("label.dialogs.move.confirm")}
                             />
                             <Button onClick={this.handleClose} color="primary">{t("label.cancel")}</Button>
-                            <Button onClick={this.handleMove} color="primary"
-                                    disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error}>{t("label.dialogs.move.move")}</Button>
+                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error}>{t("label.dialogs.move.move")}</Button>
                         </span>
-                        </DialogActions>
-                    </Dialog>
-                }
-            </Query>
+                    </DialogActions>
+                </Dialog>
+                    }
+                </Query>
+            </div>
         );
     }
 }

@@ -43,7 +43,19 @@ const styles = (theme) => ({
 
     languageSelectorIcon: {
         color: 'inherit'
+    },
+
+    loading: {
+        opacity:0.6
+    },
+
+    loadingOverlay : {
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        zIndex: 999
     }
+
 });
 
 const SiteSettingsSeoConstants = {
@@ -69,7 +81,7 @@ class SiteSettingsSeoApp extends React.Component {
 
         this.state = {
             filterText: '',
-            languages: null,
+            languages: [],
             currentPage: 0,
             pageSize: 5,
             appBarStyle: {},
@@ -377,50 +389,48 @@ class SiteSettingsSeoApp extends React.Component {
 
                 if (error) {
                     console.log("Error when loading site languages: " + error);
-                    return <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/>
                 }
 
-                if (loading) {
-                    return <CircularProgress/>
+                let totalCount = 0;
+                let numberOfPages = 0;
+                let rows = [];
+                if (data.jcr && data.jcr.nodesByQuery) {
+                    totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+                    numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.state.pageSize);
+
+                    rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+
+                        let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
+                        let allUrlPairs;
+                        if (this.state.filterText) {
+                            allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
+                            urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
+                        }
+
+                        return {
+                            path: contentNode.path,
+                            uuid: contentNode.uuid,
+                            displayName: contentNode.displayName,
+                            urls: urlPairs,
+                            allUrls: allUrlPairs
+                        }
+                    });
                 }
 
-                let totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-                let numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.state.pageSize);
-
-                let rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
-
-                    let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                    let allUrlPairs;
-                    if (this.state.filterText) {
-                        allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                        urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
-                    }
-
-                    return {
-                        path: contentNode.path,
-                        uuid: contentNode.uuid,
-                        displayName: contentNode.displayName,
-                        urls: urlPairs,
-                        allUrls: allUrlPairs
-                    }
-                });
-
-                let siteLanguages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
-                if (this.state.languages == null) {
-                    // The list of selected languages hasn't been initialized yet: select all site languages.
-                    this.state.languages = siteLanguages.map(language => language.code);
+                if (data.jcr && data.jcr.nodeByPath && this.state.languages.length === 0) {
+                    let siteLanguages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
+                    this.setState({languages: siteLanguages});
                 }
-
+                let languages = this.state.languages;
                 return (
-
                     <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
                         <Toolbar>
                             <Typography variant="title" color="inherit" className={classes.title}>
                                 {t('label.title')} - {dxContext.siteTitle}
                             </Typography>
                             <LanguageSelector
-                                languages={siteLanguages}
-                                selectedLanguageCodes={this.state.languages}
+                                languages={languages}
+                                selectedLanguageCodes={languages.map(language => language.code) || []}
                                 emptySelectionAllowed={false}
                                 className={classes.languageSelector}
                                 classes={{icon: classes.languageSelectorIcon}}
@@ -430,55 +440,64 @@ class SiteSettingsSeoApp extends React.Component {
                         </Toolbar>
                     }>
 
-                        <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
+                        {loading && <div className={classes.loadingOverlay}>
+                            <CircularProgress/>
+                        </div>}
 
-                        <VanityUrlTableView
-                            {...this.state}
-                            path={dxContext.mainResourcePath}
-                            lang={dxContext.lang}
-                            languages={siteLanguages}
-                            totalCount={totalCount}
-                            numberOfPages={numberOfPages}
-                            rows={rows}
-                            actions={this.actions}
-                            onChangeSelection={this.onChangeSelection}
-                            onChangePage={this.onChangePage}
-                            onChangeRowsPerPage={this.onChangeRowsPerPage}
-                        />
+                        <div className={loading ? classes.loading : ''}>
+                            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
-                        <Move
-                            {...this.state}
+                            <VanityUrlTableView
+
+                                {...this.state}
+                                path={dxContext.mainResourcePath}
+                                lang={dxContext.lang}
+                                languages={languages}
+                                totalCount={totalCount}
+                                numberOfPages={numberOfPages}
+                                rows={rows}
+                                actions={this.actions}
+                                onChangeSelection={this.onChangeSelection}
+                                onChangePage={this.onChangePage}
+                                onChangeRowsPerPage={this.onChangeRowsPerPage}
+                            />
+                        </div>
+
+                        {this.state.move.open && <Move
+                            {...this.state.move}
                             path={dxContext.mainResourcePath}
                             lang={dxContext.lang}
                             onClose={this.closeMove}
-                        />
+                        />}
 
-                        <MoveInfo
+                        {this.state.moveInfo.open && <MoveInfo
                             {...this.state.moveInfo}
                             onClose={this.closeMoveInfo}
-                        />
+                        />}
 
-                        <Publication
+                        {this.state.publication.open && <Publication
                             {...this.state.publication}
                             onClose={this.closePublication}
-                        />
+                        />}
 
-                        <Deletion
+                        {this.state.deletion.open && <Deletion
                             {...this.state.deletion}
                             onClose={this.closeDeletion}
-                        />
+                        />}
 
-                        <PublishDeletion
+                        {this.state.publishDeletion.open && <PublishDeletion
                             {...this.state.publishDeletion}
                             onClose={this.closePublishDeletion}
-                        />
+                        />}
 
-                        <AddVanityUrl
+                        {this.state.add.open && <AddVanityUrl
                             {...this.state.add}
                             filterText={''}
                             onClose={this.closeAdd}
                             defaultLanguage={dxContext.lang}
-                        />
+                        />}
+
+                        { error && <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/> }
 
                     </SettingsLayout>
                 )
