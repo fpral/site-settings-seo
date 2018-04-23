@@ -95,7 +95,8 @@ const styles = (theme) => ({
         }
     },
     tableTitle: {
-        paddingBottom: "10px"
+        paddingBottom: "10px",
+        textTransform: "uppercase"
     },
     text: {
         width: "260px"
