@@ -120,12 +120,13 @@ class VanityUrlListDefault extends React.Component {
             allCheckboxChecked = _.differenceBy(urlPairs, selection, "uuid").length === 0;
             allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, "uuid").length > 0;
         }
+        let checkboxesDisplayed = (allCheckboxChecked || allCheckboxIndeterminate);
 
         return (
             <div>
                 <div>
                     {urlPairs.length > 0 ? (
-                        <Checkbox className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox} checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
+                        <Checkbox className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox} checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
                                   onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
                         />
                     ) : ''}
@@ -148,8 +149,8 @@ class VanityUrlListDefault extends React.Component {
                                         <TableRow key={urlPair.uuid} hover classes={{
                                             root: classes.vanityUrl,
                                             hover: (isPublished ? '' : classes.toBePublished)
-                                        }}  onClick={(event) => onChangeSelection(!selected, [urlPair])}>
-                                            <TableCell padding={'none'} className={(selected ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
+                                        }}  onClick={() => onChangeSelection(!selected, [urlPair])}>
+                                            <TableCell padding={'none'} className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
