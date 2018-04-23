@@ -217,7 +217,8 @@ class SiteSettingsSeoApp extends React.Component {
             move: {
                 open: false,
                 urlPairs: []
-            }
+            },
+            selection:[]
         })
     };
 
@@ -235,7 +236,8 @@ class SiteSettingsSeoApp extends React.Component {
             publication: {
                 open: false,
                 urlPairs: []
-            }
+            },
+            selection: []
         })
     };
 
@@ -253,7 +255,8 @@ class SiteSettingsSeoApp extends React.Component {
             deletion: {
                 open: false,
                 urlPairs: []
-            }
+            },
+            selection: []
         })
     };
 
