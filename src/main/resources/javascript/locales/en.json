@@ -24,8 +24,8 @@
       "delete": "Delete"
     },
     "mappings": {
-      "default": "Default mappings",
-      "live": "Live mappings"
+      "default": "DEFAULT MAPPINGS",
+      "live": "LIVE MAPPINGS"
     },
     "dialogs": {
       "moveInfo": {

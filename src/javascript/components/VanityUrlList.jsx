@@ -31,8 +31,7 @@ const styles = (theme) => ({
         '&:hover $hiddenOnHover': {
             transition: ["opacity", "0.25s"],
             opacity: 1
-        },
-        height: '52px'
+        }
     },
     hidden: {
         opacity: 0
@@ -85,6 +84,18 @@ const styles = (theme) => ({
         color: "inherit",
         fontSize: "inherit",
         width: "100%"
+    },
+    allCheckbox: {
+        position: "absolute",
+        marginLeft: "-48px",
+        marginTop: "-18px",
+        '&:hover': {
+            transition: ["opacity", "0.25s"],
+            opacity: 1
+        }
+    },
+    tableTitle: {
+        paddingBottom: "10px"
     }
 });
 
@@ -112,24 +123,19 @@ class VanityUrlListDefault extends React.Component {
 
         return (
             <div>
+                <div>
+                    {urlPairs.length > 0 ? (
+                        <Checkbox className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox} checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
+                                  onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
+                        />
+                    ) : ''}
+                    <Typography variant="caption" classes={{caption: classes.tableTitle}}>
+                        {t('label.mappings.default')}
+                    </Typography>
+                </div>
                 <Paper elevation={2}>
                     <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow className={classes.vanityUrl}>
-                                <TableCell padding={'none'} className={((allCheckboxChecked || allCheckboxIndeterminate) ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
-                                    {urlPairs.length > 0 ? (
-                                        <Checkbox checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
-                                                  onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
-                                        />
-                                    ) : ''}
-                                </TableCell>
-                                <TableCell padding={'none'} colSpan={6}>
-                                    <Typography variant="caption" classes={{caption: classes.boxTitle}} >
-                                        {t('label.mappings.default')}
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
+
                         <TableBody>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
@@ -214,17 +220,13 @@ class VanityUrlListLive extends React.Component {
         let deletedUrls = _.filter(vanityUrls, (urlPair) => urlPair.live && !urlPair.live.editNode);
         return (
             <div>
+                <div>
+                    <Typography variant="caption" classes={{caption: classes.tableTitle}}>
+                        {t('label.mappings.live')}
+                    </Typography>
+                </div>
                 <Paper elevation={2}>
                     <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell padding={'none'} colSpan={4}>
-                                    <Typography variant="caption" className={classes.boxTitle} >
-                                        {t('label.mappings.live')}
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
                         <TableBody>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.live;
