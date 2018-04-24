@@ -82,7 +82,7 @@ class VanityUrlEnabledContent extends React.Component {
 
                         {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'}/>}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path}/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path} data-vud-content-uuid={content.uuid}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
                         {this.state.expanded ? <IconButton aria-label={actions.addAction.className} onClick={(event) => {
@@ -97,10 +97,10 @@ class VanityUrlEnabledContent extends React.Component {
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                         <Grid container spacing={24} className={classes.vanityUrlLists}>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages}/>
+                                <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid}/>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions}/>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>
                             </Grid>
                         </Grid>
                     </Collapse>

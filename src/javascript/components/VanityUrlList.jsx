@@ -115,7 +115,7 @@ class VanityUrlListDefault extends React.Component {
 
     render() {
 
-        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages } = this.props;
+        let { vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages, contentUuid } = this.props;
         let urlPairs = _.filter(vanityUrls, (urlPair) => urlPair.default);
 
         let allCheckboxChecked = false;
@@ -132,6 +132,7 @@ class VanityUrlListDefault extends React.Component {
                     {urlPairs.length > 0 ? (
                         <Checkbox className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox} checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
                                   onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
+                                                  data-vud-checkbox-all={contentUuid}
                         />
                     ) : ''}
                     <Typography variant="caption" classes={{caption: classes.tableTitle}}>
@@ -141,7 +142,7 @@ class VanityUrlListDefault extends React.Component {
                 <Paper elevation={2}>
                     <Table className={classes.table}>
 
-                        <TableBody>
+                        <TableBody data-vud-table-body-default={contentUuid}>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.default;
                                 let selected = !!(_.find(selection, (p)=> p.uuid === urlPair.uuid));
@@ -221,7 +222,7 @@ class VanityUrlListLive extends React.Component {
     }
 
     render() {
-        let { vanityUrls, classes, t, actions } = this.props;
+        let { vanityUrls, classes, t, actions, contentUuid } = this.props;
         let deletedUrls = _.filter(vanityUrls, (urlPair) => urlPair.live && !urlPair.live.editNode);
         return (
             <div>
@@ -232,7 +233,7 @@ class VanityUrlListLive extends React.Component {
                 </div>
                 <Paper elevation={2}>
                     <Table className={classes.table}>
-                        <TableBody>
+                        <TableBody data-vud-table-body-live={contentUuid}>
                             {vanityUrls.map(urlPair => {
                                 let url = urlPair.live;
                                 if (url) {
