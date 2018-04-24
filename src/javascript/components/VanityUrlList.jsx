@@ -154,12 +154,13 @@ class VanityUrlListDefault extends React.Component {
                                         <TableRow key={urlPair.uuid} hover classes={{
                                             root: classes.vanityUrl,
                                             hover: (isPublished ? '' : classes.toBePublished)
-                                        }}  onClick={() => onChangeSelection(!selected, [urlPair])}>
+                                        }}  onClick={() => onChangeSelection(!selected, [urlPair])}
+                                       		data-vud-url={url.url}>
                                             <TableCell padding={'none'} className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
                                             <TableCell padding={'none'}>
-                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} />
+                                                <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} data-vud-role="action-active"/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
@@ -176,7 +177,8 @@ class VanityUrlListDefault extends React.Component {
                                                 ) : ''}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
-                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}/>
+                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}
+                                                	data-vud-role="action-default"/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={(languageCode) => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>

@@ -51,7 +51,7 @@ class Deletion extends React.Component {
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
+                        aria-describedby="alert-dialog-description" data-vud-role="dialog">
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.delete.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-headline">
@@ -79,14 +79,15 @@ class Deletion extends React.Component {
                             <FormControlLabel
                                 control={
                                     <Checkbox checked={!this.state.deleteDisabled}
-                                              onChange={() => this.handleDeleteDisabled()} />
+                                              onChange={() => this.handleDeleteDisabled()}
+                                               data-vud-role="checkbox-hint" />
                                 }
                                 label={t("label.dialogs.delete.terms")}
                             />
                             <Button onClick={this.handleClose} color="primary">
                                 {t('label.cancel')}
                             </Button>
-                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled}>
+                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-delete">
                                 {t('label.delete')}
                             </Button>
                         </span>
