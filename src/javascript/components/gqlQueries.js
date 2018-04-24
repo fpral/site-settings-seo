@@ -3,7 +3,7 @@ import {PredefinedFragments} from "@jahia/apollo-dx";
 import gql from "graphql-tag";
 
 const TableQuery = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $path: String!) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
         jcr {
             nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
@@ -16,6 +16,16 @@ const TableQuery = gql`
                     ...LiveVanityUrls
                 }
             }
+        }
+    }
+    ${DefaultVanityUrls}
+    ${LiveVanityUrls}
+`;
+
+
+const LanguagesQuery = gql`
+    query LanguagesQuery($path: String!) {
+        jcr {
             nodeByPath(path: $path) {
                 site {
                     languages {
@@ -26,8 +36,6 @@ const TableQuery = gql`
             }
         }
     }
-    ${DefaultVanityUrls}
-    ${LiveVanityUrls}
 `;
 
 const TableQueryVariables = (props) => ({
@@ -38,7 +46,6 @@ const TableQueryVariables = (props) => ({
     filterText: props.filterText,
     doFilter: !!props.filterText,
     queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]},
-    path: props.path
 });
 
 const VanityUrlsByPath = gql`
@@ -76,4 +83,4 @@ const GetNodeQuery = gql`
 `;
 
 
-export {TableQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};
+export {TableQuery, LanguagesQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};

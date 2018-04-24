@@ -3,10 +3,9 @@ import {Toolbar, Typography, withTheme, withStyles, Button, IconButton, Circular
 import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
 import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableView} from "./VanityUrlTableView";
-import {PredefinedFragments} from "@jahia/apollo-dx";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
-import {compose, graphql} from 'react-apollo';
+import {compose} from 'react-apollo';
 import {Add, Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
 import MoveInfo from "./MoveInfo";
@@ -16,10 +15,9 @@ import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
 import AddVanityUrl from "./AddVanityUrl";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
-import {Query} from 'react-apollo';
-import {TableQuery, TableQueryVariables} from "./gqlQueries";
-import ErrorSnackBar from "./ErrorSnackBar";
 import {withNotifications} from '@jahia/react-dxcomponents';
+import {VanityUrlLanguageData} from "./VanityUrlLanguageData";
+import {VanityUrlTableData} from "./VanityUrlTableData";
 
 const styles = (theme) => ({
 
@@ -43,17 +41,6 @@ const styles = (theme) => ({
 
     languageSelectorIcon: {
         color: 'inherit'
-    },
-
-    loading: {
-        opacity:0.6
-    },
-
-    loadingOverlay : {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        zIndex: 999
     }
 
 });
@@ -64,14 +51,6 @@ const SiteSettingsSeoConstants = {
     TABLE_POLLING_INTERVAL: 2000
 };
 
-function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
-    let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
-    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
-    let urlPairs = _.merge(defaultUrls, liveUrls);
-    urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
-    return _.values(urlPairs);
-}
-
 class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
@@ -81,7 +60,7 @@ class SiteSettingsSeoApp extends React.Component {
 
         this.state = {
             filterText: '',
-            languages: [],
+            languages: this.props.languages.map(language => language.code),
             currentPage: 0,
             pageSize: 5,
             appBarStyle: {},
@@ -370,146 +349,82 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     render() {
-
         let { dxContext, t, classes } = this.props;
 
-        let params = {
-            lang: dxContext.lang,
-            currentPage: this.state.currentPage,
-            pageSize: this.state.pageSize,
-            path: dxContext.mainResourcePath,
-            filterText: this.state.filterText
-        }
+        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.moveInfo.open || this.state.publishDeletion.open || this.state.add.open);
 
-        let poll = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.moveInfo.open || this.state.publishDeletion.open || this.state.add.open);
+        return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
+            <Toolbar>
+                <Typography variant="title" color="inherit" className={classes.title}>
+                    {t('label.title')} - {dxContext.siteTitle}
+                </Typography>
 
-        return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(params)} pollInterval={poll ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}>{
+                <LanguageSelector
+                    languages={this.props.languages}
+                    selectedLanguageCodes={this.state.languages}
+                    emptySelectionAllowed={false}
+                    className={classes.languageSelector}
+                    classes={{icon: classes.languageSelectorIcon}}
+                    onSelectionChange={this.onSelectedLanguagesChanged}
+                />
 
-            ({loading, error, data}) => {
+                <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
+            </Toolbar>
+        }>
 
-                if (error) {
-                    console.log("Error when loading site languages: " + error);
-                }
+            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
-                let totalCount = 0;
-                let numberOfPages = 0;
-                let rows = [];
-                if (data.jcr && data.jcr.nodesByQuery) {
-                    totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-                    numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.state.pageSize);
+            <VanityUrlTableData
+                {...this.state}
+                path={dxContext.mainResourcePath}
+                lang={dxContext.lang}
+                poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+            >
+                <VanityUrlTableView
+                    {...this.state}
+                    languages={this.props.languages}
+                    actions={this.actions}
+                    onChangeSelection={this.onChangeSelection}
+                    onChangePage={this.onChangePage}
+                    onChangeRowsPerPage={this.onChangeRowsPerPage}
+                />
+            </VanityUrlTableData>
 
-                    rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
+            {this.state.move.open && <Move
+                {...this.state.move}
+                path={dxContext.mainResourcePath}
+                lang={dxContext.lang}
+                onClose={this.closeMove}
+            />}
 
-                        let result = {
-                            path: contentNode.path,
-                            uuid: contentNode.uuid,
-                            displayName: contentNode.displayName
-                        };
+            {this.state.moveInfo.open && <MoveInfo
+                {...this.state.moveInfo}
+                onClose={this.closeMoveInfo}
+            />}
 
-                        let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                        _.each(urlPairs, (p)=> {p.content = result});
+            {this.state.publication.open && <Publication
+                {...this.state.publication}
+                onClose={this.closePublication}
+            />}
 
-                        let allUrlPairs;
-                        if (this.state.filterText) {
-                            allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                            _.each(allUrlPairs, (p) => {p.content = result});
+            {this.state.deletion.open && <Deletion
+                {...this.state.deletion}
+                onClose={this.closeDeletion}
+            />}
 
-                            urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
-                        }
+            {this.state.publishDeletion.open && <PublishDeletion
+                {...this.state.publishDeletion}
+                onClose={this.closePublishDeletion}
+            />}
 
-                        result.urls = urlPairs;
-                        result.allUrls = allUrlPairs;
+            {this.state.add.open && <AddVanityUrl
+                {...this.state.add}
+                filterText={''}
+                onClose={this.closeAdd}
+                defaultLanguage={dxContext.lang}
+            />}
 
-                        return result;
-                    });
-                }
-
-                if (data.jcr && data.jcr.nodeByPath && this.state.languages.length === 0) {
-                    let siteLanguages = _.sortBy(data.jcr.nodeByPath.site.languages, 'code');
-                    this.setState({languages: siteLanguages});
-                }
-                let languages = this.state.languages;
-                return (
-                    <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
-                        <Toolbar>
-                            <Typography variant="title" color="inherit" className={classes.title}>
-                                {t('label.title')} - {dxContext.siteTitle}
-                            </Typography>
-                            <LanguageSelector
-                                languages={languages}
-                                selectedLanguageCodes={languages.map(language => language.code) || []}
-                                emptySelectionAllowed={false}
-                                className={classes.languageSelector}
-                                classes={{icon: classes.languageSelectorIcon}}
-                                onSelectionChange={this.onSelectedLanguagesChanged}
-                            />
-                            <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
-                        </Toolbar>
-                    }>
-
-                        {loading && <div className={classes.loadingOverlay}>
-                            <CircularProgress/>
-                        </div>}
-
-                        <div className={loading ? classes.loading : ''}>
-                            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
-
-                            <VanityUrlTableView
-
-                                {...this.state}
-                                path={dxContext.mainResourcePath}
-                                lang={dxContext.lang}
-                                languages={languages}
-                                totalCount={totalCount}
-                                numberOfPages={numberOfPages}
-                                rows={rows}
-                                actions={this.actions}
-                                onChangeSelection={this.onChangeSelection}
-                                onChangePage={this.onChangePage}
-                                onChangeRowsPerPage={this.onChangeRowsPerPage}
-                            />
-                        </div>
-
-                        {this.state.move.open && <Move
-                            {...this.state.move}
-                            path={dxContext.mainResourcePath}
-                            lang={dxContext.lang}
-                            onClose={this.closeMove}
-                        />}
-
-                        {this.state.moveInfo.open && <MoveInfo
-                            {...this.state.moveInfo}
-                            onClose={this.closeMoveInfo}
-                        />}
-
-                        {this.state.publication.open && <Publication
-                            {...this.state.publication}
-                            onClose={this.closePublication}
-                        />}
-
-                        {this.state.deletion.open && <Deletion
-                            {...this.state.deletion}
-                            onClose={this.closeDeletion}
-                        />}
-
-                        {this.state.publishDeletion.open && <PublishDeletion
-                            {...this.state.publishDeletion}
-                            onClose={this.closePublishDeletion}
-                        />}
-
-                        {this.state.add.open && <AddVanityUrl
-                            {...this.state.add}
-                            filterText={''}
-                            onClose={this.closeAdd}
-                            defaultLanguage={dxContext.lang}
-                        />}
-
-                        { error && <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/> }
-
-                    </SettingsLayout>
-                )
-            }
-        }</Query>
+        </SettingsLayout>
     }
 }
 
@@ -525,7 +440,9 @@ let SiteSettingsSeo = function (props) {
     return (
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
             <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                <SiteSettingsSeoApp {...props}/>
+                <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                    <SiteSettingsSeoApp {...props}/>
+                </VanityUrlLanguageData>
             </VanityMutationsProvider>
         </DxContextProvider>
     );
