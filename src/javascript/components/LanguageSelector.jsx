@@ -15,7 +15,6 @@ class LanguageSelector extends React.Component {
     constructor(props) {
 
         super(props);
-        this.languageByCode = _.keyBy(this.props.languages, 'code');
         this.emptySelectionAllowed = (this.props.emptySelectionAllowed == null ? true : this.props.emptySelectionAllowed);
 
         this.onAllLanguagesChange = this.onAllLanguagesChange.bind(this);
@@ -28,7 +27,7 @@ class LanguageSelector extends React.Component {
             // The All Languages checkbox has been checked: select all languages.
             let selectedLanguageCodes = this.props.languages.map(language => language.code);
             this.props.onSelectionChange(selectedLanguageCodes);
-        } else if (this.props.selectedLanguageCodes.length == this.props.languages.length) {
+        } else if (this.props.selectedLanguageCodes.length === this.props.languages.length) {
             // The All Languages checkbox has been unchecked while all languages were checked: deselect all languages.
             this.props.onSelectionChange([]);
         }
@@ -48,7 +47,7 @@ class LanguageSelector extends React.Component {
             return this.props.t('label.languageSelector.allLanguages');
         } else {
 
-            let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => this.languageByCode[selectedLanguageCode].name);
+            let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, l=> l.code===selectedLanguageCode).name);
             if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
                 // (Too) many languages selected: will display a part of them, plus "N more languages".
                 selectedLanguageNames = selectedLanguageNames.slice(0, MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED - 1);

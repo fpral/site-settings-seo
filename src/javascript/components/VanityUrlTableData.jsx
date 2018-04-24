@@ -9,11 +9,12 @@ import {translate} from "react-i18next";
 
 const styles = (theme) => ({
     loadingOverlay : {
-        position: "absolute",
+        position: "fixed",
         left: "50%",
         top: "50%",
         display: "block",
-        transform: "translate( -50%, -50% )"
+        transform: "translate( -50%, -50% )",
+        zIndex:999
     }
 });
 
@@ -28,31 +29,15 @@ class VanityUrlTableData extends React.Component {
 
     constructor(props) {
         super(props);
-        this.renderChildren = this.renderChildren.bind(this)
-    }
-
-    renderChildren(totalCount, numberOfPages, rows) {
-        return React.Children.map(this.props.children, child => {
-            return React.cloneElement(child, {
-                totalCount: totalCount,
-                numberOfPages: numberOfPages,
-                rows: rows
-            })
-        })
     }
 
     render() {
-        let { t, classes } = this.props;
-        return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={this.props.poll}>
+        let { t, classes, filterText, totalCount, pageSize, poll} = this.props;
+        return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
             { ({loading, error, data}) => {
 
                 if (error) {
                     console.log("Error when fetching data: " + error);
-                    return <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/>
-                }
-
-                if (loading) {
-                    return <div className={classes.loadingOverlay}><CircularProgress/></div>
                 }
 
                 let totalCount = 0;
@@ -60,7 +45,7 @@ class VanityUrlTableData extends React.Component {
                 let rows = [];
                 if (data.jcr && data.jcr.nodesByQuery) {
                     totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-                    numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / this.props.pageSize);
+                    numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / pageSize);
 
                     rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
 
@@ -74,7 +59,7 @@ class VanityUrlTableData extends React.Component {
                         _.each(urlPairs, (p)=> {p.content = result});
 
                         let allUrlPairs;
-                        if (this.props.filterText) {
+                        if (filterText) {
                             allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
                             _.each(allUrlPairs, (p) => {p.content = result});
 
@@ -88,7 +73,12 @@ class VanityUrlTableData extends React.Component {
                     });
                 }
 
-                return <div>{this.renderChildren(totalCount, numberOfPages, rows)}</div>
+                return <div>
+                    {error && <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/>}
+                    {loading && <div className={classes.loadingOverlay}><CircularProgress/></div>}
+                    {this.props.children(rows, totalCount, numberOfPages)}
+                </div>;
+
             }}
         </Query>
     }

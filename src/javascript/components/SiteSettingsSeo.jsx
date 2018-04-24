@@ -343,6 +343,13 @@ class SiteSettingsSeoApp extends React.Component {
         });
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (prevState.languages.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
+            return {languages:nextProps.languages.map(language => language.code)};
+        }
+        return null;
+    }
+
     render() {
         let { dxContext, t, classes } = this.props;
 
@@ -370,19 +377,28 @@ class SiteSettingsSeoApp extends React.Component {
             <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
 
             <VanityUrlTableData
-                {...this.state}
                 path={dxContext.mainResourcePath}
                 lang={dxContext.lang}
+                filterText={this.state.filterText}
+                pageSize={this.state.pageSize}
+                currentPage={this.state.currentPage}
                 poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
             >
-                <VanityUrlTableView
-                    {...this.state}
-                    languages={this.props.languages}
-                    actions={this.actions}
-                    onChangeSelection={this.onChangeSelection}
-                    onChangePage={this.onChangePage}
-                    onChangeRowsPerPage={this.onChangeRowsPerPage}
-                />
+                { (rows, totalCount, numberOfPages) =>
+                    <VanityUrlTableView
+                        rows={rows}
+                        totalCount={totalCount}
+                        numberOfPages={numberOfPages}
+                        pageSize={this.state.pageSize}
+                        currentPage={this.state.currentPage}
+                        selection={this.state.selection}
+                        languages={this.props.languages}
+                        actions={this.actions}
+                        onChangeSelection={this.onChangeSelection}
+                        onChangePage={this.onChangePage}
+                        onChangeRowsPerPage={this.onChangeRowsPerPage}
+                    />
+                }
             </VanityUrlTableData>
 
             {this.state.move.open && <Move
@@ -436,7 +452,7 @@ let SiteSettingsSeo = function (props) {
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
             <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                 <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                    <SiteSettingsSeoApp {...props}/>
+                    { languages => <SiteSettingsSeoApp languages={languages} {...props}/> }
                 </VanityUrlLanguageData>
             </VanityMutationsProvider>
         </DxContextProvider>
