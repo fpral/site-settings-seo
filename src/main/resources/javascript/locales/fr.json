@@ -28,8 +28,9 @@
       "live": "URLs en ligne"
     },
     "dialogs": {
-      "moveInfo": {
-        "content": "Cette URL sera supprimée lors de la publication de {{pagePath}} vers laquelle elle redirige"
+      "infoButton": {
+        "moveAction": "Cette URL sera supprimée lors de la publication de {{pagePath}} vers laquelle elle redirige",
+        "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu  {{pagePath}}"
       },
       "publish": {
         "title": "Confirmation de publication",

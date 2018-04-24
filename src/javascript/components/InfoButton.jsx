@@ -18,7 +18,7 @@ class MoveInfo extends React.Component {
     }
 
     render() {
-        let { open, path, onClose, t } = this.props;
+        let { open, message, onClose, t } = this.props;
         return (
             <Dialog
                 open={open}
@@ -29,11 +29,7 @@ class MoveInfo extends React.Component {
                 <DialogTitle id="alert-dialog-title">{t('label.importantInfo')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {path ? (
-                            t('label.dialogs.moveInfo.content', {pagePath: path})
-                        ) : (
-                            ''
-                        )}
+                        {message}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

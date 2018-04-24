@@ -28,8 +28,10 @@
       "live": "Live mappings"
     },
     "dialogs": {
-      "moveInfo": {
-        "content": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}"
+      "infoButton": {
+        "moveAction": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}",
+        "notPublished": "Bis zur Veröffentlichung von. Werden mehrere Mappings als Standard gesetzt {{pagePath}}"
+
       },
       "publish": {
         "title": "Veröffentlichung bestätigen",

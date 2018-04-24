@@ -230,6 +230,17 @@ class VanityUrlListLive extends React.Component {
     render() {
         let { vanityUrls, classes, t, actions, contentUuid } = this.props;
         let deletedUrls = _.filter(vanityUrls, (urlPair) => urlPair.live && !urlPair.live.editNode);
+
+        // get all vanity with default not published
+        let defaultNotPublished = _.map(_.filter(vanityUrls, (urlPair) =>  urlPair.live && urlPair.default && !urlPair.default.default && urlPair.live.default), urlPair => urlPair.live);
+        // get all languages of live  vanity set as default
+        let defaultPerLanguages = _.filter(_.map(vanityUrls, (urlPair) => urlPair.live && urlPair.live.default ? urlPair.live.language : null));
+        // check for multiple languages
+        let multipleDefaultLang = (_.filter(defaultPerLanguages, function (value, index, iter) {
+                return _.includes(iter, value, index + 1);
+            }));
+        // filter found languages
+        defaultNotPublished = _.filter(defaultNotPublished, vanity => _.includes(multipleDefaultLang, vanity.language));
         return (
             <div>
                 <div>
@@ -245,7 +256,7 @@ class VanityUrlListLive extends React.Component {
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + (urlPair.default ? '' : classes.missingDefaultCounterpart)}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + ((urlPair.default  && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell padding={'dense'} className={classInactive}>
                                                 {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{url.url}</Typography>}
                                             </TableCell>
@@ -258,8 +269,12 @@ class VanityUrlListLive extends React.Component {
                                             <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
                                                 {url.editNode ?
                                                     (url.editNode.path !== url.path ?
-                                                        <ActionButton action={actions.moveInfo} data={url.editNode.targetNode.path}/> :
-                                                        '')
+                                                        <ActionButton action={actions.infoButton} data={url.editNode.targetNode.path ? (
+                                                            t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path})
+                                                        ) : ('')}/> :
+                                                        _.includes(defaultNotPublished, url) ? <ActionButton action={actions.infoButton} data={
+                                                                t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/>
+                                                             : '')
                                                     :
                                                     <ActionButton action={actions.publishDeleteAction} data={deletedUrls}/>
                                                 }

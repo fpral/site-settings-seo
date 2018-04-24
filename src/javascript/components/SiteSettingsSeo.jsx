@@ -8,7 +8,7 @@ import {Selection} from "./Selection";
 import {compose} from 'react-apollo';
 import {Add, Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
 import * as _ from 'lodash';
-import MoveInfo from "./MoveInfo";
+import InfoButton from "./InfoButton";
 import Publication from "./Publication";
 import Deletion from "./Deletion";
 import PublishDeletion from "./PublishDeletion";
@@ -77,9 +77,9 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 urlPairs: []
             },
-            moveInfo: {
+            infoButton: {
                 open: false,
-                path: ''
+                message: ""
             },
             publishDeletion: {
                 open: false,
@@ -100,8 +100,8 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onSelectedLanguagesChanged = this.onSelectedLanguagesChanged.bind(this);
 
-        this.openMoveInfo = this.openMoveInfo.bind(this);
-        this.closeMoveInfo = this.closeMoveInfo.bind(this);
+        this.openInfoButton = this.openInfoButton.bind(this);
+        this.closeInfoButton = this.closeInfoButton.bind(this);
 
         this.openMove = this.openMove.bind(this);
         this.closeMove = this.closeMove.bind(this);
@@ -143,10 +143,10 @@ class SiteSettingsSeoApp extends React.Component {
                 className: "move",
                 call: this.openMove
             },
-            moveInfo: {
+            infoButton: {
                 buttonIcon: <Info/>,
                 className: "move",
-                call: this.openMoveInfo
+                call: this.openInfoButton
             },
             addAction: {
                 buttonIcon: <Add/>,
@@ -183,20 +183,20 @@ class SiteSettingsSeoApp extends React.Component {
         }
     }
 
-    openMoveInfo = (targetPath) => {
+    openInfoButton = (message) => {
         this.setState({
-            moveInfo: {
+            infoButton: {
                 open: true,
-                path: targetPath
+                message: message
             }
         })
     };
 
-    closeMoveInfo() {
+    closeInfoButton() {
         this.setState({
-            moveInfo: {
+            infoButton: {
                 open: false,
-                path: ''
+                message: ''
             }
         })
     };
@@ -295,12 +295,6 @@ class SiteSettingsSeoApp extends React.Component {
         })
     };
 
-    onMoveInfoDialog = (path) => {
-        this.setState({
-            moveInfoDialogPath: path
-        })
-    };
-
     onChangeSelection(add, urlPairs) {
         if (!urlPairs) {
             // Clear selection
@@ -352,7 +346,7 @@ class SiteSettingsSeoApp extends React.Component {
     render() {
         let { dxContext, t, classes } = this.props;
 
-        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.moveInfo.open || this.state.publishDeletion.open || this.state.add.open);
+        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
         return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
             <Toolbar>
@@ -398,9 +392,9 @@ class SiteSettingsSeoApp extends React.Component {
                 onClose={this.closeMove}
             />}
 
-            {this.state.moveInfo.open && <MoveInfo
-                {...this.state.moveInfo}
-                onClose={this.closeMoveInfo}
+            {this.state.infoButton.open && <InfoButton
+                {...this.state.infoButton}
+                onClose={this.closeInfoButton}
             />}
 
             {this.state.publication.open && <Publication
