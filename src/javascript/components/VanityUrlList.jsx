@@ -10,6 +10,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    TextField,
     Typography,
     Input,
     withStyles, withTheme
@@ -165,7 +166,10 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
                                                           render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{props.value}</Typography>) }
-                                                          input={ ({onSave, ...props}) => <Input {...props} onBlur={(e)=>onSave(e)} onKeyPress={(e)=>{if (e.key === 'Enter') { onSave(e) } }} classes={ {root:classes.textInput}}/> }
+                                                          input={ ({onSave, onCancel, onRef, ...props}) => <TextField {...props}
+                                                                                                     onBlur={(e)=>{onSave(e)}}
+                                                                                                     onKeyUp={(e)=>{if (e.key === 'Enter') { onSave(e) } else if (e.key === 'Escape') { onCancel(e) } }}
+                                                                                                     InputProps={{ classes:{root:classes.textInput}}} inputProps={{ref:onRef}}/> }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>

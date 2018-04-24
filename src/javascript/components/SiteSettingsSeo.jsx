@@ -164,17 +164,18 @@ class SiteSettingsSeoApp extends React.Component {
 
                             .then(onSuccess)
                             .catch((errors) => {
-                                onError();
+                                let err;
                                 _.each(errors.graphQLErrors, (error) => {
-                                    if (error.errorType === "GqlConstraintException") {
-                                        notificationContext.notify(this.props.t("label.errors.mappingAlreadyExist", error.extensions));
+                                    if (error.errorType === "GqlConstraintViolationException") {
+                                        err = this.props.t("label.errors.mappingAlreadyExist", error.extensions);
                                     } else {
-                                        notificationContext.notify(error.message);
+                                        err = error.message;
                                     }
                                 })
+                                onError(err);
                             });
                     } catch (e) {
-                        onError();
+                        onError(e);
                         notificationContext.notify(t("label.errors." + (e.name ? e.name : "Error")));
                     }
                 }
