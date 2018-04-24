@@ -1,6 +1,6 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel, TextField, Paper, withStyles} from 'material-ui';
+import {Button, Checkbox, FormControlLabel, TextField, Paper, withStyles, FormControl, FormHelperText} from 'material-ui';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
@@ -14,9 +14,6 @@ let styles = (theme) => ({
     pickerRoot: {
         maxHeight: "calc(100% - 350px)",
         overflowY: "scroll"
-    },
-    inputError: {
-        color: theme.palette.error.main
     }
 });
 
@@ -90,19 +87,19 @@ class Move extends React.Component {
                     <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
-
-                            {error ? <div><br/><DialogContentText className={classes.inputError}>{t("label.dialogs.move.error")}</DialogContentText></div> : ''}
-
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="targetPath"
-                                label={t("label.dialogs.move.target")}
-                                type="text"
-                                value={this.state.targetPath} onChange={this.handleTargetPathChange}
-                                fullWidth
-                                InputProps={{classes: error ? {root: classes.inputError} : {}}}
-                            />
+                            <FormControl>
+                                <TextField
+                                    autoFocus
+                                    error={!!error}
+                                    margin="dense"
+                                    id="targetPath"
+                                    label={t("label.dialogs.move.target")}
+                                    type="text"
+                                    value={this.state.targetPath} onChange={this.handleTargetPathChange}
+                                    fullWidth
+                                />
+                                <FormHelperText>{error && t("label.dialogs.move.error")}</FormHelperText>
+                            </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}
                                         render={PickerViewMaterial}
