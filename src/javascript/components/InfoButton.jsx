@@ -11,7 +11,7 @@ import {translate} from "react-i18next";
 import {MoveMutation} from "./gqlMutations";
 
 
-class MoveInfo extends React.Component {
+class InfoButton extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,8 +42,8 @@ class MoveInfo extends React.Component {
     }
 }
 
-MoveInfo = compose(
+InfoButton = compose(
     (translate('site-settings-seo'))
-)(MoveInfo);
+)(InfoButton);
 
-export default MoveInfo;
+export default InfoButton;
