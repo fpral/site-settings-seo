@@ -80,14 +80,14 @@ class Deletion extends React.Component {
                                 control={
                                     <Checkbox checked={!this.state.deleteDisabled}
                                               onChange={() => this.handleDeleteDisabled()}
-                                               data-vud-role="checkbox-hint" />
+                                              data-vud-role="checkbox-hint" />
                                 }
                                 label={t("label.dialogs.delete.terms")}
                             />
                             <Button onClick={this.handleClose} color="primary">
                                 {t('label.cancel')}
                             </Button>
-                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-delete">
+                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-primary">
                                 {t('label.delete')}
                             </Button>
                         </span>

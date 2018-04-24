@@ -175,8 +175,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
                                                 {selection.length === 0 ? (
                                                     <span>
-                                                        <ActionButton className={isPublished ? classes.deleteAction : ''} action={actions.deleteAction} data={[urlPair]}/>
-                                                        <ActionButton className={isPublished ? classes.moveAction : ''} action={actions.moveAction} data={[urlPair]}/>
+                                                        <ActionButton role='action-delete' className={isPublished ? classes.deleteAction : ''} action={actions.deleteAction} data={[urlPair]}/>
+                                                        <ActionButton role="action-move" className={isPublished ? classes.moveAction : ''} action={actions.moveAction} data={[urlPair]}/>
                                                     </span>
                                                 ) : ''}
                                             </TableCell>
@@ -191,7 +191,7 @@ class VanityUrlListDefault extends React.Component {
                                                 {isPublished ? (
                                                     <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
-                                                    <ActionButton action={actions.publishAction} data={[urlPair]}/>
+                                                    <ActionButton role="action-publish" action={actions.publishAction} data={[urlPair]}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>
@@ -276,7 +276,7 @@ class VanityUrlListLive extends React.Component {
                                                                 t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/>
                                                              : '')
                                                     :
-                                                    <ActionButton action={actions.publishDeleteAction} data={deletedUrls}/>
+                                                    <ActionButton role="action-publishDeletion" action={actions.publishDeleteAction} data={deletedUrls}/>
                                                 }
                                             </TableCell>
                                         </TableRow>
@@ -328,12 +328,12 @@ class ActionButton extends React.Component {
     }
 
     render() {
-        let {action, data, className} = this.props;
+        let {action, data, className, role} = this.props;
         return (
             <IconButton className={className} aria-label={action.buttonLabel} onClick={(event) => {
                 event.stopPropagation();
                 action.call(data, event);
-            }}>
+            }} data-vud-role={role}>
                 {action.body}
                 {action.buttonIcon}
             </IconButton>

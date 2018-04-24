@@ -104,7 +104,8 @@ class Selection extends React.Component {
                 { _.sortBy(_.filter(actions, x=>x.buttonLabel), "priority").map((action, i) =>
                     <Button key={i}
                             onClick={(event) => { action.call(selection, event)}}
-                            className={classNames(classes[action.className], classes.buttonAction)}>
+                            className={classNames(classes[action.className], classes.buttonAction)}
+                            data-vud-role={'toolbar-button-' + action.className}>
                         <span className={classes.buttonActionLeftIcon}>{action.buttonIcon}</span>
                         {action.buttonLabel}
                     </Button>) }

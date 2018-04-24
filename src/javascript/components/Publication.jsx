@@ -25,7 +25,7 @@ class Publication extends React.Component {
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
+                        aria-describedby="alert-dialog-description" data-vud-role="dialog">
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.publish.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -36,7 +36,7 @@ class Publication extends React.Component {
                         <Button onClick={onClose} color="primary">
                             {t('label.cancel')}
                         </Button>
-                        <Button onClick={() => {this.publish()}} color="primary" autoFocus>
+                        <Button onClick={() => {this.publish()}} color="primary" autoFocus data-vud-role="button-primary">
                             {t('label.dialogs.publish.publish')}
                         </Button>
                     </DialogActions>

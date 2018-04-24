@@ -54,8 +54,8 @@ class PublishDeletion extends React.Component {
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.delete.title')}</DialogTitle>
+                        aria-describedby="alert-dialog-description" data-vud-role="dialog">
+                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.publishdeletion.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-headline">
                             {t('label.dialogs.publishdeletion.headline')}{"\n"}
@@ -79,7 +79,7 @@ class PublishDeletion extends React.Component {
                     <DialogActions>
                         <FormControlLabel
                             control={
-                                <Checkbox />
+                                <Checkbox data-vud-role="checkbox-hint" />
                             }
                             label={t('label.dialogs.delete.terms')}
                             onChange={this.handleDeleteDisabled}
@@ -88,7 +88,7 @@ class PublishDeletion extends React.Component {
                         <Button onClick={this.handleClose} color="primary">
                             {t('label.cancel')}
                         </Button>
-                        <Button onClick={() => {this.publish()}} color="primary" disabled={this.state.deleteButtonState} autoFocus>
+                        <Button onClick={() => {this.publish()}} color="primary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">
                             {t('label.delete')}
                         </Button>
                     </DialogActions>
