@@ -48,28 +48,20 @@ class VanityUrlTableData extends React.Component {
                     numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / pageSize);
 
                     rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
-
-                        let result = {
-                            path: contentNode.path,
-                            uuid: contentNode.uuid,
-                            displayName: contentNode.displayName
-                        };
-
                         let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                        _.each(urlPairs, (p)=> {p.content = result});
-
                         let allUrlPairs;
                         if (filterText) {
                             allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                            _.each(allUrlPairs, (p) => {p.content = result});
-
                             urlPairs = _.filter(allUrlPairs, (urlPair) => _.find(urlPairs, (url) => url.uuid === urlPair.uuid));
                         }
 
-                        result.urls = urlPairs;
-                        result.allUrls = allUrlPairs;
-
-                        return result;
+                        return {
+                            path: contentNode.path,
+                            uuid: contentNode.uuid,
+                            displayName: contentNode.displayName,
+                            urls: urlPairs,
+                            allUrls: allUrlPairs
+                        }
                     });
                 }
 

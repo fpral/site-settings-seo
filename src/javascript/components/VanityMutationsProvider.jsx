@@ -14,27 +14,14 @@ class VanityMutationsProvider extends Component {
 
         let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
-        vanityMutationsContext.delete = (pathsOrIds, parents, newDefaults) => deleteMutation({
+        vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
             variables: {
                 pathsOrIds: pathsOrIds,
-                newDefaults: newDefaults,
                 lang: props.lang
-            },
-            update:(proxy) => {
-                // Manually clean cache from parent list
-                _.each(parents, (uuid) => {
-                    let parentNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:uuid, workspace:"EDIT"})];
-                    let list = parentNode[_.find(Object.keys(parentNode), (k) => k.startsWith("vanityUrls"))];
-                    _.each(pathsOrIds, (vanityUuid) => {
-                        let id = proxy.config.dataIdFromObject({uuid:vanityUuid, workspace:"EDIT"});
-                        _.remove(list, (v) => (v.id === id))
-                    });
-                });
-                _.each(pathsOrIds, (id) => {
-                    let liveNode = proxy.data.data[proxy.config.dataIdFromObject({uuid:id, workspace:"LIVE"})];
-                    liveNode[_.find(Object.keys(liveNode), (k) => k.startsWith("nodeInWorkspace"))] = null;
-                });
-            }
+            }, refetchQueries: [{
+                query: TableQuery,
+                variables: TableQueryVariables(props)
+            }]
         });
 
         vanityMutationsContext.move = (pathsOrIds, target, props) => {

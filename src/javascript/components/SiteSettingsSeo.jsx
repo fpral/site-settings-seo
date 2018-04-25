@@ -1,12 +1,12 @@
 import React from 'react';
-import {Toolbar, Typography, withTheme, withStyles, Button, IconButton, CircularProgress} from 'material-ui';
-import {DxContextProvider, SearchBar, SettingsLayout} from '@jahia/react-dxcomponents';
+import {Toolbar, Typography, withStyles, withTheme} from 'material-ui';
+import {DxContextProvider, SearchBar, SettingsLayout, withNotifications} from '@jahia/react-dxcomponents';
 import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableView} from "./VanityUrlTableView";
 import {translate} from 'react-i18next';
 import {Selection} from "./Selection";
 import {compose} from 'react-apollo';
-import {Add, Delete, Publish, SwapHoriz, Info} from "material-ui-icons";
+import {Add, Delete, Info, Publish, SwapHoriz} from "material-ui-icons";
 import * as _ from 'lodash';
 import InfoButton from "./InfoButton";
 import Publication from "./Publication";
@@ -15,7 +15,6 @@ import PublishDeletion from "./PublishDeletion";
 import Move from "./Move";
 import AddVanityUrl from "./AddVanityUrl";
 import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
-import {withNotifications} from '@jahia/react-dxcomponents';
 import {VanityUrlLanguageData} from "./VanityUrlLanguageData";
 import {VanityUrlTableData} from "./VanityUrlTableData";
 
@@ -56,13 +55,15 @@ class SiteSettingsSeoApp extends React.Component {
     constructor(props) {
         super(props);
 
-        let { notificationContext, t } = this.props;
+        let {notificationContext, t} = this.props;
 
         this.state = {
-            filterText: '',
-            languages: this.props.languages.map(language => language.code),
-            currentPage: 0,
-            pageSize: 5,
+            loadParams: {
+                filterText: '',
+                selectedLanguageCodes: this.props.languages.map(language => language.code),
+                currentPage: 0,
+                pageSize: 5
+            },
             appBarStyle: {},
             selection: [],
             publication: {
@@ -70,8 +71,8 @@ class SiteSettingsSeoApp extends React.Component {
                 urlPairs: []
             },
             deletion: {
-                open:false,
-                urlPairs:[]
+                open: false,
+                urlPairs: []
             },
             move: {
                 open: false,
@@ -216,7 +217,7 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 urlPairs: []
             },
-            selection:[]
+            selection: []
         })
     };
 
@@ -309,18 +310,36 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     onChangeFilter = (filterText) => {
-        this.setState({
-            filterText: filterText,
-            currentPage: 0
-        });
+        this.setState((state) => ({
+            loadParams: {
+                filterText: filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
+                currentPage: 0,
+                pageSize: state.loadParams.pageSize
+            }
+        }));
     };
 
     onChangePage(newPage) {
-        this.setState({currentPage: newPage});
+        this.setState((state) => ({
+            loadParams: {
+                filterText: state.loadParams.filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
+                currentPage: newPage,
+                pageSize: state.loadParams.pageSize
+            }
+        }));
     }
 
     onChangeRowsPerPage(newRowsPerPage) {
-        this.setState({pageSize: newRowsPerPage});
+        this.setState((state) => ({
+            loadParams: {
+                filterText: state.loadParams.filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
+                currentPage: state.loadParams.currentPage,
+                pageSize: newRowsPerPage
+            }
+        }));
     }
 
     onSearchFocus() {
@@ -338,22 +357,36 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
-        this.setState({
-            languages: selectedLanguageCodes
-        });
+        this.setState((state) => ({
+            loadParams: {
+                filterText: state.loadParams.filterText,
+                selectedLanguageCodes: selectedLanguageCodes,
+                currentPage: state.loadParams.currentPage,
+                pageSize: state.loadParams.pageSize
+            }
+        }));
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (prevState.languages.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
-            return {languages:nextProps.languages.map(language => language.code)};
+        if (prevState.loadParams.selectedLanguageCodes.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
+            return {
+                loadParams: {
+                    filterText: prevState.loadParams.filterText,
+                    selectedLanguageCodes: nextProps.languages.map(language => language.code),
+                    currentPage: prevState.loadParams.currentPage,
+                    pageSize: prevState.loadParams.pageSize
+                }
+            }
         }
         return null;
     }
 
     render() {
-        let { dxContext, t, classes } = this.props;
+        let {dxContext, t, classes} = this.props;
 
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
+
+            console.log(this.state.loadParams);
 
         return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
             <Toolbar>
@@ -363,36 +396,35 @@ class SiteSettingsSeoApp extends React.Component {
 
                 <LanguageSelector
                     languages={this.props.languages}
-                    selectedLanguageCodes={this.state.languages}
+                    selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
                     emptySelectionAllowed={false}
                     className={classes.languageSelector}
                     classes={{icon: classes.languageSelectorIcon}}
                     onSelectionChange={this.onSelectedLanguagesChanged}
                 />
 
-                <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter} onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
+                <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter}
+                           onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
             </Toolbar>
         }>
 
-            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection} actions={this.actions}/>
+            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection}
+                       actions={this.actions}/>
 
             <VanityUrlTableData
+                {...this.state.loadParams}
                 path={dxContext.mainResourcePath}
                 lang={dxContext.lang}
-                filterText={this.state.filterText}
-                pageSize={this.state.pageSize}
-                currentPage={this.state.currentPage}
                 poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
             >
-                { (rows, totalCount, numberOfPages) =>
+                {(rows, totalCount, numberOfPages) =>
                     <VanityUrlTableView
+                        {...this.state.loadParams}
+                        languages={this.props.languages}
                         rows={rows}
                         totalCount={totalCount}
                         numberOfPages={numberOfPages}
-                        pageSize={this.state.pageSize}
-                        currentPage={this.state.currentPage}
                         selection={this.state.selection}
-                        languages={this.props.languages}
                         actions={this.actions}
                         onChangeSelection={this.onChangeSelection}
                         onChangePage={this.onChangePage}
@@ -403,6 +435,7 @@ class SiteSettingsSeoApp extends React.Component {
 
             {this.state.move.open && <Move
                 {...this.state.move}
+                {...this.state.loadParams}
                 path={dxContext.mainResourcePath}
                 lang={dxContext.lang}
                 onClose={this.closeMove}
@@ -420,6 +453,9 @@ class SiteSettingsSeoApp extends React.Component {
 
             {this.state.deletion.open && <Deletion
                 {...this.state.deletion}
+                {...this.state.loadParams}
+                path={dxContext.mainResourcePath}
+                lang={dxContext.lang}
                 onClose={this.closeDeletion}
             />}
 
@@ -452,7 +488,7 @@ let SiteSettingsSeo = function (props) {
         <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
             <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                 <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                    { languages => <SiteSettingsSeoApp languages={languages} {...props}/> }
+                    {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
                 </VanityUrlLanguageData>
             </VanityMutationsProvider>
         </DxContextProvider>

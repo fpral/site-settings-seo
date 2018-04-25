@@ -26,13 +26,10 @@ const PublishMutation = gql`
 `;
 
 const DeleteVanity = gql`
-    mutation deleteVanityUrls($pathsOrIds: [String!]!, $newDefaults: [String!]!, $lang: String!) {
+    mutation deleteVanityUrls($pathsOrIds: [String!]!, $lang: String!) {
         jcr {
-            mutateNodes(pathsOrIds: $pathsOrIds){
+            mutateVanityUrls(pathsOrIds: $pathsOrIds){
                 delete
-            }
-            mutateVanityUrls(pathsOrIds: $newDefaults) {
-                update(defaultMapping:true)
             }
             modifiedNodes {
               ...DefaultVanityUrlFields
@@ -56,7 +53,9 @@ const AddVanityMutation = gql`
     mutation addVanity($vanityUrls: [InputVanityUrl]!, $path: String!) {
         jcr {
             mutateNode(pathOrId: $path) {
-                addVanityUrl(vanityUrlInputList: $vanityUrls)
+                addVanityUrl(vanityUrlInputList: $vanityUrls) {
+                    uuid
+                }
             }
             modifiedNodes{
                 uuid
