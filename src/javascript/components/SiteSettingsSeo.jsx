@@ -361,7 +361,7 @@ class SiteSettingsSeoApp extends React.Component {
             loadParams: {
                 filterText: state.loadParams.filterText,
                 selectedLanguageCodes: selectedLanguageCodes,
-                currentPage: state.loadParams.currentPage,
+                currentPage: 0,
                 pageSize: state.loadParams.pageSize
             }
         }));
@@ -386,7 +386,7 @@ class SiteSettingsSeoApp extends React.Component {
 
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
-            console.log(this.state.loadParams);
+        console.log(this.state.loadParams);
 
         return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
             <Toolbar>

@@ -22,7 +22,6 @@ const TableQuery = gql`
     ${LiveVanityUrls}
 `;
 
-
 const LanguagesQuery = gql`
     query LanguagesQuery($path: String!) {
         jcr {
@@ -40,13 +39,13 @@ const LanguagesQuery = gql`
 
 const TableQueryVariables = (props) => ({
     lang: props.lang,
+    languages: props.languages,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
     query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
     filterText: props.filterText,
     doFilter: !!props.filterText,
-    queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]},
-    languages: props.languages
+    queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
 });
 
 const VanityUrlsByPath = gql`

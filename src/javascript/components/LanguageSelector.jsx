@@ -47,7 +47,7 @@ class LanguageSelector extends React.Component {
             return this.props.t('label.languageSelector.allLanguages');
         } else {
 
-            let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, l=> l.code===selectedLanguageCode).name);
+            let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, language => language.code === selectedLanguageCode).name);
             if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
                 // (Too) many languages selected: will display a part of them, plus "N more languages".
                 selectedLanguageNames = selectedLanguageNames.slice(0, MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED - 1);

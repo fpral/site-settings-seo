@@ -25,6 +25,7 @@ function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
     return _.values(urlPairs);
 }
+
 class VanityUrlTableData extends React.Component {
 
     constructor(props) {
