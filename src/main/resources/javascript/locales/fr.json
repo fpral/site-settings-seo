@@ -60,7 +60,10 @@
         "check": "Publier automatiquement",
         "text": "Entrer une URL",
         "error": {
-          "exists": "L'URL existe déjà pour la page {{contentPath}}",
+          "exists": {
+            "label": "L'URL existe déjà pour la page {{contentPath}}",
+            "message": "L'URL existe déjà pour la page {{contentPath}}"
+          },
           "invalid": "Cette URL n'est pas valide. Seuls les lettres, chiffres, points (.), tirets (-) et les slashs non consécutifs (/) sont acceptés."
         }
       },

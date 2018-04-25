@@ -3,8 +3,10 @@ import {
     Checkbox,
     Input,
     Button,
+    FormControl,
+    FormHelperText,
+    IconButton,
     Paper,
-    Popover,
     Switch,
     Table,
     TableBody,
@@ -13,7 +15,7 @@ import {
     Typography,
     withStyles,
 } from 'material-ui';
-import {Add, Star, StarBorder, Info} from 'material-ui-icons';
+import {Add, Star, StarBorder, Info, Cancel} from 'material-ui-icons';
 import {LanguageMenu} from "./LanguageMenu";
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
@@ -36,12 +38,6 @@ const styles = theme => ({
     error: {
         color: theme.palette.error.main
     },
-    paper: {
-        padding: theme.spacing.unit,
-    },
-    popover: {
-        pointerEvents: 'none',
-    },
     leftControl: {
         marginRight: "auto",
         paddingLeft: "16px"
@@ -49,6 +45,30 @@ const styles = theme => ({
     rowDisabled: {
         backgroundColor: theme.palette.background.global,
         color: theme.palette.getContrastText(theme.palette.background.global),
+    },
+    root:{
+        width:"100%",
+        "& error": {
+        },
+        "& message": {
+            display:"none"
+        },
+        "& label": {
+        }
+    },
+    button: {
+        height: 18,
+        width: 18,
+        position: "absolute",
+        top: 4,
+        transform: "scale(0.75)",
+        "&:hover": {
+            backgroundColor: "inherit"
+        }
+    },
+    cancel: {
+        color: theme.palette.primary.main,
+        right: 0
     }
 });
 
@@ -62,7 +82,6 @@ class AddVanityUrl extends React.Component {
         this.state = {
             newMappings: this._resetMap(),
             errors:[],
-            errorPopover: null,
             doPublish: false
         };
 
@@ -70,9 +89,8 @@ class AddVanityUrl extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handlePublishCheckboxChange = this.handlePublishCheckboxChange.bind(this);
-        this.handleErrorPopoverOpen = this.handleErrorPopoverOpen.bind(this);
-        this.handleErrorPopoverClose = this.handleErrorPopoverClose.bind(this);
         this.handleDialogEntered = this.handleDialogEntered.bind(this);
+        this.resetInput = this.resetInput.bind(this);
     }
 
     _resetMap = () => {
@@ -81,14 +99,6 @@ class AddVanityUrl extends React.Component {
             newMappings.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false})
         }
         return newMappings;
-    };
-
-    handleErrorPopoverOpen = (event, message) => {
-        this.setState({ errorPopover: {anchorEl: event.target, message: message} });
-    };
-
-    handleErrorPopoverClose = () => {
-        this.setState({ errorPopover: null });
     };
 
     handleSave = (event) => {
@@ -118,7 +128,8 @@ class AddVanityUrl extends React.Component {
                         errors: _.map(error.graphQLErrors[0].extensions, (value) => {
                             return {
                                 url: value.urlMapping,
-                                message: t("label.dialogs.add.error.exists", {contentPath: value.existingNodePath})
+                                message: t("label.dialogs.add.error.exists.message", {contentPath: value.existingNodePath}),
+                                label: t("label.dialogs.add.error.exists.label", {contentPath: value.existingNodePath})
                             }
                         })
                     });
@@ -148,7 +159,6 @@ class AddVanityUrl extends React.Component {
         this.setState({
             newMappings: this._resetMap(),
             errors:[],
-            errorPopoverAnchorEl: null,
             doPublish: false
         });
         this.props.onClose(event);
@@ -189,9 +199,15 @@ class AddVanityUrl extends React.Component {
         this.firstMappingInputRef.focus()
     };
 
+    inputTab = [];
+
+    resetInput = (input) => {
+        input.value = "";
+    }
+
     render() {
         let { t, open, path, onClose, availableLanguages, classes } = this.props;
-        const { errors, newMappings, errorPopover } = this.state;
+        const { errors, newMappings } = this.state;
 
         return (
             <div>
@@ -220,25 +236,30 @@ class AddVanityUrl extends React.Component {
                                                         data-vud-role="active"/>
                                                 </TableCell>
                                                 <TableCell padding={'none'}>
-                                                    <Input
-                                                        inputRef={(input) => { if(index === 0) {this.firstMappingInputRef = input;} }}
-                                                        error={ !!errorForRow }
-                                                        placeholder={t("label.dialogs.add.text")}
-                                                        onFocus={() => this.handleFieldChange("focus", index, true)}
-                                                        onBlur={() => this.handleFieldChange("focus", index, false)}
-                                                        onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
-                                                        data-vud-role="url"
-                                                    />
 
-                                                </TableCell>
-                                                <TableCell padding={'none'}>
-                                                    { errorForRow ?
-                                                        (
-                                                            <Info color="error" className={classes.error} aria-label="error"
-                                                                  onMouseOver={(event) => this.handleErrorPopoverOpen(event, errorForRow.message)}
-                                                                  onMouseOut={this.handleErrorPopoverClose} />)
-                                                        : ""
-                                                    }
+                                                    <FormControl className={classes.root} >
+                                                        <Input
+                                                            ref={index}
+                                                            inputRef={(input) => {this.inputTab[index] = input; if(index === 0) {this.firstMappingInputRef = input}}}
+                                                            error={ !!errorForRow }
+                                                            placeholder={t("label.dialogs.add.text")}
+                                                            onFocus={() => this.handleFieldChange("focus", index, true)}
+                                                            onBlur={() => this.handleFieldChange("focus", index, false)}
+                                                            onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
+                                                            data-vud-role="url"
+                                                        />
+                                                        { errorForRow && <FormHelperText><error><label>{errorForRow.label}</label><message>{errorForRow.message}</message></error></FormHelperText> }
+                                                        {entry.url &&
+                                                        <IconButton className={classes.button + " " + classes.cancel}
+                                                                    component="span" disableRipple onClick={() => {
+                                                            delete entry.url;
+                                                            this.resetInput(this.inputTab[index])
+                                                        }}>
+                                                            <Cancel/>
+                                                        </IconButton>
+                                                        }
+                                                    </FormControl>
+
                                                 </TableCell>
                                                 <TableCell padding={'none'}>
                                                     <Checkbox checked={entry.defaultMapping}
@@ -274,22 +295,6 @@ class AddVanityUrl extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                { errorPopover ?
-                    (
-                        <Popover
-                            className={classes.popover}
-                            classes={{ paper: classes.paper }}
-                            open={true}
-                            anchorEl={errorPopover.anchorEl}
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
-                            transformOrigin={{ vertical: 'top', horizontal: 'left', }}
-                            onClose={this.handleErrorPopoverClose}
-                        >
-                            <Typography>{errorPopover.message}</Typography>
-                        </Popover>)
-                    : ""
-                }
             </div>
         )
     }

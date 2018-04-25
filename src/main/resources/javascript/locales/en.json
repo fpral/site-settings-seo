@@ -61,7 +61,10 @@
         "check": "Automatic publish on save",
         "text": "Enter mapping URL",
         "error": {
-          "exists": "This mapping already set to {{contentPath}}",
+          "exists": {
+            "label": "This mapping already set to {{contentPath}}",
+            "message": "This mapping already set to {{contentPath}}"
+          },
           "invalid": "This mapping is invalid: only letters, digits, dots (.), dashes (-) and no consecutive slashes (/) are allowed"
         }
       },
