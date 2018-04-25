@@ -467,9 +467,9 @@ class SiteSettingsSeoApp extends React.Component {
 
             {this.state.add.open && <AddVanityUrl
                 {...this.state.add}
-                filterText={''}
+                {...this.state.loadParams}
+                lang={dxContext.lang}
                 onClose={this.closeAdd}
-                defaultLanguage={dxContext.lang}
             />}
 
         </SettingsLayout>

@@ -57,7 +57,7 @@ class AddVanityUrl extends React.Component {
     constructor(props) {
         super(props);
         // get default language for the language selector
-        this.defaultLanguage = this.props.defaultLanguage;
+        this.defaultLanguage = this.props.lang;
 
         this.state = {
             newMappings: this._resetMap(),
@@ -98,7 +98,7 @@ class AddVanityUrl extends React.Component {
             return entry;
         });
         try {
-            vanityMutationsContext.add(path, newMappings).then((result) =>
+            vanityMutationsContext.add(path, newMappings, this.props).then((result) =>
             {
                 if (this.state.doPublish) {
                     vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {

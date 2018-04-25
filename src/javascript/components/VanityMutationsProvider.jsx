@@ -65,7 +65,7 @@ class VanityMutationsProvider extends Component {
             })
         };
 
-        vanityMutationsContext.add = (path, vanityUrls) => {
+        vanityMutationsContext.add = (path, vanityUrls, props) => {
 
             let invalidMappings = _.filter(vanityUrls, (mapping) => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
 
@@ -80,7 +80,7 @@ class VanityMutationsProvider extends Component {
                     lang: props.lang
                 }, refetchQueries: [{
                     query: VanityUrlsByPath,
-                    variables: VanityUrlsByPathVariables(path, props.lang)
+                    variables: VanityUrlsByPathVariables(path, props)
                 }]
             })
         };

@@ -49,7 +49,7 @@ const TableQueryVariables = (props) => ({
 });
 
 const VanityUrlsByPath = gql`
-    query NodesbyPath($paths: [String!]!, $lang: String!, $filterText: String, $doFilter: Boolean!) {
+    query NodesbyPath($paths: [String!]!, $lang: String!, $filterText: String, $doFilter: Boolean!, $languages: [String!]) {
         jcr {
             nodesByPath(paths: $paths) {
                 ...NodeCacheRequiredFields
@@ -63,11 +63,12 @@ const VanityUrlsByPath = gql`
     ${LiveVanityUrls}
 `;
 
-const VanityUrlsByPathVariables = (paths, lang) => ({
-    paths: paths,
-    filterText: '',
-    doFilter: false,
-    lang: lang
+const VanityUrlsByPathVariables = (paths, props) => ({
+    lang: props.lang,
+    languages: props.selectedLanguageCodes,
+    filterText: props.filterText,
+    doFilter: !!props.filterText,
+    paths: paths
 });
 
 const GetNodeQuery = gql`
