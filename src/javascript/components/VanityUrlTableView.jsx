@@ -25,6 +25,6 @@ class VanityUrlTableView extends React.Component {
     }
 }
 
-VanityUrlTableView = translate('site-settings-seo')(VanityUrlTableView);
+VanityUrlTableView = translate()(VanityUrlTableView);
 
 export {VanityUrlTableView};

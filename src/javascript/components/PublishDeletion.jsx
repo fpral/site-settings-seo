@@ -101,7 +101,7 @@ class PublishDeletion extends React.Component {
 PublishDeletion = compose(
     withVanityMutationContext(),
     withNotifications(),
-    (translate('site-settings-seo')),
+    (translate()),
     withStyles(styles)
 )(PublishDeletion);
 

@@ -480,12 +480,12 @@ SiteSettingsSeoApp = compose(
     withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
-    translate('site-settings-seo')
+    translate()
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
     return (
-        <DxContextProvider dxContext={props.dxContext} i18n apollo redux mui>
+        <DxContextProvider dxContext={props.dxContext} i18n={{ns:['site-settings-seo', 'react-dxcomponents'], defaultNS:'site-settings-seo'}} apollo redux mui>
             <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                 <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
                     {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}

@@ -76,6 +76,6 @@ class VanityUrlTableData extends React.Component {
     }
 }
 
-VanityUrlTableData = withStyles(styles)(translate('site-settings-seo')(VanityUrlTableData));
+VanityUrlTableData = withStyles(styles)(translate()(VanityUrlTableData));
 
 export {VanityUrlTableData};

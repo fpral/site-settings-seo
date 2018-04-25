@@ -345,12 +345,12 @@ VanityUrlListDefault = compose(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    translate('site-settings-seo')
+    translate()
 )(VanityUrlListDefault);
 
 VanityUrlListLive = compose(
     withStyles(styles),
-    translate('site-settings-seo')
+    translate()
 )(VanityUrlListLive);
 
 export {VanityUrlListLive};

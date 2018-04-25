@@ -49,7 +49,7 @@ class Publication extends React.Component {
 Publication = compose(
     withVanityMutationContext(),
     withNotifications(),
-    translate('site-settings-seo')
+    translate()
 )(Publication);
 
 export default Publication;

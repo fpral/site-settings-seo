@@ -296,7 +296,7 @@ AddVanityUrl = compose(
     withVanityMutationContext(),
     withNotifications(),
     withStyles(styles),
-    translate('site-settings-seo')
+    translate()
 )(AddVanityUrl);
 
 export default AddVanityUrl;

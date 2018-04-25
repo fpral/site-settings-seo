@@ -92,7 +92,7 @@ class Deletion extends React.Component {
 Deletion = compose(
     withVanityMutationContext(),
     withNotifications(),
-    translate('site-settings-seo')
+    translate()
 )(Deletion);
 
 export default Deletion;

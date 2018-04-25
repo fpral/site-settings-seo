@@ -101,7 +101,7 @@ class Move extends React.Component {
                                     value={this.state.targetPath} onChange={this.handleTargetPathChange}
                                     fullWidth
                                 />
-                                <FormHelperText>{error && t("label.dialogs.move.error")}</FormHelperText>
+                                <FormHelperText><container><label>xx</label><message>{error && t("label.dialogs.move.error")}</message></container></FormHelperText>
                             </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}
@@ -144,7 +144,7 @@ Move = compose(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    (translate('site-settings-seo'))
+    (translate())
 )(Move);
 
 export default Move;
