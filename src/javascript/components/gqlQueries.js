@@ -3,7 +3,7 @@ import {PredefinedFragments} from "@jahia/apollo-dx";
 import gql from "graphql-tag";
 
 const TableQuery = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $languages: [String!]) {
         jcr {
             nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
                 pageInfo {
@@ -46,6 +46,7 @@ const TableQueryVariables = (props) => ({
     filterText: props.filterText,
     doFilter: !!props.filterText,
     queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]},
+    languages: props.languages
 });
 
 const VanityUrlsByPath = gql`

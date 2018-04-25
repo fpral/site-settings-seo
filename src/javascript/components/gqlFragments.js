@@ -10,6 +10,12 @@ const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl 
         targetNode {
             ...NodeCacheRequiredFields
         }
+        liveNode: nodeInWorkspace(workspace: LIVE) {
+            ...NodeCacheRequiredFields
+            ...on VanityUrl {
+                language
+            }
+        }
         publicationInfo: aggregatedPublicationInfo(language: $lang) {
             publicationStatus
         }
@@ -33,6 +39,7 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
                     ...NodeCacheRequiredFields
                     displayName(language: $lang)
                 }
+                language
             }
         }
         parent{uuid}
@@ -41,10 +48,19 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
 `;
 
 const DefaultVanityUrls = gql`fragment DefaultVanityUrls on JCRNode {
-        vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+        vanityUrls(fieldFilter: {filters: [
+            {fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText},
+            {fieldFilter: {multi: ANY, filters: [
+                {fieldName: "language", evaluation: AMONG, values: $languages},
+                {fieldName: "liveNode.language", evaluation: AMONG, values: $languages}
+            ]}}
+        ]}) {
             ...DefaultVanityUrlFields
         }
-        allVanityUrls: vanityUrls @include(if: $doFilter) {
+        allVanityUrls: vanityUrls(fieldFilter: {multi: ANY, filters: [
+            {fieldName: "language", evaluation: AMONG, values: $languages},
+            {fieldName: "liveNode.language", evaluation: AMONG, values: $languages}
+        ]}) @include(if: $doFilter) {
             ...DefaultVanityUrlFields
         }
     }
@@ -53,10 +69,19 @@ const DefaultVanityUrls = gql`fragment DefaultVanityUrls on JCRNode {
 
 const LiveVanityUrls = gql`fragment LiveVanityUrls on JCRNode {
         liveNode: nodeInWorkspace(workspace: LIVE) {
-            vanityUrls(fieldFilter: {filters: [{fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText}]}) {
+            vanityUrls(fieldFilter: {filters: [
+                {fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText},
+                {fieldFilter: {multi: ANY, filters: [
+                    {fieldName: "language", evaluation: AMONG, values: $languages},
+                    {fieldName: "editNode.language", evaluation: AMONG, values: $languages}
+                ]}}
+            ]}) {
                 ...LiveVanityUrlFields
             }
-            allVanityUrls: vanityUrls @include(if: $doFilter) {
+            allVanityUrls: vanityUrls(fieldFilter: {multi: ANY, filters: [
+                {fieldName: "language", evaluation: AMONG, values: $languages},
+                {fieldName: "editNode.language", evaluation: AMONG, values: $languages}
+            ]}) @include(if: $doFilter) {
                 ...LiveVanityUrlFields
             }
         }
