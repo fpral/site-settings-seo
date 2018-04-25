@@ -216,7 +216,8 @@ class AddVanityUrl extends React.Component {
                                                 <TableCell padding={'none'}>
                                                     <Switch
                                                         checked={entry.active}
-                                                        onChange={(event, checked) => this.handleFieldChange("active", index, checked)}/>
+                                                        onChange={(event, checked) => this.handleFieldChange("active", index, checked)}
+                                                        data-vud-role="active"/>
                                                 </TableCell>
                                                 <TableCell padding={'none'}>
                                                     <Input
@@ -226,6 +227,7 @@ class AddVanityUrl extends React.Component {
                                                         onFocus={() => this.handleFieldChange("focus", index, true)}
                                                         onBlur={() => this.handleFieldChange("focus", index, false)}
                                                         onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
+                                                        data-vud-role="url"
                                                     />
 
                                                 </TableCell>
@@ -242,9 +244,10 @@ class AddVanityUrl extends React.Component {
                                                     <Checkbox checked={entry.defaultMapping}
                                                               icon={<StarBorder/>}
                                                               checkedIcon={<Star/>}
-                                                              onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}/>
+                                                              onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}
+                                                              data-vud-role="default"/>
                                                 </TableCell>
-                                                <TableCell padding={'none'}>
+                                                <TableCell padding={'none'} data-vud-role="language">
                                                     <LanguageMenu languages={availableLanguages}
                                                                   languageCode={ entry.language }
                                                                   onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
@@ -259,14 +262,14 @@ class AddVanityUrl extends React.Component {
                     <DialogActions>
                         <FormControlLabel classes={{ root: classes.leftControl }}
                                           control={
-                                              <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} />
+                                              <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} data-vud-role="checkbox-hint" />
                                           }
                                           label={t('label.dialogs.add.check')}
                         />
                         <Button onClick={this.handleClose} color="primary">
                             {t('label.cancel')}
                         </Button>
-                        <Button onClick={this.handleSave} color="primary" autoFocus>
+                        <Button onClick={this.handleSave} color="primary" autoFocus data-vud-role="button-primary">
                             {t('label.dialogs.add.save')}
                         </Button>
                     </DialogActions>

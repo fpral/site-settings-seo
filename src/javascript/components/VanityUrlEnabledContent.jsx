@@ -76,13 +76,13 @@ class VanityUrlEnabledContent extends React.Component {
 
         let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls
         return (
-            <div className={this.props.classes.root}>
+            <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
                 <Paper elevation={1}>
                     <ListItem onClick={() => this.handleExpandCollapseClick()} >
 
                         {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'}/>}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path} data-vud-content-uuid={content.uuid}/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
                         {this.state.expanded ? <IconButton aria-label={actions.addAction.className} onClick={(event) => {
