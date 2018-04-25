@@ -14,6 +14,9 @@ let styles = (theme) => ({
     pickerRoot: {
         maxHeight: "calc(100% - 350px)",
         overflowY: "scroll"
+    },
+    formControl:{
+        width:"100%"
     }
 });
 
@@ -87,7 +90,7 @@ class Move extends React.Component {
                     <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>{t("label.dialogs.move.content")}</DialogContentText>
-                            <FormControl>
+                            <FormControl className={classes.formControl}>
                                 <TextField
                                     autoFocus
                                     error={!!error}
