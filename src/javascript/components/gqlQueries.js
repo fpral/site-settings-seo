@@ -39,7 +39,7 @@ const LanguagesQuery = gql`
 
 const TableQueryVariables = (props) => ({
     lang: props.lang,
-    languages: props.languages,
+    languages: props.selectedLanguageCodes,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
     query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
