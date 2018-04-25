@@ -47,20 +47,23 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
+const SearchFilter = `fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText`;
+
+const DefaultLanguageFilter = `fieldFilter: {multi: ANY, filters: [
+    {fieldName: "language", evaluation: AMONG, values: $languages},
+    {fieldName: "liveNode.language", evaluation: AMONG, values: $languages}
+]}`;
+
+const LiveLanguageFilter = `fieldFilter: {multi: ANY, filters: [
+    {fieldName: "language", evaluation: AMONG, values: $languages},
+    {fieldName: "editNode.language", evaluation: AMONG, values: $languages}
+]}`;
+
 const DefaultVanityUrls = gql`fragment DefaultVanityUrls on JCRNode {
-        vanityUrls(fieldFilter: {filters: [
-            {fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText},
-            {fieldFilter: {multi: ANY, filters: [
-                {fieldName: "language", evaluation: AMONG, values: $languages},
-                {fieldName: "liveNode.language", evaluation: AMONG, values: $languages}
-            ]}}
-        ]}) {
+        vanityUrls(fieldFilter: {filters: [{${SearchFilter}}, {${DefaultLanguageFilter}}]}) {
             ...DefaultVanityUrlFields
         }
-        allVanityUrls: vanityUrls(fieldFilter: {multi: ANY, filters: [
-            {fieldName: "language", evaluation: AMONG, values: $languages},
-            {fieldName: "liveNode.language", evaluation: AMONG, values: $languages}
-        ]}) @include(if: $doFilter) {
+        allVanityUrls: vanityUrls(${DefaultLanguageFilter}) @include(if: $doFilter) {
             ...DefaultVanityUrlFields
         }
     }
@@ -69,19 +72,10 @@ const DefaultVanityUrls = gql`fragment DefaultVanityUrls on JCRNode {
 
 const LiveVanityUrls = gql`fragment LiveVanityUrls on JCRNode {
         liveNode: nodeInWorkspace(workspace: LIVE) {
-            vanityUrls(fieldFilter: {filters: [
-                {fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText},
-                {fieldFilter: {multi: ANY, filters: [
-                    {fieldName: "language", evaluation: AMONG, values: $languages},
-                    {fieldName: "editNode.language", evaluation: AMONG, values: $languages}
-                ]}}
-            ]}) {
+            vanityUrls(fieldFilter: {filters: [{${SearchFilter}}, {${LiveLanguageFilter}}]}) {
                 ...LiveVanityUrlFields
             }
-            allVanityUrls: vanityUrls(fieldFilter: {multi: ANY, filters: [
-                {fieldName: "language", evaluation: AMONG, values: $languages},
-                {fieldName: "editNode.language", evaluation: AMONG, values: $languages}
-            ]}) @include(if: $doFilter) {
+            allVanityUrls: vanityUrls(${LiveLanguageFilter}) @include(if: $doFilter) {
                 ...LiveVanityUrlFields
             }
         }
