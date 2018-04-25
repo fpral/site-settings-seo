@@ -51,7 +51,8 @@
         "confirm": "I understand that this move is a one way ticket !!",
         "cancel": "Cancel",
         "move": "Move",
-        "error": "Looks like this path leads nowhere, please double check and try again."
+        "error": "Invalid path",
+        "error_message": "Looks like this path leads nowhere, please double check and try again."
       },
       "add": {
         "title": "Add Mapping",
@@ -72,10 +73,12 @@
     },
     "errors": {
       "Error": "An unexpected error has occurred",
-      "InvalidMappingError": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
+      "InvalidMappingError": "The vanity URL invalid",
+      "InvalidMappingError_message": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
-      "mappingAlreadyExist": "URL Mapping is already used on {{existingNodePath}}",
+      "GqlConstraintViolationException": "URL Mapping already used",
+      "GqlConstraintViolationException_message": "URL Mapping is already used on {{existingNodePath}}",
       "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed"
     },
     "cancel": "Cancel",

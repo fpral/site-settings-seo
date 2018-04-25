@@ -5,7 +5,14 @@ import {Check, Cancel} from "material-ui-icons";
 
 let styles = (theme) => ({
     root:{
-        width:"100%"
+        width:"100%",
+        "& error": {
+        },
+        "& message": {
+            display:"none"
+        },
+        "& label": {
+        }
     },
     button:{
         height:18,
@@ -33,7 +40,8 @@ class Editable extends React.Component {
         this.state = {
             edit:false,
             loading:false,
-            error:null,
+            errorLabel:null,
+            errorMessage:null,
             value:props.value
         };
         this.onValueChange = this.onValueChange.bind(this);
@@ -48,12 +56,12 @@ class Editable extends React.Component {
         if (!edit) {
             if (onChange.length === 1) {
                 onChange(value);
-                this.setState({edit: false, error:null})
+                this.setState({edit: false,  errorLabel:null, errorMessage:null});
             } else {
-                this.setState({loading: true})
+                this.setState({loading: true});
                 onChange(value,
-                    () => { this.setState({loading: false, edit: false, error:null}) },
-                    (error) => { this.setState({loading: false, error:error}); this.nativeInput.focus(); }
+                    () => { this.setState({loading: false, edit: false,  errorLabel:null, errorMessage:null}) },
+                    (errorLabel, errorMessage) => { this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
                 );
             }
         } else {
@@ -76,7 +84,7 @@ class Editable extends React.Component {
     }
 
     cancel(event) {
-        this.setState({edit:false, value:this.props.value, error:null});
+        this.setState({edit:false, value:this.props.value, errorLabel:null, errorMessage:null});
         event.stopPropagation();
     }
 
@@ -86,12 +94,12 @@ class Editable extends React.Component {
 
     render() {
         let { render:Render, input:Input, classes } = this.props;
-        let { edit, loading, value, error } = this.state;
+        let { edit, loading, value, errorLabel, errorMessage } = this.state;
 
         return edit ?
             <FormControl className={classes.root} >
-                <Input value={value} onChange={this.onValueChange} onSave={this.save} onCancel={this.cancel} onClick={(event) => { event.stopPropagation() }} disabled={loading} error={!!error} onRef={this.ref} />
-                { error && <FormHelperText>{error}</FormHelperText> }
+                <Input value={value} onChange={this.onValueChange} onSave={this.save} onCancel={this.cancel} onClick={(event) => { event.stopPropagation() }} disabled={loading} error={!!errorLabel} onRef={this.ref} />
+                { errorLabel && <FormHelperText><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
                 <IconButton className={classes.button + " " + classes.valid} component="span" disableRipple onClick={this.save}>
                     <Check />
                 </IconButton>

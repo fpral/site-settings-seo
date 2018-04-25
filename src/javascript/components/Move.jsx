@@ -16,7 +16,14 @@ let styles = (theme) => ({
         overflowY: "scroll"
     },
     formControl:{
-        width:"100%"
+        width:"100%",
+        "& error": {
+        },
+        "& message": {
+            display:"none"
+        },
+        "& label": {
+        }
     }
 });
 
@@ -77,12 +84,10 @@ class Move extends React.Component {
 
     render() {
         const { t, classes, lang, path } = this.props;
-
         return (
             <div>
                 <Query fetchPolicy={"network-only"} query={GetNodeQuery} variables={{path:this.state.targetPath}}>
-                    {({ loading, error, data }) =>
-                <Dialog
+                    {({ loading, error, data }) => <Dialog
                     open={this.props.open}
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
@@ -101,7 +106,7 @@ class Move extends React.Component {
                                     value={this.state.targetPath} onChange={this.handleTargetPathChange}
                                     fullWidth
                                 />
-                                <FormHelperText><container><label>xx</label><message>{error && t("label.dialogs.move.error")}</message></container></FormHelperText>
+                                <FormHelperText>{error && <error><label>{t("label.dialogs.move.error")}</label><message>{t(["label.dialogs.move.error_message", "label.dialogs.move.error"])}</message></error>}</FormHelperText>
                             </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}
