@@ -4,19 +4,27 @@ import {ArrowDropDown} from 'material-ui-icons';
 
 const styles = (theme) => ({
     langButton: {
+		background: 'transparent',
+		padding: '2px 0 2px 6px',
+		fontSize: '0.8rem',
+		borderRadius: '0',
+		height: 'auto',
+		minHeight: 'auto',
+		minWidth: '60px',
         textTransform: 'none',
         '&:hover $rightIcon': {
             transition: ["opacity", "0.25s"],
             opacity: 1
         },
         '&:hover': {
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary
+            backgroundColor: 'pink',
+            color: 'white'
         }
     },
     rightIcon: {
-        marginLeft: theme.spacing.unit,
-        opacity: 0
+        marginLeft: '0px',
+        opacity: 0,
+		width: '0.8em'
     }
 });
 

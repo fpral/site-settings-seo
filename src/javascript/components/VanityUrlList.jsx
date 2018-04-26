@@ -44,6 +44,26 @@ const styles = (theme) => ({
     table: {
         color: theme.palette.text.primary,
     },
+	tableCellTextInput: {
+		background: 'transparent',
+		width: '100%'
+	},
+	tableRow: {
+		'&:hover $vanityURLText': {
+			marginRight: '78px'
+		},
+		'&:hover $vanityURLText:before': {
+			background: '#ededed'
+		},
+		'&:hover $vanityURLText:after': {
+			background: '#ededed'
+		}
+	},
+	tableCellActionsContainer: {
+		width: '76px',
+		position: 'absolute',
+		marginLeft: '-76px'
+	},
     checkboxLeft: {
         marginLeft: '-48px',
         marginTop: '2px',
@@ -62,10 +82,7 @@ const styles = (theme) => ({
         color: theme.palette.getContrastText(theme.palette.delete.main),
     },
     toBePublished: {
-        '&:hover': {
-            backgroundColor: fade(theme.palette.publish.main, 0.7)
-        },
-        backgroundColor: theme.palette.publish.main,
+        boxShadow: 'inset 7px 0px 0 0 ' + theme.palette.publish.main,
         color: theme.palette.getContrastText(theme.palette.publish.main),
     },
     highlightText: {
@@ -91,12 +108,48 @@ const styles = (theme) => ({
         }
     },
     tableTitle: {
-        paddingBottom: "10px",
-        textTransform: "uppercase"
+        paddingBottom: "3px",
     },
-    text: {
-        width: "260px"
-    }
+	vanityURLText: {
+		color: '#00A0E3',
+		lineHeight: '21px',
+		maxHeight: '42px',
+		overflow: 'hidden',
+		position: 'relative',
+		wordBreak: 'break-all',
+		padding: '3px 6px 1px',
+		'&:before': {
+			content: '"..."',
+			position: 'absolute',
+			right: '1px',
+			bottom: '1px',
+			padding: '0 10px 0 4px',
+			background: 'white',
+			lineHeight: '19px',
+		},
+		'&:hover:before': {
+			background: 'white!important'
+		},
+		'&:after': {
+			content: '""',
+			width: '24px',
+			height: '19px',
+			background: 'white',
+			position: 'absolute',
+			right: '1px',
+			marginTop: '1px'
+		},
+		'&:hover:after': {
+			background: 'white!important'
+		},
+	},
+	editableText: {
+		'&:hover': {
+			boxShadow: 'inset 1px 1px 0 0 #b9b9b9, inset -1px -1px 0 0 #b9b9b9',
+			cursor: 'text',
+			background: 'white'
+		}
+	}
 });
 
 class VanityUrlListDefault extends React.Component {
@@ -147,7 +200,7 @@ class VanityUrlListDefault extends React.Component {
                                     let isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
 
                                     return (
-                                        <TableRow key={urlPair.uuid} hover classes={{
+                                        <TableRow key={urlPair.uuid} className={classes.tableRow} hover classes={{
                                             root: classes.vanityUrl,
                                             hover: (isPublished ? '' : classes.toBePublished)
                                         }}  onClick={() => onChangeSelection(!selected, [urlPair])}
@@ -160,10 +213,10 @@ class VanityUrlListDefault extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
-                                                          render={ (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{props.value}</Typography>) }
+                                                          render={ (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>) }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
+                                            <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive + ' ' + classes.tableCellActionsContainer}>
                                                 {selection.length === 0 ? (
                                                     <span>
                                                         <ActionButton role='action-delete' className={isPublished ? classes.deleteAction : ''} action={actions.deleteAction} data={[urlPair]}/>
@@ -249,7 +302,7 @@ class VanityUrlListLive extends React.Component {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + ((urlPair.default  && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell padding={'dense'} className={classInactive}>
-                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{url.url}</Typography>}
+                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText}>{url.url}</Typography>}
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}

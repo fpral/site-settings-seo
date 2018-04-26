@@ -15,10 +15,18 @@ const styles = theme => ({
     filterMatchInfo: {
         margin: theme.spacing.unit
     },
-    vanityUrlLists: {
-        paddingLeft: 64,
-        padding: 16,
+	vanityUrlLists: {
+        paddingLeft: '45px',
+		paddingTop: '12px',
+        padding: '26px',
     },
+	vanityUrlListHeader: {
+        paddingLeft: '13px',
+        paddingRight: '10px',
+    },
+	vanityUrlListHeaderText: {
+		paddingLeft: '8px'
+	}
 });
 
 class VanityUrlEnabledContent extends React.Component {
@@ -78,11 +86,11 @@ class VanityUrlEnabledContent extends React.Component {
         return (
             <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
                 <Paper elevation={1}>
-                    <ListItem onClick={() => this.handleExpandCollapseClick()} >
+                    <ListItem onClick={() => this.handleExpandCollapseClick()} className={classes.vanityUrlListHeader}>
 
-                        {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'}/>}
+                        {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'} />}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path}/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
                         {this.state.expanded ? <IconButton aria-label={actions.addAction.className} onClick={(event) => {
@@ -95,11 +103,11 @@ class VanityUrlEnabledContent extends React.Component {
 
                     </ListItem>
                     <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                        <Grid container spacing={24} className={classes.vanityUrlLists}>
-                            <Grid item xs={12} lg={6}>
+                        <Grid container spacing={16} className={classes.vanityUrlLists}>
+                            <Grid item xs={6}>
                                 <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid}/>
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={6}>
                                 <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>
                             </Grid>
                         </Grid>

@@ -5,15 +5,41 @@ import {Check, Cancel} from "material-ui-icons";
 
 let styles = (theme) => ({
     root:{
-        width:"100%",
-        "& error": {
+        width:"calc(100% + 130px)",
+		zIndex: '9'
+    },
+	errorContainer: {
+		right: '33px',
+		color: 'red',
+		position: 'absolute',
+		background: 'white',
+		height: '100%',
+		top: '0',
+		margin: '0',
+		zIndex: '99',
+		padding: '11px 5px 11px 11px',
+		boxSizing: 'border-box',
+		"&:hover message": {
+			display: 'block'
+		},
+		"& error": {
         },
         "& message": {
-            display:"none"
+			top: '24px',
+			left: '-50%',
+			width: '280px',
+			display: 'none',
+			padding: '9px',
+			zIndex: '9',
+			position: 'absolute',
+			background: 'blue',
+			border: '1px solid red',
+			boxShadow: '0px 0px 10px 2px rgba(38, 38, 38, 0.7)',
+			borderRadius: '6px',
         },
         "& label": {
         }
-    },
+	},
     button:{
         height:18,
         width:18,
@@ -25,12 +51,14 @@ let styles = (theme) => ({
         }
     },
     cancel: {
-        color:theme.palette.primary.main,
-        right:0
+        color:'red',
+        right:'10px',
+		top: '7px'
     },
     valid: {
-        color:theme.palette.primary.main,
-        right:18
+		color:'green',
+		right:'32px',
+		top: '7px'
     },
     textInput: {
         color: "inherit",
@@ -113,7 +141,7 @@ class Editable extends React.Component {
                        onKeyUp={(e)=>{if (e.key === 'Enter') { this.save(e) } else if (e.key === 'Escape') { this.cancel(e) } }}
                        classes={{root:classes.textInput}} inputRef={this.ref}/>
 
-                { errorLabel && <FormHelperText><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
+                { errorLabel && <FormHelperText className={classes.errorContainer}><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
                 <IconButton className={classes.button + " " + classes.valid} component="span" disableRipple onClick={this.save}>
                     <Check />
                 </IconButton>
