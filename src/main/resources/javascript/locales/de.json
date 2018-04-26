@@ -4,10 +4,10 @@
     "filterPlaceholder": "Nach Keywords filtern",
     "filterMatch": "Treffer: {{count}} von {{totalCount}} Mappings",
     "languageSelector": {
-        "allLanguages": "Alle Sprachen",
-        "moreLanguages": "{{count}} weitere Sprache(n)",
-        "partialLanguages": "{{names}}, {{nextName}}",
-        "languages": "{{names}} & {{lastName}}"
+      "allLanguages": "Alle Sprachen",
+      "moreLanguages": "{{count}} weitere Sprache(n)",
+      "partialLanguages": "{{names}}, {{nextName}}",
+      "languages": "{{names}} & {{lastName}}"
     },
     "selection": {
       "count": "{{count}} Mapping ausgewählt",
@@ -31,7 +31,6 @@
       "infoButton": {
         "moveAction": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}",
         "notPublished": "Bis zur Veröffentlichung von. Werden mehrere Mappings als Standard gesetzt {{pagePath}}"
-
       },
       "publish": {
         "title": "Veröffentlichung bestätigen",
@@ -53,18 +52,17 @@
         "cancel": "Abbrechen",
         "move": "Verschieben",
         "error": "Sieht so aus, als ob dieser Pfad nirgendwohin führt. Bitte überprüfen Sie ihn erneut und versuchen Sie es erneut."
-      },     
-        "add": {
-          "title": "Mapping hinzufügen",
-          "cancel": "Abbrechen",
-          "save": "Speichern",
-          "check": "Automatisch veröffentlichen beim Speichern",
-          "text": "Mapping URL eingeben",
-          "error": {
-            "exists": {
-              "label": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}",
-              "message": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}"
-            }
+      },
+      "add": {
+        "title": "Mapping hinzufügen",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "check": "Automatisch veröffentlichen beim Speichern",
+        "text": "Mapping URL eingeben",
+        "error": {
+          "exists": {
+            "label": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}",
+            "message": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}"
           },
           "invalid": "Dieses Mapping ist ungültig: nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) sind erlaubt"
         }
@@ -76,7 +74,7 @@
       }
     },
     "errors": {
-    "Error": "Ein unerwarteter Fehler ist aufgetreten.",
+      "Error": "Ein unerwarteter Fehler ist aufgetreten.",
       "InvalidMappingError": "Die Vanity URL darf nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) beinhalten.",
       "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen",
       "loadingVanityUrl": "Fehler beim Laden der Vanity URLs",
