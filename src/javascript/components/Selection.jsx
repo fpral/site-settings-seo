@@ -34,7 +34,7 @@ let styles = theme => ({
         color: theme.palette.primary.contrastText,
         position: "relative",
         float: "left",
-        margin: "8px 0 0 7px"
+        margin: "7px 0 0 7px"
     },
     clearIcon: {
         marginLeft: "-2px",

@@ -117,14 +117,14 @@ class SiteSettingsSeoApp extends React.Component {
 
         this.actions = {
             deleteAction: {
-                priority: 3,
+                priority: 1,
                 buttonLabel: "Delete",
                 buttonIcon: <Delete/>,
                 className: "delete",
                 call: this.openDeletion
             },
             publishAction: {
-                priority: 2,
+                priority: 3,
                 buttonLabel: "Publish",
                 buttonIcon: <Publish/>,
                 className: "publish",
@@ -136,7 +136,7 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openPublishDeletion
             },
             moveAction: {
-                priority: 1,
+                priority: 2,
                 buttonLabel: "Move",
                 buttonIcon: <SwapHoriz/>,
                 className: "move",
