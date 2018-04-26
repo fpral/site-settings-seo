@@ -55,8 +55,6 @@ class SiteSettingsSeoApp extends React.Component {
     constructor(props) {
         super(props);
 
-        let {notificationContext, t} = this.props;
-
         this.state = {
             loadParams: {
                 filterText: '',
@@ -162,27 +160,28 @@ class SiteSettingsSeoApp extends React.Component {
                             data.active != null ? data.active.toString() : undefined,
                             data.language,
                             data.url)
-
                             .then(onSuccess)
-                            .catch((errors) => {
-                                let err, mess;
-                                _.each(errors.graphQLErrors, (error) => {
-                                    if (error.errorType === "GqlConstraintViolationException") {
-                                        err = this.props.t("label.errors." + (error.errorType ? error.errorType : "Error"));
-                                        mess = this.props.t(["label.errors." + (error.errorType ? error.errorType : "Error") + "_message", "label.errors." + (error.errorType ? error.errorType : "Error")], error.extensions);
-                                    } else {
-                                        err = this.props.t("label.errors.Error");
-                                        mess = this.props.t(["label.errors.Error_message", "label.errors.Error"]);
-                                    }
-                                });
-                                onError(err,mess);
-                            });
-                    } catch (e) {
-                        onError(t("label.errors." + (e.name ? e.name : "Error")), t(["label.errors." + (e.name ? e.name : "Error") + "_message", "label.errors." + (e.name ? e.name : "Error")]));
+                            .catch(ex => { this.handleServerError(ex, onError) });
+                    } catch (ex) {
+                        this.handleServerError(ex, onError);
                     }
                 }
             }
         }
+    }
+
+    handleServerError(ex, onError) {
+        let {t} = this.props;
+        let err, mess;
+        if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
+            let graphQLError = ex.graphQLErrors[0];
+            err = t(["label.errors." + graphQLError.errorType, "label.errors.Error"]);
+            mess = t(["label.errors." + graphQLError.errorType + "_message", graphQLError.message], graphQLError.extensions);
+        } else {
+            err = t(["label.errors." + ex.name, "label.errors.Error"]);
+            mess = t(["label.errors." + ex.name + "_message", ex.message]);
+        }
+        onError(err,mess);
     }
 
     openInfoButton = (message) => {
@@ -314,7 +313,6 @@ class SiteSettingsSeoApp extends React.Component {
         this.setState((state) => ({
             loadParams: {
                 filterText: filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
                 currentPage: 0,
                 pageSize: state.loadParams.pageSize
             }
@@ -324,10 +322,7 @@ class SiteSettingsSeoApp extends React.Component {
     onChangePage(newPage) {
         this.setState((state) => ({
             loadParams: {
-                filterText: state.loadParams.filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
                 currentPage: newPage,
-                pageSize: state.loadParams.pageSize
             }
         }));
     }
@@ -335,9 +330,6 @@ class SiteSettingsSeoApp extends React.Component {
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState((state) => ({
             loadParams: {
-                filterText: state.loadParams.filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
-                currentPage: state.loadParams.currentPage,
                 pageSize: newRowsPerPage
             }
         }));

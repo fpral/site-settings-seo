@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {FormControl, FormHelperText, IconButton, withStyles} from "material-ui";
+import {FormControl, FormHelperText, IconButton, withStyles, Input} from "material-ui";
 import {Check, Cancel} from "material-ui-icons";
 
 let styles = (theme) => ({
@@ -31,6 +31,11 @@ let styles = (theme) => ({
     valid: {
         color:theme.palette.primary.main,
         right:18
+    },
+    textInput: {
+        color: "inherit",
+        fontSize: "inherit",
+        width: "100%"
     }
 });
 
@@ -89,16 +94,25 @@ class Editable extends React.Component {
     }
 
     onValueChange(event) {
-        this.setState({value:event.target.value});
+        this.setState({value:event.target.value, errorLabel:null, errorMessage:null});
     }
 
     render() {
-        let { render:Render, input:Input, classes } = this.props;
+        let { render:Render,classes } = this.props;
         let { edit, loading, value, errorLabel, errorMessage } = this.state;
 
         return edit ?
             <FormControl className={classes.root} >
-                <Input value={value} onChange={this.onValueChange} onSave={this.save} onCancel={this.cancel} onClick={(event) => { event.stopPropagation() }} disabled={loading} error={!!errorLabel} onRef={this.ref} />
+
+                <Input value={value}
+                       onChange={this.onValueChange}
+                       onClick={(e)=>e.stopPropagation()}
+                       disabled={loading}
+                       onBlur={this.save}
+                       error={!!errorLabel}
+                       onKeyUp={(e)=>{if (e.key === 'Enter') { this.save(e) } else if (e.key === 'Escape') { this.cancel(e) } }}
+                       classes={{root:classes.textInput}} inputRef={this.ref}/>
+
                 { errorLabel && <FormHelperText><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
                 <IconButton className={classes.button + " " + classes.valid} component="span" disableRipple onClick={this.save}>
                     <Check />

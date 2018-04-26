@@ -81,11 +81,6 @@ const styles = (theme) => ({
     deleteAction: {
         color: theme.palette.delete.main,
     },
-    textInput: {
-        color: "inherit",
-        fontSize: "inherit",
-        width: "100%"
-    },
     allCheckbox: {
         position: "absolute",
         marginLeft: "-48px",
@@ -165,11 +160,7 @@ class VanityUrlListDefault extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
-                                                          render={  (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{props.value}</Typography>) }
-                                                          input={ ({onSave, onCancel, onRef, ...props}) => <TextField {...props}
-                                                                                                     onBlur={(e)=>{onSave(e)}}
-                                                                                                     onKeyUp={(e)=>{if (e.key === 'Enter') { onSave(e) } else if (e.key === 'Escape') { onCancel(e) } }}
-                                                                                                     InputProps={{ classes:{root:classes.textInput}}} inputProps={{ref:onRef}}/> }
+                                                          render={ (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.text} noWrap={true}>{props.value}</Typography>) }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive}>
