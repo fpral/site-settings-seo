@@ -30,7 +30,7 @@ class PublishDeletion extends React.Component {
 
         this.publish = function() {
             if (this.props.urlPairs.length > 0) {
-                vanityMutationsContext.publish(this.props.urlPairs[0].live.parent.uuid);
+                vanityMutationsContext.publish(this.props.urlPairs[0].live.parent.uuid, true);
                 notificationContext.notify(t('label.publicationDeletionConfirmed'));
             }
             props.onClose();

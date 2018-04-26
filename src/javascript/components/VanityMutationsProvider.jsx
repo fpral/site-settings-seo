@@ -41,9 +41,10 @@ class VanityMutationsProvider extends Component {
             })
         };
 
-        vanityMutationsContext.publish = (pathsOrIds) => publishMutation({
+        vanityMutationsContext.publish = (pathsOrIds, nodeOnly) => publishMutation({
             variables: {
                 pathsOrIds: pathsOrIds,
+                nodeOnly: nodeOnly,
             }
         });
 
