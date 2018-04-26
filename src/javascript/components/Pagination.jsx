@@ -41,29 +41,31 @@ class TablePaginationActions extends React.Component {
                     onClick={this.handleFirstPageButtonClick}
                     disabled={page === 0}
                     aria-label="First Page"
+                    data-vud-role="table-pagination-button-first-page"
                 >
-                    {theme.direction === 'rtl' ? <LastPage/> : <FirstPage/>}
+                    <FirstPage/>
                 </IconButton>
                 <IconButton
                     onClick={this.handleBackButtonClick}
                     disabled={page === 0}
                     aria-label="Previous Page"
                 >
-                    {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
+                    <KeyboardArrowLeft/>
                 </IconButton>
                 <IconButton
                     onClick={this.handleNextButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Next Page"
+                    data-vud-role="table-pagination-button-next-page"
                 >
-                    {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
+                    <KeyboardArrowRight/>
                 </IconButton>
                 <IconButton
                     onClick={this.handleLastPageButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Last Page"
                 >
-                    {theme.direction === 'rtl' ? <FirstPage/> : <LastPage/>}
+                    <LastPage/>
                 </IconButton>
             </div>
         );
@@ -94,6 +96,7 @@ class Pagination extends React.Component {
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={(event) => onChangeRowsPerPage(event.target.value)}
                         Actions={TablePaginationActions}
+                        data-vud-role="table-pagination"
                     />
                 </TableRow>
             </TableFooter>
