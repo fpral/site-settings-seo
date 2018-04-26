@@ -91,6 +91,7 @@ class Move extends React.Component {
                     open={this.props.open}
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
+                    data-vud-role="dialog"
                 >
                     <DialogTitle id="form-dialog-title">{t("label.dialogs.move.title")}</DialogTitle>
                         <DialogContent>
@@ -129,12 +130,13 @@ class Move extends React.Component {
                             <FormControlLabel
                                 control={
                                     <Checkbox checked={!this.state.saveDisabled}
-                                              onChange={() => this.handleSaveDisabled()} />
+                                              onChange={() => this.handleSaveDisabled()}
+                                              data-vud-role="checkbox-hint" />
                                 }
                                 label={t("label.dialogs.move.confirm")}
                             />
                             <Button onClick={this.handleClose} color="primary">{t("label.cancel")}</Button>
-                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error}>{t("label.dialogs.move.move")}</Button>
+                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error} data-vud-role="button-primary">{t("label.dialogs.move.move")}</Button>
                         </span>
                     </DialogActions>
                 </Dialog>
