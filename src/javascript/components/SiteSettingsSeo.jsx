@@ -311,34 +311,26 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangeFilter = (filterText) => {
         this.setState((state) => ({
-            loadParams: {
+            loadParams: _.assign({},state.loadParams,{
                 filterText: filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
                 currentPage: 0,
-                pageSize: state.loadParams.pageSize
-            }
+            })
         }));
     };
 
     onChangePage(newPage) {
         this.setState((state) => ({
-            loadParams: {
-                filterText: state.loadParams.filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
+            loadParams: _.assign({},state.loadParams,{
                 currentPage: newPage,
-                pageSize: state.loadParams.pageSize
-            }
+            })
         }));
     }
 
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState((state) => ({
-            loadParams: {
-                filterText: state.loadParams.filterText,
-                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
-                currentPage: state.loadParams.currentPage,
+            loadParams: _.assign({},state.loadParams,{
                 pageSize: newRowsPerPage
-            }
+            })
         }));
     }
 
@@ -358,24 +350,19 @@ class SiteSettingsSeoApp extends React.Component {
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
         this.setState((state) => ({
-            loadParams: {
-                filterText: state.loadParams.filterText,
+            loadParams: _.assign({},state.loadParams,{
                 selectedLanguageCodes: selectedLanguageCodes,
                 currentPage: 0,
-                pageSize: state.loadParams.pageSize
-            }
+            })
         }));
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
         if (prevState.loadParams.selectedLanguageCodes.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
             return {
-                loadParams: {
-                    filterText: prevState.loadParams.filterText,
+                loadParams: _.assign({},prevState.loadParams,{
                     selectedLanguageCodes: nextProps.languages.map(language => language.code),
-                    currentPage: prevState.loadParams.currentPage,
-                    pageSize: prevState.loadParams.pageSize
-                }
+                })
             }
         }
         return null;
