@@ -313,6 +313,7 @@ class SiteSettingsSeoApp extends React.Component {
         this.setState((state) => ({
             loadParams: {
                 filterText: filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
                 currentPage: 0,
                 pageSize: state.loadParams.pageSize
             }
@@ -322,7 +323,10 @@ class SiteSettingsSeoApp extends React.Component {
     onChangePage(newPage) {
         this.setState((state) => ({
             loadParams: {
+                filterText: state.loadParams.filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
                 currentPage: newPage,
+                pageSize: state.loadParams.pageSize
             }
         }));
     }
@@ -330,6 +334,9 @@ class SiteSettingsSeoApp extends React.Component {
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState((state) => ({
             loadParams: {
+                filterText: state.loadParams.filterText,
+                selectedLanguageCodes: state.loadParams.selectedLanguageCodes,
+                currentPage: state.loadParams.currentPage,
                 pageSize: newRowsPerPage
             }
         }));
