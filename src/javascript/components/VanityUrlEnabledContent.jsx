@@ -76,7 +76,7 @@ class VanityUrlEnabledContent extends React.Component {
                 filterSwitchButtonLabel = t('label.localFilter.switchOn');
             }
             localFilterSwitch = (
-                <Button onClick={(e) => this.handleFilterSwitchClick(e)}>
+                <Button onClick={(e) => this.handleFilterSwitchClick(e)} data-vud-role="button-filter-switch">
                     {filterSwitchButtonLabel}
                 </Button>
             );
