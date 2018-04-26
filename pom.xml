@@ -120,7 +120,7 @@
               <goal>webpack</goal>
             </goals>
             <configuration>
-              <arguments>--config webpack.config.js</arguments>
+              <arguments>-p</arguments>
             </configuration>
           </execution>
         </executions>
