@@ -4,10 +4,10 @@
     "filterPlaceholder": "Filter by keywords",
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
     "languageSelector": {
-        "allLanguages": "All Languages",
-        "moreLanguages": "{{count}} more language(s)",
-        "partialLanguages": "{{names}}, {{nextName}}",
-        "languages": "{{names}} & {{lastName}}"
+      "allLanguages": "All Languages",
+      "moreLanguages": "{{count}} more language(s)",
+      "partialLanguages": "{{names}}, {{nextName}}",
+      "languages": "{{names}} & {{lastName}}"
     },
     "selection": {
       "count": "{{count}} mapping selected",
