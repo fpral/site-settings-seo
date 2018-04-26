@@ -59,8 +59,7 @@
         "cancel": "Cancel",
         "save": "Save",
         "check": "Automatic publish on save",
-        "text": "Enter mapping URL",
-        }
+        "text": "Enter mapping URL"
       },
       "publishdeletion": {
         "title": "Delete Live Mappings",

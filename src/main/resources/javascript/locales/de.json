@@ -58,7 +58,7 @@
         "cancel": "Abbrechen",
         "save": "Speichern",
         "check": "Automatisch veröffentlichen beim Speichern",
-        "text": "Mapping URL eingeben",
+        "text": "Mapping URL eingeben"
       },
       "publishdeletion": {
         "title": "Live Mappings Löschen",

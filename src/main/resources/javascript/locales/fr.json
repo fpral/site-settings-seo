@@ -58,7 +58,7 @@
         "cancel": "Annuler",
         "save": "Sauver",
         "check": "Publier automatiquement",
-        "text": "Entrer une URL",
+        "text": "Entrer une URL"
       },
       "publishdeletion": {
         "title": "Suppression d'URLs en ligne",
