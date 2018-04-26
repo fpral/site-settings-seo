@@ -19,7 +19,7 @@
                                    j:view="plain"
                                    jcr:primaryType="jnt:contentTemplate"
                                    j:icon="/modules/siteSettings/templates/files/urlmapping.png"
-                                   j:requiredPermissionNames="siteAdminUrlmapping"
+                                   j:requiredPermissionNames="siteAdminVanityURLs"
                                    jcr:mixinTypes="jmix:rbTitle"
                                    j:titleKey="siteSettingsSeo.title">
                             <pagecontent jcr:primaryType="jnt:contentList">
