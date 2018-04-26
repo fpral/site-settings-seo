@@ -133,7 +133,7 @@ class AddVanityUrl extends React.Component {
                         errors: _.map(error.graphQLErrors[0].extensions, (value) => {
                             return {
                                 url: value.urlMapping,
-                                message: t("label.errors.GqlConstraintViolationException_message", {contentPath: value.existingNodePath}),
+                                message: t("label.errors.GqlConstraintViolationException_message", {existingNodePath: value.existingNodePath}),
                                 label: t("label.errors.GqlConstraintViolationException")
                             }
                         })
