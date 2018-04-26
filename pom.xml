@@ -64,7 +64,7 @@
     <url>scm:git:git@github.com:Jahia/site-settings-seo.git</url>
   </scm>
   <properties>
-    <jahia-depends>default,siteSettings,graphql-dxm-provider,react-dxcomponents</jahia-depends>
+    <jahia-depends>default,siteSettings,graphql-dxm-provider</jahia-depends>
   </properties>
   <repositories>
     <repository>
