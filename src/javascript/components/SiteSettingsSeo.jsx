@@ -477,8 +477,15 @@ SiteSettingsSeoApp = compose(
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
+    let getI18NData = __webpack_require__ ? (ns,lang) => {
+        if (ns === 'site-settings-seo') { return require('../../main/resources/javascript/locales/' + lang + '.json'); }
+        if (ns === 'react-dxcomponents') { return require('@jahia/react-dxcomponents/src/main/resources/javascript/locales/' + lang + '.json'); }
+    } : null;
+
     return (
-        <DxContextProvider dxContext={props.dxContext} i18n={{ns:['site-settings-seo', 'react-dxcomponents'], defaultNS:'site-settings-seo'}} apollo redux mui>
+        <DxContextProvider dxContext={props.dxContext} i18n={{
+            ns: ['site-settings-seo', 'react-dxcomponents'], defaultNS: 'site-settings-seo', getData:getI18NData
+        }} apollo redux mui>
             <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                 <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
                     {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}

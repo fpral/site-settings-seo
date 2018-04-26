@@ -19,7 +19,7 @@
 
 "@jahia/react-dxcomponents@git+ssh://git@github.com:Jahia/react-dxcomponents.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#6769959a98baba04d721857a0b48c8f8d6727af7"
+  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#c5b57b089f6ea047f678d2dfdc691f6a1e0e04ed"
   dependencies:
     "@jahia/apollo-dx" "git+ssh://git@github.com:Jahia/apollo-dx.git"
     apollo-client "^2.2.0"
@@ -27,6 +27,7 @@
     graphql-tag "^2.6.1"
     history "^4.7.2"
     i18next "^10.3.0"
+    i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
     jss "^9.4.0"
     jss-preset-default "^4.0.1"
@@ -1459,8 +1460,8 @@ csso@~2.3.1:
     source-map "^0.5.3"
 
 csstype@^2.0.0, csstype@^2.2.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.4.0.tgz#6c7d711cc135dcd90c812a80213eab006fc1acff"
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.4.1.tgz#ba35a94259cffc07ed022954737a1da690dcae2c"
 
 d@1:
   version "1.0.0"
@@ -2042,6 +2043,10 @@ https-browserify@^1.0.0:
 hyphenate-style-name@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
+
+i18next-chained-backend@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/i18next-chained-backend/-/i18next-chained-backend-0.1.2.tgz#f7ea05c75a28dabd4b8664406b78509555508241"
 
 i18next-xhr-backend@^1.5.1:
   version "1.5.1"
