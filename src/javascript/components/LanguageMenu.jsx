@@ -60,11 +60,11 @@ class LanguageMenu extends React.Component {
         const { languageCode, languages, classes } = this.props;
 
         return (<div>
-            <Button className={classes.langButton} onClick={this.handleClick}>
+            <Button className={classes.langButton} onClick={this.handleClick} data-vud-role="language-menu-button">
                 {languageCode}
                 <ArrowDropDown className={classes.rightIcon}/>
             </Button>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} data-vud-role="language-menu">
                 {languages.map(language => <MenuItem key={language.code} onClick={(event) => this.handleSelect(language.code, event)}>{language.name} ({language.code})</MenuItem>)}
             </Menu>
         </div>)
