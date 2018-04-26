@@ -59,13 +59,6 @@
         "save": "Speichern",
         "check": "Automatisch veröffentlichen beim Speichern",
         "text": "Mapping URL eingeben",
-        "error": {
-          "exists": {
-            "label": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}",
-            "message": "Dieses Mapping ist bereits zugewiesen: {{contentPath}}"
-          },
-          "invalid": "Dieses Mapping ist ungültig: nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) sind erlaubt"
-        }
       },
       "publishdeletion": {
         "title": "Live Mappings Löschen",

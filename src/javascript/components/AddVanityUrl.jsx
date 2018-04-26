@@ -107,6 +107,11 @@ class AddVanityUrl extends React.Component {
             delete entry.focus;
             return entry;
         });
+        // exit if there is no mapping to save
+        if (newMappings.length === 0) {
+            this.handleClose(event);
+            return;
+        }
         try {
             vanityMutationsContext.add(path, newMappings, this.props).then((result) =>
             {
@@ -128,8 +133,8 @@ class AddVanityUrl extends React.Component {
                         errors: _.map(error.graphQLErrors[0].extensions, (value) => {
                             return {
                                 url: value.urlMapping,
-                                message: t("label.dialogs.add.error.exists.message", {contentPath: value.existingNodePath}),
-                                label: t("label.dialogs.add.error.exists.label", {contentPath: value.existingNodePath})
+                                message: t("label.errors.GqlConstraintViolationException_message", {contentPath: value.existingNodePath}),
+                                label: t("label.errors.GqlConstraintViolationException")
                             }
                         })
                     });
@@ -144,7 +149,8 @@ class AddVanityUrl extends React.Component {
                     errors: _.map(e.invalidMappings, (invalidMapping) => {
                         return {
                             url: invalidMapping,
-                            message: t("label.dialogs.add.error.invalid")
+                            message: t("label.errors.InvalidMappingError_message"),
+                            label: t("label.errors.InvalidMappingError")
                         }
                     })
                 });
@@ -203,6 +209,7 @@ class AddVanityUrl extends React.Component {
 
     resetInput = (input) => {
         input.value = "";
+        input.focus();
     }
 
     render() {
