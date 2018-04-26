@@ -85,7 +85,7 @@ class PublishDeletion extends React.Component {
                             onChange={this.handleDeleteDisabled}
                             checked={!this.state.deleteButtonState}
                         />
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">
                             {t('label.cancel')}
                         </Button>
                         <Button onClick={() => {this.publish()}} color="primary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">

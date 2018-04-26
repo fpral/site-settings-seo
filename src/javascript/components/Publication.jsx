@@ -33,7 +33,7 @@ class Publication extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={onClose} color="primary">
+                        <Button onClick={onClose} color="primary" data-vud-role="button-cancel">
                             {t('label.cancel')}
                         </Button>
                         <Button onClick={() => {this.publish()}} color="primary" autoFocus data-vud-role="button-primary">
