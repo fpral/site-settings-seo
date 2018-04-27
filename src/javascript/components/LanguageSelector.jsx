@@ -87,6 +87,7 @@ class LanguageSelector extends React.Component {
                 className={this.props.className}
                 classes={this.props.classes}
                 style={this.props.style}
+                data-vud-role={'language-selector'}
                 onChange={this.onChange}
             >
 
@@ -94,7 +95,7 @@ class LanguageSelector extends React.Component {
                     // Render the All Languages checkbox as a menu item so that it is displayed uniformly with individual language items.
                     // However, supply null value to it and ignore it when handling menu change events afterwards; instead handle the checkbox's change event directly.
                 }
-                <MenuItem value={null} disabled={!this.emptySelectionAllowed && allLanguagesChecked /*Do not allow unchecking all in case empty selection is not allowed.*/}>
+                <MenuItem value={null} disabled={!this.emptySelectionAllowed && allLanguagesChecked /*Do not allow unchecking all in case empty selection is not allowed.*/} data-vud-role={'language-selector-item-all'}>
                     <Checkbox
                         checked={allLanguagesChecked}
                         indeterminate={(selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length)}
@@ -111,7 +112,7 @@ class LanguageSelector extends React.Component {
                     let disabled = (!this.emptySelectionAllowed && checked && selectedLanguageCodes.length == 1);
 
                     return (
-                        <MenuItem key={language.code} value={language.code} disabled={disabled}>
+                        <MenuItem key={language.code} value={language.code} disabled={disabled} data-vud-role={'language-selector-item'}>
                             <Checkbox checked={checked}/>
                             <ListItemText primary={language.name + ' (' + language.code + ')'}/>
                         </MenuItem>
