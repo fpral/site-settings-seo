@@ -44,6 +44,8 @@
       }
     },
     "errors": {
+      "duplicateMappings": "doppelte Zuordnungen",
+      "duplicateMappings_message": "doppelte Zuordnungen",
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
       "GqlConstraintViolationException": "URL Mapping wird bereits verwendet",
       "GqlConstraintViolationException_message": "URL Mapping wird bereits verwendet von {{existingNodePath}}",

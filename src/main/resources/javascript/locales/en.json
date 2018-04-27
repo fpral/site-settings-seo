@@ -44,6 +44,8 @@
       }
     },
     "errors": {
+      "duplicateMappings": "Duplicate mappings",
+      "duplicateMappings_message": "Duplicate mappings",
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": "URL Mapping is already used",
       "GqlConstraintViolationException_message": "URL Mapping is already used on {{existingNodePath}}",
