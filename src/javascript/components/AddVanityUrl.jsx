@@ -80,7 +80,7 @@ class AddVanityUrl extends React.Component {
         this.defaultLanguage = this.props.lang;
 
         this.state = {
-            newMappings: this._resetMap(),
+            mappings: this._resetMap(),
             errors:[],
             doPublish: false
         };
@@ -94,26 +94,48 @@ class AddVanityUrl extends React.Component {
     }
 
     _resetMap = () => {
-        let newMappings = [];
+        let mapping = [];
         for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i >= 0; i--) {
-            newMappings.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false})
+            mapping.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false})
         }
-        return newMappings;
+        return mapping;
     };
 
     handleSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
-        let newMappings = _.map(_.filter(this.state.newMappings,(entry) =>  entry.url), (entry) => {
+        let mappings= _.map(_.filter(this.state.mappings,(entry) =>  entry.url), (entry) => {
             delete entry.focus;
             return entry;
         });
+        // check for duplicate mapping
+        let error = false;
+        _.each(mappings, entry => {
+            if (_.filter(mappings, value => value.url === entry.url).length > 1 ) {
+                this.setState(previous => {
+                    previous.errors.push({
+                        url: entry.url,
+                        message: this.props.t("label.errors.duplicateMappings_message"),
+                        label: this.props.t("label.errors.duplicateMappings")
+                    });
+                    return {
+                        errors: previous.errors
+                    }
+                });
+                error = true;
+            }
+        });
+        if (error) {
+            return;
+        }
+
+
         // exit if there is no mapping to save
-        if (newMappings.length === 0) {
+        if (mappings.length === 0) {
             this.handleClose(event);
             return;
         }
         try {
-            vanityMutationsContext.add(path, newMappings, this.props).then((result) =>
+            vanityMutationsContext.add(path, mappings, this.props).then((result) =>
             {
                 if (this.state.doPublish) {
                     vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
@@ -163,7 +185,7 @@ class AddVanityUrl extends React.Component {
 
     handleClose = (event) => {
         this.setState({
-            newMappings: this._resetMap(),
+            mappings: this._resetMap(),
             errors:[],
             doPublish: false
         });
@@ -174,23 +196,32 @@ class AddVanityUrl extends React.Component {
         this.setState(function (previous) {
 
             let mappingToDisableDefaultFlag;
-            if ((field === "defaultMapping" && value === true)) {
-                mappingToDisableDefaultFlag = _.find(previous.newMappings, mapping =>  (mapping.defaultMapping && mapping.language === previous.newMappings[index].language));
+            let errors = previous.errors;
+            let mappings = previous.mappings;
+
+            if (field === "focus") {
+                errors = _.filter(errors, entry => entry.url !== mappings[index].url);
             }
 
-            if ((field === "language" && previous.newMappings[index].defaultMapping)) {
-                mappingToDisableDefaultFlag = _.find(previous.newMappings, mapping =>  (mapping.defaultMapping && mapping.language === value)) ? previous.newMappings[index] : undefined;
+            if (field === "defaultMapping" && value === true) {
+                mappingToDisableDefaultFlag = _.find(mappings, entry =>  (entry.defaultMapping && entry.language === entry[index].language));
+            }
+
+            if (field === "language" && mappings[index].defaultMapping) {
+                mappingToDisableDefaultFlag = _.find(mappings, entry =>  (entry.defaultMapping && entry.language === value)) ? entry[index] : undefined;
             }
 
             if (mappingToDisableDefaultFlag) {
                 mappingToDisableDefaultFlag.defaultMapping = false;
             }
 
-            previous.newMappings[index][field] = value;
-            if (field === "url" && _.filter(previous.newMappings, entry => entry.url).length === previous.newMappings.length) {
-                previous.newMappings.push({ language: this.defaultLanguage, defaultMapping: false, active: true, focus: false });
+            previous.mappings[index][field] = value;
+            if (field === "url" && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
+                previous.mappings.push({ language: this.defaultLanguage, defaultmapping: false, active: true, focus: false });
             }
-            return {newMappings: previous.newMappings};
+            mappings[index][field] = value;
+
+            return {mappings: mappings, errors: errors};
 
         });
     };
@@ -208,13 +239,14 @@ class AddVanityUrl extends React.Component {
     inputTab = [];
 
     resetInput = (input) => {
+        console.log("reset input");
         input.value = "";
         input.focus();
     }
 
     render() {
         let { t, open, path, onClose, availableLanguages, classes } = this.props;
-        const { errors, newMappings } = this.state;
+        const { errors, mappings } = this.state;
 
         return (
             <div>
@@ -229,8 +261,8 @@ class AddVanityUrl extends React.Component {
                         <Paper elevation={2}>
                             <Table>
                                 <TableBody>
-                                    {newMappings.map((entry, index) => {
-                                        let errorForRow = _.find(errors, error =>  error.url === entry.url);
+                                    {mappings.map((entry, index) => {
+                                        let errorForRow = _.find(errors, error =>  error.url === entry.url || error.url === ('/' + entry.url));
                                         let lineEnabled = !!entry.url || entry.focus;
                                         return (
                                             <TableRow key={index} classes={{
