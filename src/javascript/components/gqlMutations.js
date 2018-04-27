@@ -16,10 +16,10 @@ const UpdateVanityMutation = gql`
 `;
 
 const PublishMutation = gql`
-    mutation mutateNodes($pathsOrIds: [String!]!, $nodeOnly: Boolean) {
+    mutation mutateNodes($pathsOrIds: [String!]!, $publishSubNodes: Boolean) {
         jcr {
             mutateNodes(pathsOrIds: $pathsOrIds) {
-                publish(nodeOnly: $nodeOnly)
+                publish(publishSubNodes: $publishSubNodes)
             }
         }
     }

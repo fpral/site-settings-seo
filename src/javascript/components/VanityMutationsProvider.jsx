@@ -44,7 +44,7 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.publish = (pathsOrIds, nodeOnly) => publishMutation({
             variables: {
                 pathsOrIds: pathsOrIds,
-                nodeOnly: nodeOnly,
+                publishSubNodes: !nodeOnly,
             }
         });
 
