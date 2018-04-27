@@ -17,8 +17,8 @@
       "delete": {
         "content": "Sind Sie sicher, dass die ausgewählten Vanity URLs gelöscht werden sollen?",
         "delete": "Löschen",
-        "headline": "",
-        "terms": "",
+        "headline": "Möchten Sie die folgenden Standard Mapping wirklich löschen?",
+        "terms": "Ich verstehe, dass diese Operation nicht rückgängig gemacht werden kann",
         "title": "Löschen bestätigen"
       },
       "infoButton": {
