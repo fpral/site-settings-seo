@@ -6,7 +6,7 @@ import * as gqlMutations from "./gqlMutations";
 import * as _ from "lodash";
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from "./gqlQueries";
 import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
-import {InvalidMappingError, MoveSiteError} from "./Errors";
+import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError} from "./Errors";
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -51,7 +51,7 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
 
             if (url && !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(url)) {
-                throw new InvalidMappingError([url])
+                throw new InvalidMappingError(url)
             }
 
             return updateMutation({
@@ -69,9 +69,14 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.add = (path, vanityUrls, props) => {
 
             let invalidMappings = _.filter(vanityUrls, (mapping) => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
+            let duplicateUrls = _.chain(vanityUrls).pullAllBy(invalidMappings, "url").groupBy("url").pickBy(x => x.length > 1).keys().value();
 
-            if (invalidMappings && invalidMappings.length > 0) {
-                throw new InvalidMappingError(_.map(invalidMappings, (mapping) => mapping.url))
+            let errors = [];
+            _.each(invalidMappings, (invalidMapping) => errors.push(new InvalidMappingError(invalidMapping.url)));
+            _.each(duplicateUrls, (duplicateUrl) =>  errors.push(new DuplicateMappingError(duplicateUrl)));
+
+            if (errors.length > 0) {
+                throw new AddMappingsError(errors)
             }
 
             return addMutation({

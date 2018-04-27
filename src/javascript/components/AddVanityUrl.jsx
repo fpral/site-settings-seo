@@ -103,37 +103,18 @@ class AddVanityUrl extends React.Component {
 
     handleSave = (event) => {
         let { vanityMutationsContext, notificationContext, path, t} = this.props;
+
+        // exit if there is no mapping to save
+        if (this.state.mappings.length === 0) {
+            this.handleClose(event);
+            return;
+        }
+
         let mappings= _.map(_.filter(this.state.mappings,(entry) =>  entry.url), (entry) => {
             delete entry.focus;
             return entry;
         });
-        // check for duplicate mapping
-        let error = false;
-        _.each(mappings, entry => {
-            if (_.filter(mappings, value => value.url === entry.url).length > 1 ) {
-                this.setState(previous => {
-                    previous.errors.push({
-                        url: entry.url,
-                        message: this.props.t("label.errors.duplicateMappings_message"),
-                        label: this.props.t("label.errors.duplicateMappings")
-                    });
-                    return {
-                        errors: previous.errors
-                    }
-                });
-                error = true;
-            }
-        });
-        if (error) {
-            return;
-        }
 
-
-        // exit if there is no mapping to save
-        if (mappings.length === 0) {
-            this.handleClose(event);
-            return;
-        }
         try {
             vanityMutationsContext.add(path, mappings, this.props).then((result) =>
             {
@@ -166,13 +147,13 @@ class AddVanityUrl extends React.Component {
                 }
             })
         } catch (e) {
-            if (e.invalidMappings) {
+            if (e.errors) {
                 this.setState({
-                    errors: _.map(e.invalidMappings, (invalidMapping) => {
+                    errors: _.map(e.errors, (error) => {
                         return {
-                            url: invalidMapping,
-                            message: t("label.errors.InvalidMappingError_message"),
-                            label: t("label.errors.InvalidMappingError")
+                            url: error.mapping,
+                            message: t("label.errors." + error.name + "_message"),
+                            label: t("label.errors." + error.name)
                         }
                     })
                 });
@@ -195,20 +176,17 @@ class AddVanityUrl extends React.Component {
     handleFieldChange = (field, index, value) => {
         this.setState(function (previous) {
 
+            if ((field === "url")) {
+                previous.errors = _.pullAllBy(previous.errors, [{ 'url': previous.mappings[index].url }], "url");
+            }
+
             let mappingToDisableDefaultFlag;
-            let errors = previous.errors;
-            let mappings = previous.mappings;
-
-            if (field === "focus") {
-                errors = _.filter(errors, entry => entry.url !== mappings[index].url);
+            if ((field === "defaultMapping" && value === true)) {
+                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping =>  (mapping.defaultMapping && mapping.language === previous.mappings[index].language));
             }
 
-            if (field === "defaultMapping" && value === true) {
-                mappingToDisableDefaultFlag = _.find(mappings, entry =>  (entry.defaultMapping && entry.language === entry[index].language));
-            }
-
-            if (field === "language" && mappings[index].defaultMapping) {
-                mappingToDisableDefaultFlag = _.find(mappings, entry =>  (entry.defaultMapping && entry.language === value)) ? entry[index] : undefined;
+            if ((field === "language" && previous.mappings[index].defaultMapping)) {
+                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping =>  (mapping.defaultMapping && mapping.language === value)) ? previous.mappings[index] : undefined;
             }
 
             if (mappingToDisableDefaultFlag) {
@@ -217,11 +195,9 @@ class AddVanityUrl extends React.Component {
 
             previous.mappings[index][field] = value;
             if (field === "url" && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
-                previous.mappings.push({ language: this.defaultLanguage, defaultmapping: false, active: true, focus: false });
+                previous.mappings.push({ language: this.defaultLanguage, defaultMapping: false, active: true, focus: false });
             }
-            mappings[index][field] = value;
-
-            return {mappings: mappings, errors: errors};
+            return {mappings: previous.mappings, errors: previous.errors};
 
         });
     };

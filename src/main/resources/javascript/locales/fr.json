@@ -44,8 +44,8 @@
       }
     },
     "errors": {
-      "duplicateMappings": "URL Dupliquée",
-      "duplicateMappings_message": "URL Dupliquée",
+      "DuplicateMappingError": "URL Dupliquée",
+      "DuplicateMappingError_message": "URL Dupliquée",
       "Error": "Une erreur imprévue s'est produite",
       "GqlConstraintViolationException": "Cette URL est déjà utilisée",
       "GqlConstraintViolationException_message": "Cette URL est déjà utilisée par {{existingNodePath}}",
