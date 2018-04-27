@@ -118,14 +118,14 @@ class AddVanityUrl extends React.Component {
                 if (this.state.doPublish) {
                     vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
                         this.handleClose(event);
-                        notificationContext.notify(t('label.newMappingCreatedAndPublished'));
+                        notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'));
                     }, (error) => {
                         notificationContext.notify(t('label.errors.Error'));
                         console.log(error)
                     })
                 } else {
                     this.handleClose(event);
-                    notificationContext.notify(t('label.newMappingCreated'));
+                    notificationContext.notify(t('label.notifications.newMappingCreated'));
                 }
             }, (error) => {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {

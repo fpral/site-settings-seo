@@ -1,91 +1,95 @@
 {
   "label": {
-    "title": "URL personnalisées",
-    "filterPlaceholder": "Filtrer",
-    "filterMatch": "Affichage de {{count}} éléments filtrés sur {{totalCount}}",
-    "languageSelector": {
-      "allLanguages": "Toutes les langues",
-      "moreLanguages": "{{count}} langue(s) supplémentaire(s)",
-      "partialLanguages": "{{names}}, {{nextName}}",
-      "languages": "{{names}} & {{lastName}}"
-    },
-    "selection": {
-      "count": "{{count}} URL sélectionnée",
-      "count_plural": "{{count}} URLs sélectionnées",
-      "clear": "Clear"
-    },
-    "localFilter": {
-      "switchOn": "Afficher les URLs filtrées",
-      "switchOff": "Afficher tout"
-    },
     "actions": {
+      "delete": "Supprimer",
       "move": "Réaffecter",
-      "publish": "Publier",
-      "delete": "Supprimer"
+      "publish": "Publier"
     },
-    "mappings": {
-      "default": "URLs en version de travail",
-      "live": "URLs en ligne"
-    },
+    "cancel": "Annuler",
+    "copyright": "© Copyright 2002-2018 - Jahia Solutions Group SA",
     "dialogs": {
+      "add": {
+        "check": "Publier automatiquement",
+        "save": "Sauver",
+        "text": "Entrer une URL",
+        "title": "Ajouter URL"
+      },
+      "delete": {
+        "content": "Note: Si vous voulez utiliser cette URL sur une autre page, il est préférable de la déplacer plutôt que de la supprimer.",
+        "delete": "Effacer",
+        "headline": "Êtes vous sûr de vouloir supprimer les URLs personnalisées suivantes ?",
+        "terms": "Je comprend que cette opération ne peut être annulée.",
+        "title": "Suppression d'URLs"
+      },
       "infoButton": {
         "moveAction": "Cette URL sera supprimée lors de la publication de {{pagePath}} vers laquelle elle redirige",
         "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu  {{pagePath}}"
       },
-      "publish": {
-        "title": "Confirmation de publication",
-        "content": "Êtes vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
-        "cancel": "Annuler",
-        "publish": "Publier"
-      },
-      "delete": {
-        "title": "Suppression d'URLs",
-        "headline": "Êtes vous sûr de vouloir supprimer les URLs personnalisées suivantes ?",
-        "content": "Note: Si vous voulez utiliser cette URL sur une autre page, il est préférable de la déplacer plutôt que de la supprimer.",
-        "terms": "Je comprend que cette opération ne peut être annulée."
-      },
       "move": {
-        "title": "Déplacer URL",
-        "content": "Entrez le chemin du contenu de destination.",
-        "target": "Chemin du contenu de destination",
         "confirm": "Cette opération ne peut être annulée.",
-        "cancel": "Annuler",
+        "content": "Entrez le chemin du contenu de destination.",
         "move": "Déplacer",
-        "error": "Il semblerait que ce chemin ne mène nulle part, s'il vous plaît vérifiez et réessayez."
+        "target": "Chemin du contenu de destination",
+        "title": "Déplacer URL"
       },
-      "add": {
-        "title": "Ajouter URL",
-        "cancel": "Annuler",
-        "save": "Sauver",
-        "check": "Publier automatiquement",
-        "text": "Entrer une URL"
+      "publish": {
+        "content": "Êtes vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
+        "publish": "Publier",
+        "title": "Confirmation de publication"
       },
       "publishdeletion": {
-        "title": "Suppression d'URLs en ligne",
+        "content": "Il n'est pas possible de supprimer des URLs en ligne individuellement. Les URLs en ligne suivante vont être supprimées :",
         "headline": "Vous êtes sur le point de supprimer plusieurs URLs en ligne.",
-        "content": "Il n'est pas possible de supprimer des URLs en ligne individuellement. Les URLs en ligne suivante vont être supprimées :"
+        "title": "Suppression d'URLs en ligne"
       }
     },
     "errors": {
       "Error": "Une erreur imprévue s'est produite",
-      "InvalidMappingError": "Une URL ne peut contenir que des lettres, chiffres, points (.), tirets (-) et slashs non consécutifs (/)",
+      "GqlConstraintViolationException": "Cette URL est déjà utilisée",
+      "GqlConstraintViolationException_message": "Cette URL est déjà utilisée par {{existingNodePath}}",
+      "InvalidMappingError": "L'URL est invalide",
+      "InvalidMappingError_message": "Une URL ne peut contenir que des lettres, chiffres, points (.), tirets (-) et slashs non consécutifs (/)",
+      "MoveInvalidTarget_message": "Il semblerait que ce chemin ne mène nulle part, s'il vous plaît vérifiez et réessayez.",
+      "MoveSiteError": "Le déplacement d'URLs vers un autre site n'est pas autorisé.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
       "loadingVanityUrl": "Erreur lors du chargement des URLs personnalisées",
-      "mappingAlreadyExist": "Cette URL est déjà utilisée par {{existingNodePath}}",
-      "MoveSiteError": "Le déplacement d'URLs vers un autre site n'est pas autorisé."
+      "MoveInvalidTarget": "Chemin invalide"
     },
-    "cancel": "Annuler",
-    "delete": "Supprimer",
-    "publicationStarted": "Job de publication lancé en arrière plan",
-    "deletionConfirmed": "Suppression confirmée",
-    "publicationDeletionConfirmed": "Suppression confirmée, Job de publication lancé en arrière plan",
-    "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
-    "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
-    "moveConfirmed": "Déplacement confirmé",
-    "okGotIt": "OK, j'ai compris",
+    "filterMatch": "Affichage de {{count}} élément filtré sur {{totalCount}}",
+    "filterMatch_plural": "Affichage de {{count}} éléments filtrés sur {{totalCount}}",
+    "filterPlaceholder": "Filtrer",
     "importantInfo": "Information importante",
-    "missingDefault": "{{vanityUrl}} supprimée",
-    "movedDefault": "Déplacée vers {{page}}",
-    "copyright": "\u00A9 Copyright 2002-2018 - Jahia Solutions Group SA"
+    "languageSelector": {
+      "allLanguages": "Toutes les langues",
+      "languages": "{{names}} & {{lastName}}",
+      "moreLanguages": "{{count}} langue supplémentaire",
+      "moreLanguages_plural": "{{count}} langues supplémentaires",
+      "partialLanguages": "{{names}}, {{nextName}}"
+    },
+    "localFilter": {
+      "switchOff": "Afficher tout",
+      "switchOn": "Afficher les URLs filtrées"
+    },
+    "mappings": {
+      "default": "URLs en version de travail",
+      "live": "URLs en ligne",
+      "missingDefault": "{{vanityUrl}} supprimée",
+      "movedDefault": "Déplacée vers {{page}}"
+    },
+    "notifications": {
+      "deletionConfirmed": "Suppression confirmée",
+      "moveConfirmed": "Déplacement confirmé",
+      "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
+      "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
+      "publicationDeletionConfirmed": "Suppression confirmée, Job de publication lancé en arrière plan",
+      "publicationStarted": "Job de publication lancé en arrière plan"
+    },
+    "okGotIt": "OK, j'ai compris",
+    "selection": {
+      "clear": "Effacer",
+      "count": "{{count}} URL sélectionnée",
+      "count_plural": "{{count}} URLs sélectionnées"
+    },
+    "title": "URL personnalisées"
   }
 }

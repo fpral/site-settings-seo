@@ -31,7 +31,7 @@ class PublishDeletion extends React.Component {
         this.publish = function() {
             if (this.props.urlPairs.length > 0) {
                 vanityMutationsContext.publish(this.props.urlPairs[0].live.parent.uuid, true);
-                notificationContext.notify(t('label.publicationDeletionConfirmed'));
+                notificationContext.notify(t('label.notifications.publicationDeletionConfirmed'));
             }
             props.onClose();
         };
@@ -89,7 +89,7 @@ class PublishDeletion extends React.Component {
                             {t('label.cancel')}
                         </Button>
                         <Button onClick={() => {this.publish()}} color="primary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">
-                            {t('label.delete')}
+                            {t('label.actions.delete')}
                         </Button>
                     </DialogActions>
                 </Dialog>

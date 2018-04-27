@@ -49,7 +49,7 @@ class Move extends React.Component {
             vanityMutationsContext.move(_.map(this.props.urlPairs, "uuid"), this.state.targetPath, this.props)
                 .then(() => {
                     this.handleClose();
-                    notificationContext.notify(t("label.moveConfirmed"));
+                    notificationContext.notify(t("label.notifications.moveConfirmed"));
                 })
                 .catch((errors) => {
                     if (errors.graphQLErrors) {
@@ -107,7 +107,7 @@ class Move extends React.Component {
                                     value={this.state.targetPath} onChange={this.handleTargetPathChange}
                                     fullWidth
                                 />
-                                <FormHelperText>{error && <error><label>{t("label.dialogs.move.error")}</label><message>{t(["label.dialogs.move.error_message", "label.dialogs.move.error"])}</message></error>}</FormHelperText>
+                                <FormHelperText>{error && <error><label>{t("label.errors.MoveInvalidTarget")}</label><message>{t(["label.errors.MoveInvalidTarget_message", "label.errors.MoveInvalidTarget"])}</message></error>}</FormHelperText>
                             </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}

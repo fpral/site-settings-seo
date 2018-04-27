@@ -16,7 +16,7 @@ class Publication extends React.Component {
         this.publish = function() {
             vanityMutationsContext.publish(_.map(this.props.urlPairs, "uuid"));
             props.onClose();
-            notificationContext.notify(t('label.publicationStarted'));
+            notificationContext.notify(t('label.notifications.publicationStarted'));
         };
     }
 

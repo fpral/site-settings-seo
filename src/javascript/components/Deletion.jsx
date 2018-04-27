@@ -17,7 +17,7 @@ class Deletion extends React.Component {
         this.delete = function() {
             vanityMutationsContext.delete(_.map(this.props.urlPairs, "uuid"), this.props);
             props.onClose();
-            notificationContext.notify(t('label.deletionConfirmed'));
+            notificationContext.notify(t('label.notifications.deletionConfirmed'));
         };
         this.state = {
             deleteDisabled: true,
@@ -79,7 +79,7 @@ class Deletion extends React.Component {
                                 {t('label.cancel')}
                             </Button>
                             <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-primary">
-                                {t('label.delete')}
+                                {t('label.dialogs.delete.delete')}
                             </Button>
                         </span>
                     </DialogActions>
