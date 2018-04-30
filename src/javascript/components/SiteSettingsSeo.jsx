@@ -181,7 +181,7 @@ class SiteSettingsSeoApp extends React.Component {
             err = t(["label.errors." + ex.name, "label.errors.Error"]);
             mess = t(["label.errors." + ex.name + "_message", ex.message]);
         }
-        onError(err,mess);
+        onError(err, mess);
     }
 
     openInfoButton = (message) => {
@@ -311,7 +311,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangeFilter = (filterText) => {
         this.setState((state) => ({
-            loadParams: _.assign({},state.loadParams,{
+            loadParams: _.assign({}, state.loadParams, {
                 filterText: filterText,
                 currentPage: 0,
             })
@@ -320,7 +320,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangePage(newPage) {
         this.setState((state) => ({
-            loadParams: _.assign({},state.loadParams,{
+            loadParams: _.assign({}, state.loadParams, {
                 currentPage: newPage,
             })
         }));
@@ -328,7 +328,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState((state) => ({
-            loadParams: _.assign({},state.loadParams,{
+            loadParams: _.assign({}, state.loadParams, {
                 pageSize: newRowsPerPage
             })
         }));
@@ -350,7 +350,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
         this.setState((state) => ({
-            loadParams: _.assign({},state.loadParams,{
+            loadParams: _.assign({}, state.loadParams, {
                 selectedLanguageCodes: selectedLanguageCodes,
                 currentPage: 0,
             })
@@ -360,7 +360,7 @@ class SiteSettingsSeoApp extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (prevState.loadParams.selectedLanguageCodes.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
             return {
-                loadParams: _.assign({},prevState.loadParams,{
+                loadParams: _.assign({}, prevState.loadParams, {
                     selectedLanguageCodes: nextProps.languages.map(language => language.code),
                 })
             }
@@ -469,7 +469,7 @@ SiteSettingsSeoApp = compose(
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
-    let getI18NData = __webpack_require__ ? (ns,lang) => {
+    let getI18NData = __webpack_require__ ? (ns, lang) => {
         if (ns === 'site-settings-seo') { return require('../../main/resources/javascript/locales/' + lang + '.json'); }
         if (ns === 'react-dxcomponents') { return require('@jahia/react-dxcomponents/src/main/resources/javascript/locales/' + lang + '.json'); }
     } : null;
