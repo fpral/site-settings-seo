@@ -92,6 +92,6 @@
       "count": "{{count}} mapping selected",
       "count_plural": "{{count}} mappings selected"
     },
-    "title": "Vanity URL Dashboard"
+    "title": "Vanity URLs"
   }
 }
