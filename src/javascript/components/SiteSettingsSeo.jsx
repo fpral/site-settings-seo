@@ -54,6 +54,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     constructor(props) {
         super(props);
+        let {t} = this.props;
 
         this.state = {
             loadParams: {
@@ -118,14 +119,14 @@ class SiteSettingsSeoApp extends React.Component {
         this.actions = {
             deleteAction: {
                 priority: 1,
-                buttonLabel: "Delete",
+                buttonLabel: t("label.actions.delete"),
                 buttonIcon: <Delete/>,
                 className: "delete",
                 call: this.openDeletion
             },
             publishAction: {
                 priority: 3,
-                buttonLabel: "Publish",
+                buttonLabel: t("label.actions.publish"),
                 buttonIcon: <Publish/>,
                 className: "publish",
                 call: this.openPublication
@@ -137,7 +138,7 @@ class SiteSettingsSeoApp extends React.Component {
             },
             moveAction: {
                 priority: 2,
-                buttonLabel: "Move",
+                buttonLabel:  t("label.actions.move"),
                 buttonIcon: <SwapHoriz/>,
                 className: "move",
                 call: this.openMove
