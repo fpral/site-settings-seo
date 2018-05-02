@@ -11,20 +11,38 @@ import {GetNodeQuery} from "./gqlQueries";
 import {Query} from 'react-apollo';
 
 let styles = (theme) => ({
-    pickerRoot: {
-        maxHeight: "calc(100% - 350px)",
-        overflowY: "scroll"
+	pickerRoot: {
+		minHeight: '330px',
+        maxHeight: "350px",
+        overflowY: "scroll",
+		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
+		borderRadius: '0px',
+		border: '1px solid #d5d5d5',
+		'& $PickerViewMaterial': {
+		color: 'pink'
+		}
     },
-    formControl:{
-        width:"100%",
-        "& error": {
-        },
-        "& message": {
-            display:"none"
-        },
-        "& label": {
-        }
-    }
+	dialogNote: {
+		fontSize: '0.875rem',
+		marginTop: '10px'
+	},
+	dialogActionsButtonContainer: {
+		display: 'inline-block',
+		verticalAlign: 'middle',
+		position: 'absolute',
+		right: '20px',
+		paddingTop: '7px',
+	},
+	filterPath: {
+		marginTop: '20px',
+		'& > div': {
+			borderRadius: '0px',
+			border: '1px solid #d5d5d5',
+			borderBottom: 'none',
+			boxShadow: 'none',
+			background: 'whitesmoke'
+		}
+	}
 });
 
 class Move extends React.Component {
@@ -100,10 +118,10 @@ class Move extends React.Component {
                                 <TextField
                                     autoFocus
                                     error={!!error}
-                                    margin="dense"
                                     id="targetPath"
-                                    label={t("label.dialogs.move.target")}
                                     type="text"
+									placeholder="Enter a path"
+									className={classes.filterPath}
                                     value={this.state.targetPath} onChange={this.handleTargetPathChange}
                                     fullWidth
                                 />
@@ -135,9 +153,12 @@ class Move extends React.Component {
                                 }
                                 label={t("label.dialogs.move.confirm")}
                             />
-                            <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">{t("label.cancel")}</Button>
-                            <Button onClick={this.handleMove} color="primary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error} data-vud-role="button-primary">{t("label.dialogs.move.move")}</Button>
-                        </span>
+
+							<div className={classes.dialogActionsButtonContainer}>
+								<Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">{t("label.cancel")}</Button>
+								<Button onClick={this.handleMove} color="secondary" disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || !!error} data-vud-role="button-primary">{t("label.dialogs.move.move")}</Button>
+							</div>
+						</span>
                     </DialogActions>
                 </Dialog>
                     }

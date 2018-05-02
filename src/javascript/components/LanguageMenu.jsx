@@ -12,13 +12,13 @@ const styles = (theme) => ({
 		minHeight: 'auto',
 		minWidth: '60px',
         textTransform: 'none',
+		color: '#676767',
         '&:hover $rightIcon': {
             transition: ["opacity", "0.25s"],
             opacity: 1
         },
         '&:hover': {
-            backgroundColor: 'pink',
-            color: 'white'
+            backgroundColor: 'white'
         }
     },
     rightIcon: {

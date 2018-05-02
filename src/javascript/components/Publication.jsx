@@ -1,11 +1,17 @@
 import React from 'react';
 import {withNotifications} from '@jahia/react-dxcomponents';
 import * as _ from "lodash";
-import {Button} from 'material-ui';
+import {Button, withStyles} from 'material-ui';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
+
+let styles = (theme) => ({
+	dialogActionsContainer: {
+		justifyContent: 'right'
+	},
+});
 
 class Publication extends React.Component {
 
@@ -21,7 +27,7 @@ class Publication extends React.Component {
     }
 
     render() {
-        const { open, onClose, t } = this.props;
+        const { classes, open, onClose, t } = this.props;
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
@@ -32,11 +38,12 @@ class Publication extends React.Component {
                             {t('label.dialogs.publish.content')}
                         </DialogContentText>
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={onClose} color="primary" data-vud-role="button-cancel">
+
+                    <DialogActions className={classes.dialogActionsContainer}>
+						<Button onClick={onClose} color="default" data-vud-role="button-cancel">
                             {t('label.cancel')}
                         </Button>
-                        <Button onClick={() => {this.publish()}} color="primary" autoFocus data-vud-role="button-primary">
+                        <Button onClick={() => {this.publish()}} color="secondary" autoFocus data-vud-role="button-primary">
                             {t('label.dialogs.publish.publish')}
                         </Button>
                     </DialogActions>
@@ -47,6 +54,7 @@ class Publication extends React.Component {
 }
 
 Publication = compose(
+	withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
     translate()

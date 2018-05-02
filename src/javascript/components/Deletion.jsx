@@ -1,12 +1,45 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel} from 'material-ui';
+import {Button, Checkbox, FormControlLabel, withStyles} from 'material-ui';
 import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {Table, TableBody, TableRow, TableCell} from 'material-ui';
 import {withNotifications} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
+
+let styles = (theme) => ({
+	dialogNote: {
+		fontSize: '0.875rem',
+		marginTop: '10px'
+	},
+	vanityUrlTable: {
+		border: '1px solid #d5d5d5',
+		borderBottom: 'none',
+		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)'
+	},
+	dialogActionsButtonContainer: {
+		display: 'inline-block',
+		verticalAlign: 'middle',
+		position: 'absolute',
+		right: '20px',
+		paddingTop: '7px',
+	},
+	vanityUrlTableCellLanguage: {
+		color: '#676767',
+		fontSize: '0.875rem',
+		fontWeight: '400',
+		width: '50px',
+		padding: '0 15px'
+	},
+	vanityUrlTableCellUrl: {
+		color: '#00A0E3',
+		fontSize: '0.875rem',
+		fontWeight: '400',
+		padding: '0 15px',
+		wordBreak: 'break-all'
+	},
+});
 
 class Deletion extends React.Component {
 
@@ -48,39 +81,41 @@ class Deletion extends React.Component {
                         <DialogContentText id="alert-dialog-headline">
                             {t('label.dialogs.delete.headline')}
                         </DialogContentText><br/>
-                        <DialogContentText id="alert-dialog-content">
-                              {t('label.dialogs.delete.content')}
-                        </DialogContentText>
+
                     </DialogContent>
                     <DialogContent>
-                        <Table>
+                        <Table className={classes.vanityUrlTable}>
                             <TableBody>
                                 {this.props.urlPairs.map((url, i) =>
                                     <TableRow key={i}>
-                                        <TableCell>{url.default.targetNode.path}</TableCell>
-                                        <TableCell>{url.default.url}</TableCell>
-                                        <TableCell>{url.default.language}</TableCell>
+                                        <TableCell className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
+                                        <TableCell className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
                         </Table>
+						<DialogContentText className={classes.dialogNote} id="alert-dialog-content">
+                              {t('label.dialogs.delete.content')}
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <span>
                             <FormControlLabel
-                                control={
+								control={
                                     <Checkbox checked={!this.state.deleteDisabled}
                                               onChange={() => this.handleDeleteDisabled()}
                                               data-vud-role="checkbox-hint" />
                                 }
                                 label={t("label.dialogs.delete.terms")}
                             />
-                            <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">
-                                {t('label.cancel')}
-                            </Button>
-                            <Button onClick={() => {this.delete()}} color="primary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-primary">
-                                {t('label.dialogs.delete.delete')}
-                            </Button>
+                            <div className={classes.dialogActionsButtonContainer}>
+								<Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
+									{t('label.cancel')}
+								</Button>
+								<Button onClick={() => {this.delete()}} color="secondary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-primary">
+	                                {t('label.dialogs.delete.delete')}
+	                            </Button>
+							</div>
                         </span>
                     </DialogActions>
                 </Dialog>
@@ -90,6 +125,7 @@ class Deletion extends React.Component {
 }
 
 Deletion = compose(
+	withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
     translate()

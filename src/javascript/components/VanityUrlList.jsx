@@ -32,8 +32,13 @@ const styles = (theme) => ({
         '&:hover $hiddenOnHover': {
             transition: ["opacity", "0.25s"],
             opacity: 1
-        }
+        },
+		'& td': {
+			padding: '7px 0'
+		}
     },
+	vanityUrlLive: {
+	},
     hidden: {
         opacity: 0
     },
@@ -46,10 +51,13 @@ const styles = (theme) => ({
     },
 	tableCellTextInput: {
 		background: 'transparent',
-		width: '100%'
+		width: '100%',
+		'& > div': {
+		}
 	},
 	tableRow: {
-		'&:hover $vanityURLText': {
+		height: '66px',
+		'&:hover $editableText': {
 			marginRight: '78px'
 		},
 		'&:hover $vanityURLText:before': {
@@ -62,7 +70,7 @@ const styles = (theme) => ({
 	tableCellActionsContainer: {
 		width: '76px',
 		position: 'absolute',
-		marginLeft: '-76px'
+		marginLeft: '-76px',
 	},
     checkboxLeft: {
         marginLeft: '-48px',
@@ -71,18 +79,73 @@ const styles = (theme) => ({
         border: '0',
         color: theme.palette.text.primary,
     },
+	languageContainer: {
+		paddingRight: '10px'
+	},
+	liveVanityUrl: {
+		paddingLeft: '14px!important',
+	},
+	liveDefaultValue: {
+		width: '30px'
+	},
+	liveLanguage: {
+		color: '#676767',
+		width: '50px'
+	},
     inactive: {
-        color: theme.palette.text.disabled
+		'& $languageContainer': {
+			opacity: '0.5',
+			'&:hover': {
+				opacity: '1'
+			}
+		},
+		'& $liveLanguage': {
+			color: '#B2B2B2'
+		},
+		'& $vanityURLText': {
+			color: '#B2B2B2',
+		},
     },
     missingDefault: {
-        color: theme.palette.text.secondary
+		fontStyle: 'italic',
+		fontWeight: '100',
+        color: '#B2B2B2',
+		fontSize: '0.8125rem',
+		paddingLeft: '22px!important',
+		boxShadow: 'inset 7px 0px 0 0 #bab7b7'
     },
     missingDefaultCounterpart: {
-        backgroundColor: theme.palette.delete.main,
-        color: theme.palette.getContrastText(theme.palette.delete.main),
+		boxShadow: 'inset 7px 0px 0 0 ' + 'red',
+		color: 'whitesmoke',
+		'& td': {
+			borderBottomColor: '#f66'
+		},
+		background: '#f66',
+		'& $vanityURLText': {
+			color: 'whitesmoke',
+			'&:before': {
+				background: '#f66'
+			},
+			'&:after': {
+				background: '#f66'
+			},
+			'&:hover:after': {
+				background: '#f66!important'
+			},
+			'&:hover:before': {
+				background: '#f66!important'
+			}
+		},
+		'& $liveLanguage': {
+			color: 'whitesmoke'
+		}
     },
-    toBePublished: {
-        boxShadow: 'inset 7px 0px 0 0 ' + theme.palette.publish.main,
+	toBePublished: {
+        boxShadow: 'inset 7px 0px 0 0 ' + '#FB9926',
+        color: theme.palette.getContrastText(theme.palette.publish.main),
+    },
+	isPublished: {
+        boxShadow: 'inset 7px 0px 0 0 #08D000',
         color: theme.palette.getContrastText(theme.palette.publish.main),
     },
     highlightText: {
@@ -90,13 +153,44 @@ const styles = (theme) => ({
         color: theme.palette.primary.contrastText,
     },
     publishedCheck: {
-        color: theme.palette.enabled.main,
+        color: 'white',
+		display: 'none'
     },
     moveAction: {
-        color: theme.palette.secondary.main,
+        color: '#00a0e3',
+		opacity: '0.6',
+		'&:hover': {
+			background: 'transparent',
+			opacity: '1'
+		}
     },
-    deleteAction: {
-        color: theme.palette.delete.main,
+	deleteAction: {
+        color: '#FB3F26',
+		opacity: '0.6',
+		'&:hover': {
+			background: 'transparent',
+			opacity: '1'
+		}
+    },
+	actionButton: {
+		width: '38px',
+		'& button': {
+			opacity: '0.9',
+			'&:hover': {
+				background: 'transparent',
+				opacity: '1'
+			}
+		}
+	},
+	publish: {
+        color: '#FB9926',
+		marginRight: '10px',
+		width: '28px',
+		opacity: '0.6',
+		'&:hover': {
+			background: 'transparent',
+			opacity: '1'
+		}
     },
     allCheckbox: {
         position: "absolute",
@@ -110,6 +204,9 @@ const styles = (theme) => ({
     tableTitle: {
         paddingBottom: "3px",
     },
+	inactiveRow: {
+		border: '10px solid red'
+	},
 	vanityURLText: {
 		color: '#00A0E3',
 		lineHeight: '21px',
@@ -118,6 +215,7 @@ const styles = (theme) => ({
 		position: 'relative',
 		wordBreak: 'break-all',
 		padding: '3px 6px 1px',
+		fontSize: '0.8rem',
 		'&:before': {
 			content: '"..."',
 			position: 'absolute',
@@ -149,6 +247,17 @@ const styles = (theme) => ({
 			cursor: 'text',
 			background: 'white'
 		}
+	},
+	editableField: {
+	background: 'red'
+	},
+	publishArea: {
+	},
+	vanityGroupPaper: {
+		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
+		border: '1px solid #d5d5d5',
+		borderBottom: 'none',
+		borderRadius: '0px'
 	}
 });
 
@@ -188,7 +297,7 @@ class VanityUrlListDefault extends React.Component {
                         {t('label.mappings.default')}
                     </Typography>
                 </div>
-                <Paper elevation={2}>
+                <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
 
                         <TableBody data-vud-table-body-default={contentUuid}>
@@ -200,15 +309,15 @@ class VanityUrlListDefault extends React.Component {
                                     let isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
 
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.tableRow} hover classes={{
+                                        <TableRow key={urlPair.uuid} className={classes.tableRow + ' ' + classInactive} hover classes={{
                                             root: classes.vanityUrl,
-                                            hover: (isPublished ? '' : classes.toBePublished)
-                                        }}  onClick={() => onChangeSelection(!selected, [urlPair])}
+                                            hover: (isPublished ? classes.isPublished : classes.toBePublished)
+                                        }}
                                        		data-vud-url={url.url}>
                                             <TableCell padding={'none'} className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
                                                 <Checkbox onClick={(event) => {event.stopPropagation()}} checked={selected} onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
                                             </TableCell>
-                                            <TableCell padding={'none'}>
+                                            <TableCell padding={'none'} onClick={(event) => {console.log(url)}}>
                                                 <Switch onClick={(event) => {event.stopPropagation()}} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)} checked={url.active} data-vud-role="action-active"/>
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
@@ -219,8 +328,8 @@ class VanityUrlListDefault extends React.Component {
                                             <TableCell padding={'none'} className={classes.hiddenOnHover + ' ' + classInactive + ' ' + classes.tableCellActionsContainer}>
                                                 {selection.length === 0 ? (
                                                     <span>
-                                                        <ActionButton role='action-delete' className={isPublished ? classes.deleteAction : ''} action={actions.deleteAction} data={[urlPair]}/>
-                                                        <ActionButton role="action-move" className={isPublished ? classes.moveAction : ''} action={actions.moveAction} data={[urlPair]}/>
+                                                        <ActionButton role='action-delete' className={classes.deleteAction} action={actions.deleteAction} data={[urlPair]}/>
+                                                        <ActionButton role="action-move" className={classes.moveAction} action={actions.moveAction} data={[urlPair]}/>
                                                     </span>
                                                 ) : ''}
                                             </TableCell>
@@ -228,22 +337,22 @@ class VanityUrlListDefault extends React.Component {
                                                 <Checkbox className={url.default ? '' : classes.hiddenOnHover} onClick={(event) => {event.stopPropagation()}} checked={url.default} icon={<StarBorder/>} checkedIcon={<Star/>} onChange={(event) => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}
                                                 	data-vud-role="action-default"/>
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive}>
+                                            <TableCell padding={'none'} className={classInactive + ' ' + classes.languageContainer}>
                                                 <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={(languageCode) => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
+                                            <TableCell padding={'none'} style={{textAlign: 'center'}} className={classes.publishArea}>
                                                 {isPublished ? (
                                                     <Done classes={{root: classes.publishedCheck}}/>
                                                 ) : (
-                                                    <ActionButton role="action-publish" action={actions.publishAction} data={[urlPair]}/>
+                                                    <ActionButton role="action-publish" className={classes.publish} action={actions.publishAction} data={[urlPair]}/>
                                                 )}
                                             </TableCell>
                                         </TableRow>
                                     );
                                 } else {
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
-                                            <TableCell colSpan={7} padding={'dense'} className={classes.missingDefault}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
+                                            <TableCell colSpan={7} className={classes.missingDefault}>
                                                 {urlPair.live && urlPair.live.editNode ? (
                                                         t('label.mappings.movedDefault', {page: urlPair.live.editNode.targetNode.displayName})
                                                     ) :
@@ -292,7 +401,7 @@ class VanityUrlListLive extends React.Component {
                         {t('label.mappings.live')}
                     </Typography>
                 </div>
-                <Paper elevation={2}>
+                <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
                         <TableBody data-vud-table-body-live={contentUuid}>
                             {vanityUrls.map(urlPair => {
@@ -300,17 +409,17 @@ class VanityUrlListLive extends React.Component {
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + ((urlPair.default  && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
-                                            <TableCell padding={'dense'} className={classInactive}>
+                                        <TableRow key={urlPair.uuid} className={classes.tableRow + ' ' + classInactive + ' ' + classes.vanityUrl + ' ' + classes.vanityUrlLive + ' ' + ((urlPair.default  && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
+                                            <TableCell padding={'none'} className={classInactive + ' ' + classes.liveVanityUrl}>
                                                 {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText}>{url.url}</Typography>}
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive}>
+                                            <TableCell padding={'none'} className={classInactive + ' ' + classes.liveDefaultValue}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive}>
+                                            <TableCell padding={'none'} className={classInactive} className={classes.liveLanguage}>
                                                 {url.language}
                                             </TableCell>
-                                            <TableCell padding={'none'} className={classInactive} style={{textAlign: 'center'}}>
+                                            <TableCell padding={'none'} className={classInactive + ' ' + classes.actionButton} style={{textAlign: 'center'}}>
                                                 {url.editNode ?
                                                     (url.editNode.path !== url.path ?
                                                         <ActionButton action={actions.infoButton} data={url.editNode.targetNode.path ? (
@@ -327,7 +436,7 @@ class VanityUrlListLive extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
                                             <TableCell colSpan={4} padding={'none'}>
                                                 {/*Not published yet */}
                                             </TableCell>

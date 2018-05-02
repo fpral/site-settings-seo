@@ -6,10 +6,16 @@ import Dialog, {
     DialogContentText,
     DialogTitle,
 } from 'material-ui/Dialog';
+import {withStyles} from 'material-ui';
 import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
 import {MoveMutation} from "./gqlMutations";
 
+let styles = (theme) => ({
+	dialogActionsContainer: {
+		justifyContent: 'right'
+	},
+});
 
 class InfoButton extends React.Component {
 
@@ -18,7 +24,7 @@ class InfoButton extends React.Component {
     }
 
     render() {
-        let { open, message, onClose, t } = this.props;
+        let { classes, open, message, onClose, t } = this.props;
         return (
             <Dialog
                 open={open}
@@ -32,8 +38,8 @@ class InfoButton extends React.Component {
                         {message}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} color="primary" autoFocus>
+                <DialogActions className={classes.dialogActionsContainer}>
+                    <Button onClick={onClose} color="secondary" autoFocus>
                         {t('label.okGotIt')}
                     </Button>
                 </DialogActions>
@@ -43,6 +49,7 @@ class InfoButton extends React.Component {
 }
 
 InfoButton = compose(
+	withStyles(styles),
     (translate())
 )(InfoButton);
 

@@ -67,9 +67,21 @@ const styles = theme => ({
         }
     },
     cancel: {
-        color: theme.palette.primary.main,
-        right: 0
-    }
+		color:'red',
+		right:'10px',
+		top: '7px'
+    },
+	dialogNote: {
+		fontSize: '0.875rem',
+		marginTop: '10px'
+	},
+	dialogActionsButtonContainer: {
+		display: 'inline-block',
+		verticalAlign: 'middle',
+		position: 'absolute',
+		right: '20px',
+		paddingTop: '7px',
+	},
 });
 
 class AddVanityUrl extends React.Component {
@@ -302,12 +314,14 @@ class AddVanityUrl extends React.Component {
                                           }
                                           label={t('label.dialogs.add.check')}
                         />
-                        <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">
-                            {t('label.cancel')}
-                        </Button>
-                        <Button onClick={this.handleSave} color="primary" autoFocus data-vud-role="button-primary">
-                            {t('label.dialogs.add.save')}
-                        </Button>
+						<div className={classes.dialogActionsButtonContainer}>
+	                        <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">
+	                            {t('label.cancel')}
+	                        </Button>
+	                        <Button onClick={this.handleSave} color="primary" autoFocus data-vud-role="button-primary">
+	                            {t('label.dialogs.add.save')}
+	                        </Button>
+						</div>
                     </DialogActions>
                 </Dialog>
             </div>
