@@ -82,7 +82,8 @@ class PublishDeletion extends React.Component {
     };
 
     render() {
-        const { open, classes, onClose, t } = this.props;
+        const { open, classes, onClose, t, urlPairs } = this.props;
+        let mappingCount = urlPairs.length;
 
         return (
             <div>
@@ -91,7 +92,7 @@ class PublishDeletion extends React.Component {
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.publishdeletion.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-headline">
-                            {t('label.dialogs.publishdeletion.headline')}{"\n"}
+                            {t('label.dialogs.publishdeletion.headline', {count: mappingCount})}{"\n"}
                         </DialogContentText><br/>
 
                     </DialogContent>
@@ -106,9 +107,12 @@ class PublishDeletion extends React.Component {
                                 )}
                             </TableBody>
                         </Table>
+                        { (mappingCount > 1) ? (
 						<DialogContentText className={classes.dialogNote} id="alert-dialog-content">
                             {t('label.dialogs.publishdeletion.content')}
                         </DialogContentText>
+                        ) : ("")
+                        }
                     </DialogContent>
                     <DialogActions>
                         <FormControlLabel
