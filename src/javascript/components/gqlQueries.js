@@ -30,6 +30,7 @@ const LanguagesQuery = gql`
                     languages {
                         code: language
                         name: displayName
+                        activeInEdit
                     }
                 }
             }
