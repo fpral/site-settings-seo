@@ -9,7 +9,7 @@
     "copyright": "© Copyright 2002-2018 - Jahia Solutions Group SA",
     "dialogs": {
       "add": {
-        "check": "Automatic publish on save",
+        "check": "Automatically publish on save",
         "save": "Save",
         "text": "Enter mapping URL",
         "title": "Add Mapping"
@@ -17,28 +17,28 @@
       "delete": {
         "content": "Note: if you want to use this mapping on a different page, it is advised to reassign it instead of deleting it.",
         "delete": "Delete",
-        "headline": "Are you sure you want to delete the following Default URL mappings?",
-        "terms": "I understand that this operation cannot be undone",
-        "title": "Delete Default Mappings"
+        "headline": "Are you sure you want to delete the following Default URL mapping?",
+        "terms": "I understand that this cannot be undone",
+        "title": "Delete Default Mapping"
       },
       "infoButton": {
-        "moveAction": "Mapping to this page will be removed on publication of {{pagePath}}",
+        "moveAction": "Mapping to this page will be removed when {{pagePath}} is published",
         "notPublished": "Several mappings will be set as default until publication of {{pagePath}}"
       },
       "move": {
-        "confirm": "I understand that this move is a one way ticket !!",
-        "content": "Please enter the path to where you want to point ...",
+        "confirm": "I understand that this action cannot be undone",
+        "content": "Please select a page or enter a path directly",
         "move": "Move",
         "target": "Target node path",
         "title": "Move Mapping"
       },
       "publish": {
-        "content": "Are you sure you want to publish vanity URLs selected? The publication will be started as a background job.",
+        "content": "Are you sure you want to publish the selected vanity URL(s)? Publication will be started as a background job.",
         "publish": "Publish",
-        "title": "Publish confirmation"
+        "title": "Confirm Publication"
       },
       "publishdeletion": {
-        "content": "It is not possible to delete Live Mappings individually, so please note that all of the following Live Mappings will be removed",
+        "content": "It is not possible to delete Live Mappings individually, so please note that all of the listed Live Mappings will be deleted.",
         "headline": "You are about to delete multiple Live Mapping URLs",
         "title": "Delete Live Mappings"
       }
@@ -47,12 +47,12 @@
       "DuplicateMappingError": "Duplicate mappings",
       "DuplicateMappingError_message": "Duplicate mappings",
       "Error": "An unexpected error has occurred",
-      "GqlConstraintViolationException": "URL Mapping is already used",
-      "GqlConstraintViolationException_message": "URL Mapping is already used on {{existingNodePath}}",
-      "InvalidMappingError": "The vanity URL is invalid",
-      "InvalidMappingError_message": "The vanity URL can only contain letters, digits, dots (.), dashes (-) and no consecutive slashes (/)",
-      "MoveInvalidTarget_message": "Looks like this path leads nowhere, please double check and try again.",
-      "MoveSiteError": "Moving vanity mapping(s) in a different site is not allowed",
+      "GqlConstraintViolationException": "Already in use",
+      "GqlConstraintViolationException_message": "This mapping already points to {{existingNodePath}}",
+      "InvalidMappingError": "Invalid URL",
+      "InvalidMappingError_message": "The vanity URL may only contain letters, digits, dots, dashes and no consecutive slashes",
+      "MoveInvalidTarget_message": "Sorry, this path is invalid.",
+      "MoveSiteError": "Mappings cannot be assigned to different sites",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "MoveInvalidTarget": "Invalid path"
@@ -79,14 +79,14 @@
       "movedDefault": "Moved to {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Deletion confirmed",
-      "moveConfirmed": "Move confirmed",
+      "deletionConfirmed": "Deleted",
+      "moveConfirmed": "Moved",
       "newMappingCreated": "New mapping(s) added",
       "newMappingCreatedAndPublished": "New mapping(s) added, publication job started in background",
-      "publicationDeletionConfirmed": "Deletion confirmed, publication job started in background",
+      "publicationDeletionConfirmed": "Deleted. Publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
-    "okGotIt": "OK, GOT IT",
+    "okGotIt": "OK",
     "selection": {
       "clear": "Clear",
       "count": "{{count}} mapping selected",
