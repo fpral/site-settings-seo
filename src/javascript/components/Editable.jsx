@@ -58,18 +58,16 @@ class Editable extends React.Component {
         if (!edit) {
             if (onChange.length === 1) {
                 onChange(value);
-                this.setState({edit: false,  errorLabel:null, errorMessage:null});
+                this.setState({edit: false,  errorLabel:null, errorMessage:null}, () => onEdit(this.state.edit));
             } else {
                 this.setState({loading: true});
                 onChange(value,
-                    () => { this.setState({loading: false, edit: false,  errorLabel:null, errorMessage:null}) },
-                    (errorLabel, errorMessage) => {  onEdit(true);this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
+                    () => { this.setState({loading: false, edit: false,  errorLabel:null, errorMessage:null}, () => onEdit(this.state.edit)) },
+                    (errorLabel, errorMessage) => {  this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
                 );
             }
-            onEdit(false);
         } else {
-            this.setState({edit:true});
-            onEdit(true);
+            this.setState({edit:true}, () => onEdit(this.state.edit));
         }
         event.stopPropagation();
     }
@@ -89,8 +87,7 @@ class Editable extends React.Component {
 
     cancel(event) {
         const {value, onEdit} = this.props;
-        onEdit(false);
-        this.setState({edit:false, value:value, errorLabel:null, errorMessage:null});
+        this.setState({edit:false, value:value, errorLabel:null, errorMessage:null}, () => onEdit(this.state.edit));
         event.stopPropagation();
     }
 
