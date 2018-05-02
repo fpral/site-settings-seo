@@ -16,39 +16,39 @@ const styles = theme => ({
     deleteClass: {
         color: theme.palette.delete.main
     },
-	dialogNote: {
-		fontSize: '0.875rem',
-		marginTop: '30px'
-	},
-	dialogActionsButtonContainer: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		position: 'absolute',
-		right: '20px',
-		paddingTop: '7px',
-	},
-	dialogUrlTable: {
-		border: '1px solid #d5d5d5',
-		borderBottom: 'none',
-		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)'
-	},
-	dialogUrlRow: {
-		borderBottom: '1px solid rgba(224, 224, 224, 1)'
-	},
-	vanityUrlTableCellLanguage: {
-		color: '#676767',
-		fontSize: '0.875rem',
-		fontWeight: '400',
-		width: '50px',
-		padding: '0 15px'
-	},
-	vanityUrlTableCellUrl: {
-		color: '#00A0E3',
-		fontSize: '0.875rem',
-		fontWeight: '400',
-		padding: '0 15px',
-		wordBreak: 'break-all'
-	}
+    dialogNote: {
+        fontSize: '0.875rem',
+        marginTop: '30px'
+    },
+    dialogActionsButtonContainer: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        position: 'absolute',
+        right: '20px',
+        paddingTop: '7px',
+    },
+    dialogUrlTable: {
+        border: '1px solid #d5d5d5',
+        borderBottom: 'none',
+        boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)'
+    },
+    dialogUrlRow: {
+        borderBottom: '1px solid rgba(224, 224, 224, 1)'
+    },
+    vanityUrlTableCellLanguage: {
+        color: '#676767',
+        fontSize: '0.875rem',
+        fontWeight: '400',
+        width: '50px',
+        padding: '0 15px'
+    },
+    vanityUrlTableCellUrl: {
+        color: '#00A0E3',
+        fontSize: '0.875rem',
+        fontWeight: '400',
+        padding: '0 15px',
+        wordBreak: 'break-all'
+    }
 });
 
 class PublishDeletion extends React.Component {
@@ -99,7 +99,7 @@ class PublishDeletion extends React.Component {
                     <DialogContent>
                         <Table className={classes.dialogUrlTable}>
                             <TableBody>
-                                {this.props.urlPairs.map((url, i) =>
+                                {urlPairs.map((url, i) =>
                                     <TableRow key={i} className={classes.dialogUrlRow}>
                                         <TableCell className={this.props.classes.deleteClass + ' ' + classes.vanityUrlTableCellUrl}>{url.live.url}</TableCell>
                                         <TableCell className={classes.vanityUrlTableCellLanguage}>{url.live.language}</TableCell>
@@ -107,11 +107,12 @@ class PublishDeletion extends React.Component {
                                 )}
                             </TableBody>
                         </Table>
-                        { (mappingCount > 1) ? (
-						<DialogContentText className={classes.dialogNote} id="alert-dialog-content">
-                            {t('label.dialogs.publishdeletion.content')}
-                        </DialogContentText>
-                        ) : ("")
+                        {
+                            (mappingCount > 1) ? (
+                                <DialogContentText className={classes.dialogNote} id="alert-dialog-content">
+                                    {t('label.dialogs.publishdeletion.content')}
+                                </DialogContentText>
+                            ) : ("")
                         }
                     </DialogContent>
                     <DialogActions>
@@ -124,13 +125,13 @@ class PublishDeletion extends React.Component {
                             checked={!this.state.deleteButtonState}
                         />
                         <div className={classes.dialogActionsButtonContainer}>
-							<Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
-								{t('label.cancel')}
-							</Button>
-							<Button onClick={() => {this.publish()}} color="secondary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">
-	                            {t('label.actions.delete')}
-	                        </Button>
-						</div>
+                            <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
+                                {t('label.cancel')}
+                            </Button>
+                            <Button onClick={() => {this.publish()}} color="secondary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">
+                                {t('label.actions.delete')}
+                            </Button>
+                        </div>
                     </DialogActions>
                 </Dialog>
             </div>
