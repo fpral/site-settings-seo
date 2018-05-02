@@ -27,6 +27,16 @@ import * as _ from 'lodash';
 import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
 
 const styles = theme => ({
+	pickerRoot: {
+		overflowY: "scroll",
+		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
+		borderRadius: '0px',
+		border: '1px solid #d5d5d5',
+		borderBottom: 'none',
+		'& $PickerViewMaterial': {
+			color: 'pink'
+		}
+	},
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -43,8 +53,12 @@ const styles = theme => ({
         paddingLeft: "16px"
     },
     rowDisabled: {
-        backgroundColor: theme.palette.background.global,
+        backgroundColor: '#f5f5f5',
         color: theme.palette.getContrastText(theme.palette.background.global),
+
+		'& $MuiInput': {
+			border: '3px solid green!important'
+		}
     },
     root:{
         width:"100%",
@@ -82,6 +96,21 @@ const styles = theme => ({
 		right: '20px',
 		paddingTop: '7px',
 	},
+	vanitySwitchContainer: {
+		width: '60px'
+	},
+	languageContainer: {
+		width: '70px'
+	},
+	defaultContainer: {
+		width: '50px'
+	},
+	editDisabled: {
+		background: 'red',
+
+		'& input': {
+		}
+	}
 });
 
 class AddVanityUrl extends React.Component {
@@ -246,7 +275,7 @@ class AddVanityUrl extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogContent>
-                        <Paper elevation={2}>
+                        <Paper elevation={2} classes={{root:classes.pickerRoot}}>
                             <Table>
                                 <TableBody>
                                     {mappings.map((entry, index) => {
@@ -256,7 +285,7 @@ class AddVanityUrl extends React.Component {
                                             <TableRow key={index} classes={{
                                                 root: (lineEnabled ? '' : classes.rowDisabled)
                                             }}>
-                                                <TableCell padding={'none'}>
+                                                <TableCell padding={'none'} className={classes.vanitySwitchContainer}>
                                                     <Switch
                                                         checked={entry.active}
                                                         onChange={(event, checked) => this.handleFieldChange("active", index, checked)}
@@ -264,7 +293,9 @@ class AddVanityUrl extends React.Component {
                                                 </TableCell>
                                                 <TableCell padding={'none'}>
 
-                                                    <FormControl className={classes.root} >
+                                                    <FormControl className={classes.root} classes={{
+		                                                root: (lineEnabled ? '' : classes.editDisabled)
+		                                            }}>
                                                         <Input
                                                             ref={index}
                                                             inputRef={(input) => {this.inputTab[index] = input; if(index === 0) {this.firstMappingInputRef = input}}}
@@ -288,14 +319,14 @@ class AddVanityUrl extends React.Component {
                                                     </FormControl>
 
                                                 </TableCell>
-                                                <TableCell padding={'none'}>
+                                                <TableCell padding={'none'} className={classes.defaultContainer}>
                                                     <Checkbox checked={entry.defaultMapping}
                                                               icon={<StarBorder/>}
                                                               checkedIcon={<Star/>}
                                                               onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}
                                                               data-vud-role="default"/>
                                                 </TableCell>
-                                                <TableCell padding={'none'} data-vud-role="language">
+                                                <TableCell padding={'none'} data-vud-role="language" className={classes.languageContainer}>
                                                     <LanguageMenu languages={availableLanguages}
                                                                   languageCode={ entry.language }
                                                                   onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
@@ -315,10 +346,10 @@ class AddVanityUrl extends React.Component {
                                           label={t('label.dialogs.add.check')}
                         />
 						<div className={classes.dialogActionsButtonContainer}>
-	                        <Button onClick={this.handleClose} color="primary" data-vud-role="button-cancel">
+	                        <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
 	                            {t('label.cancel')}
 	                        </Button>
-	                        <Button onClick={this.handleSave} color="primary" autoFocus data-vud-role="button-primary">
+	                        <Button onClick={this.handleSave} color="secondary" autoFocus data-vud-role="button-primary">
 	                            {t('label.dialogs.add.save')}
 	                        </Button>
 						</div>
