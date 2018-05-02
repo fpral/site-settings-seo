@@ -53,7 +53,7 @@ class Editable extends React.Component {
     }
 
     setEdit(event, edit) {
-        let {onChange, onClick} = this.props;
+        let {onChange, onEdit} = this.props;
         let {value} = this.state;
         if (!edit) {
             if (onChange.length === 1) {
@@ -66,10 +66,10 @@ class Editable extends React.Component {
                     (errorLabel, errorMessage) => { this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
                 );
             }
-            onClick(false);
+            onEdit(false);
         } else {
             this.setState({edit:true});
-            onClick(true);
+            onEdit(true);
         }
         event.stopPropagation();
     }
@@ -97,7 +97,7 @@ class Editable extends React.Component {
     }
 
     render() {
-        let { render:Render,classes, onClick } = this.props;
+        let { render:Render,classes } = this.props;
         let { edit, loading, value, errorLabel, errorMessage } = this.state;
 
         return edit ?

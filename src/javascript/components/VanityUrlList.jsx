@@ -269,14 +269,14 @@ class VanityUrlListDefault extends React.Component {
     constructor(props) {
         super(props);
         this.state = {editLine: ''};
-        this.handleClick = this.handleClick.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
     }
 
     onMappingChanged(urlPair, actions, value, onSuccess, onError) {
         actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
     }
 
-    handleClick = (uuid, set) => {
+    handleEdit = (uuid, set) => {
     	if (set) {
             this.setState({editLine: uuid});
         } else {
@@ -338,7 +338,7 @@ class VanityUrlListDefault extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
-														  onClick={this.handleClick.bind(this, urlPair.uuid)}
+														  onEdit={this.handleEdit.bind(this, urlPair.uuid)}
                                                           render={ (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>) }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>
