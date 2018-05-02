@@ -22,7 +22,7 @@
         "title": "Suppression d'URLs"
       },
       "infoButton": {
-        "moveAction": "Cette URL sera supprimée lors de la publication de {{pagePath}} vers laquelle elle redirige",
+        "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
         "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu  {{pagePath}}"
       },
       "move": {
@@ -38,7 +38,7 @@
         "title": "Confirmation de publication"
       },
       "publishdeletion": {
-        "content": "Il n'est pas possible de supprimer des URLs en ligne individuellement. Les URLs en ligne suivante vont être supprimées :",
+        "content": "Il n'est pas possible de supprimer des URLs en ligne individuellement. Les URLs en ligne listées ci-dessous vont être supprimées",
         "headline": "Vous êtes sur le point de supprimer plusieurs URLs en ligne.",
         "title": "Suppression d'URLs en ligne"
       }
@@ -51,8 +51,8 @@
       "GqlConstraintViolationException_message": "Cette URL est déjà utilisée par {{existingNodePath}}",
       "InvalidMappingError": "L'URL est invalide",
       "InvalidMappingError_message": "Une URL ne peut contenir que des lettres, chiffres, points (.), tirets (-) et slashs non consécutifs (/)",
-      "MoveInvalidTarget_message": "Il semblerait que ce chemin ne mène nulle part, s'il vous plaît vérifiez et réessayez.",
-      "MoveSiteError": "Le déplacement d'URLs vers un autre site n'est pas autorisé.",
+      "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
+      "MoveSiteError": "Les URLs ne peuvent être assignées à une autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
       "loadingVanityUrl": "Erreur lors du chargement des URLs personnalisées",
       "MoveInvalidTarget": "Chemin invalide"
@@ -79,11 +79,11 @@
       "movedDefault": "Déplacée vers {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Suppression confirmée",
-      "moveConfirmed": "Déplacement confirmé",
+      "deletionConfirmed": "Supprimé",
+      "moveConfirmed": "Déplacé",
       "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
       "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
-      "publicationDeletionConfirmed": "Suppression confirmée, Job de publication lancé en arrière plan",
+      "publicationDeletionConfirmed": "Supprimé. Job de publication lancé en arrière plan",
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
     "okGotIt": "OK, j'ai compris",
