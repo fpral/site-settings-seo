@@ -61,16 +61,17 @@ const styles = (theme) => ({
 			marginRight: '78px'
 		},
 		'&:hover $vanityURLText:before': {
-			background: '#ededed'
+			background: '#f7f7f7'
 		},
 		'&:hover $vanityURLText:after': {
-			background: '#ededed'
+			background: '#f7f7f7'
 		}
 	},
 	tableCellActionsContainer: {
 		width: '76px',
 		position: 'absolute',
 		marginLeft: '-76px',
+		border: 'none'
 	},
     checkboxLeft: {
         marginLeft: '-48px',
@@ -121,6 +122,9 @@ const styles = (theme) => ({
 			borderBottomColor: '#f66'
 		},
 		background: '#f66',
+		'&:hover': {
+			background: '#f16060!important',
+		},
 		'& $vanityURLText': {
 			color: 'whitesmoke',
 			'&:before': {
@@ -243,7 +247,7 @@ const styles = (theme) => ({
 	},
 	editableText: {
 		'&:hover': {
-			boxShadow: 'inset 1px 1px 0 0 #b9b9b9, inset -1px -1px 0 0 #b9b9b9',
+			boxShadow: 'inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7',
 			cursor: 'text',
 			background: 'white'
 		}
@@ -260,7 +264,12 @@ const styles = (theme) => ({
 		borderRadius: '0px'
 	},
 	editLine: {
-    	color: 'red'
+		backgroundColor: '#F7F7F7!important',
+
+		'& $tableCellTextInput > div > div': {
+			background: 'white!important',
+			//boxShadow: 'inset 1px 1px 1px 0 rgba(38, 38, 38, 0.3)'
+		}
 	}
 });
 

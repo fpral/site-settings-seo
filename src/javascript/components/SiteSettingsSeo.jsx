@@ -25,7 +25,6 @@ const styles = (theme) => ({
     },
 
     languageSelector: {
-
         marginRight: theme.spacing.unit,
         color: 'inherit',
 
@@ -471,19 +470,19 @@ SiteSettingsSeoApp = compose(
 
 let SiteSettingsSeo = function (props) {
     let getI18NData = __webpack_require__ ? (ns, lang) => {
-        if (ns === 'site-settings-seo') { 
+        if (ns === 'site-settings-seo') {
             try {
                 return require('../../main/resources/javascript/locales/' + lang + '.json');
             } catch (e) {
             	return null;
-            } 
+            }
         }
         if (ns === 'react-dxcomponents') {
             try {
                 return require('@jahia/react-dxcomponents/src/main/resources/javascript/locales/' + lang + '.json');
             } catch (e) {
             	return null;
-            } 
+            }
         }
     } : null;
 

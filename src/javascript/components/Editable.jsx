@@ -106,7 +106,7 @@ class Editable extends React.Component {
                        onChange={this.onValueChange}
                        onClick={(e)=> {e.stopPropagation()}}
                        disabled={loading}
-                       onBlur={this.save}
+                       //onBlur={this.save}
                        error={!!errorLabel}
                        onKeyUp={(e)=>{if (e.key === 'Enter') { this.save(e) } else if (e.key === 'Escape') { this.cancel(e) } }}
                        classes={{root:classes.textInput}} inputRef={this.ref}/>

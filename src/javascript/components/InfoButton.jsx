@@ -13,7 +13,7 @@ import {MoveMutation} from "./gqlMutations";
 
 let styles = (theme) => ({
 	dialogActionsContainer: {
-		justifyContent: 'right'
+		justifyContent: 'flex-end'
 	},
 });
 

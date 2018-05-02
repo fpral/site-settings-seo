@@ -56,10 +56,17 @@ const styles = theme => ({
         backgroundColor: '#f5f5f5',
         color: theme.palette.getContrastText(theme.palette.background.global),
 
-		'& $MuiInput': {
-			border: '3px solid green!important'
+		'& $editDisabled > div': {
+			boxShadow: 'none'
 		}
     },
+	rowEnabled: {
+		backgroundColor: '#FFF!important',
+		background: 'red',
+		'&:hover': {
+			backgroundColor: '#FFF!important',
+		}
+	},
     root:{
         width:"100%",
         "& error": {
@@ -283,7 +290,7 @@ class AddVanityUrl extends React.Component {
                                         let lineEnabled = !!entry.url || entry.focus;
                                         return (
                                             <TableRow key={index} classes={{
-                                                root: (lineEnabled ? '' : classes.rowDisabled)
+                                                root: (lineEnabled ? classes.rowEnabled : classes.rowDisabled)
                                             }}>
                                                 <TableCell padding={'none'} className={classes.vanitySwitchContainer}>
                                                     <Switch

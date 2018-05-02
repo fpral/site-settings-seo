@@ -9,7 +9,7 @@ import {withVanityMutationContext} from "./VanityMutationsProvider";
 
 let styles = (theme) => ({
 	dialogActionsContainer: {
-		justifyContent: 'right'
+		justifyContent: 'flex-end'
 	},
 });
 
