@@ -71,7 +71,8 @@ class Deletion extends React.Component {
     }
 
     render() {
-        const { open, classes, onClose, t } = this.props;
+        const { open, classes, onClose, t, urlPairs } = this.props;
+        let mappingCount = urlPairs.length;
         return (
             <div>
                 <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
@@ -79,14 +80,14 @@ class Deletion extends React.Component {
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.delete.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-headline">
-                            {t('label.dialogs.delete.headline')}
+                            {t('label.dialogs.delete.headline', {count: mappingCount})}
                         </DialogContentText><br/>
 
                     </DialogContent>
                     <DialogContent>
                         <Table className={classes.vanityUrlTable}>
                             <TableBody>
-                                {this.props.urlPairs.map((url, i) =>
+                                {urlPairs.map((url, i) =>
                                     <TableRow key={i}>
                                         <TableCell className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
                                         <TableCell className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>

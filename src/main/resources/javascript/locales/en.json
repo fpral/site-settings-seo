@@ -15,9 +15,10 @@
         "title": "Add Mapping"
       },
       "delete": {
-        "content": "Note: if you want to use this mapping on a different page, it is advised to reassign it instead of deleting it.",
+        "content": "Note: if you want to use a mapping on a different page, it is advised to reassign it instead of deleting it.",
         "delete": "Delete",
-        "headline": "Are you sure you want to delete the following Default URL mapping?",
+        "headline": "Are you sure you want to delete the following Default Mapping?",
+        "headline_plural": "Are you sure you want to delete the following Default Mappings?",
         "terms": "I understand that this cannot be undone",
         "title": "Delete Default Mapping"
       },
