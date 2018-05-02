@@ -27,6 +27,9 @@ const styles = (theme) => ({
     languageSelector: {
         marginRight: theme.spacing.unit,
         color: 'inherit',
+		boxShadow: 'none',
+	    background: 'none',
+	    color: 'white',
 
         // Disable any underlining.
         '&:before': {
