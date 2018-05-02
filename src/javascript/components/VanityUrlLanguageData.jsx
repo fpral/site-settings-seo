@@ -18,8 +18,7 @@ class VanityUrlLanguageData extends React.Component {
             { ({loading, error, data}) => {
                 let languages = [];
                 if (data.jcr && data.jcr.nodeByPath) {
-                    languages = _.filter(data.jcr.nodeByPath.site.languages, (language) => language.activeInEdit);
-                    languages = _.sortBy(languages, 'code');
+                    languages = _.sortBy(_.filter(data.jcr.nodeByPath.site.languages, (language) => language.activeInEdit), 'code');
                 }
 
                 return this.props.children(languages);
