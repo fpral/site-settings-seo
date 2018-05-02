@@ -63,7 +63,7 @@ class Editable extends React.Component {
                 this.setState({loading: true});
                 onChange(value,
                     () => { this.setState({loading: false, edit: false,  errorLabel:null, errorMessage:null}) },
-                    (errorLabel, errorMessage) => { this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
+                    (errorLabel, errorMessage) => {  onEdit(true);this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
                 );
             }
             onEdit(false);
@@ -88,7 +88,9 @@ class Editable extends React.Component {
     }
 
     cancel(event) {
-        this.setState({edit:false, value:this.props.value, errorLabel:null, errorMessage:null});
+        const {value, onEdit} = this.props;
+        onEdit(false);
+        this.setState({edit:false, value:value, errorLabel:null, errorMessage:null});
         event.stopPropagation();
     }
 
