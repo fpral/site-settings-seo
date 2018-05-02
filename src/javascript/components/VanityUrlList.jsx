@@ -258,6 +258,9 @@ const styles = (theme) => ({
 		border: '1px solid #d5d5d5',
 		borderBottom: 'none',
 		borderRadius: '0px'
+	},
+	editLine: {
+    	color: 'red'
 	}
 });
 
@@ -265,10 +268,20 @@ class VanityUrlListDefault extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {editLine: ''};
+        this.handleClick = this.handleClick.bind(this);
     }
 
     onMappingChanged(urlPair, actions, value, onSuccess, onError) {
         actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
+    }
+
+    handleClick = (uuid, set) => {
+    	if (set) {
+            this.setState({editLine: uuid});
+        } else {
+            this.setState({editLine:  ''});
+		}
     }
 
     render() {
@@ -309,7 +322,10 @@ class VanityUrlListDefault extends React.Component {
                                     let isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
 
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.tableRow + ' ' + classInactive} hover classes={{
+                                        <TableRow key={urlPair.uuid} className={
+                                        	classes.tableRow + ' ' +
+											classInactive + ' ' +
+											(this.state.editLine === urlPair.uuid ? classes.editLine : '')} hover classes={{
                                             root: classes.vanityUrl,
                                             hover: (isPublished ? classes.isPublished : classes.toBePublished)
                                         }}
@@ -322,6 +338,7 @@ class VanityUrlListDefault extends React.Component {
                                             </TableCell>
                                             <TableCell padding={'none'} className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
+														  onClick={this.handleClick.bind(this, urlPair.uuid)}
                                                           render={ (props) => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>) }
                                                           onChange={ this.onMappingChanged.bind(this, urlPair, actions) } />
                                             </TableCell>

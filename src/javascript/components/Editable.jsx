@@ -53,7 +53,7 @@ class Editable extends React.Component {
     }
 
     setEdit(event, edit) {
-        let {onChange} = this.props;
+        let {onChange, onClick} = this.props;
         let {value} = this.state;
         if (!edit) {
             if (onChange.length === 1) {
@@ -66,8 +66,10 @@ class Editable extends React.Component {
                     (errorLabel, errorMessage) => { this.setState({loading: false, errorLabel:errorLabel, errorMessage:errorMessage}); this.nativeInput.focus(); }
                 );
             }
+            onClick(false);
         } else {
             this.setState({edit:true});
+            onClick(true);
         }
         event.stopPropagation();
     }
@@ -95,7 +97,7 @@ class Editable extends React.Component {
     }
 
     render() {
-        let { render:Render,classes } = this.props;
+        let { render:Render,classes, onClick } = this.props;
         let { edit, loading, value, errorLabel, errorMessage } = this.state;
 
         return edit ?
@@ -103,9 +105,9 @@ class Editable extends React.Component {
 
                 <Input value={value}
                        onChange={this.onValueChange}
-                       onClick={(e)=>e.stopPropagation()}
+                       onClick={(e)=> {e.stopPropagation()}}
                        disabled={loading}
-                       //onBlur={this.save}
+                       onBlur={this.save}
                        error={!!errorLabel}
                        onKeyUp={(e)=>{if (e.key === 'Enter') { this.save(e) } else if (e.key === 'Escape') { this.cancel(e) } }}
                        classes={{root:classes.textInput}} inputRef={this.ref}/>
@@ -118,7 +120,7 @@ class Editable extends React.Component {
                     <Cancel />
                 </IconButton>
             </FormControl> :
-            <div onClick={(event) => this.setEdit(event,true)}><Render value={value} {...this.props} /></div>
+            <div onClick={(event) => {this.setEdit(event,true);}}><Render value={value} {...this.props} /></div>
     }
 
 
