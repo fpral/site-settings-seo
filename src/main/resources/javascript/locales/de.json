@@ -15,18 +15,19 @@
         "title": "Mapping hinzufügen"
       },
       "delete": {
-        "content": "Sind Sie sicher, dass die ausgewählten Vanity URLs gelöscht werden sollen?",
+        "content": "Hinweis: Wenn Sie ein Mapping auf einer anderen Seite verwenden wollen, sollte dieses neu zugewiesen und nicht gelöscht werden.",
         "delete": "Löschen",
-        "headline": "Möchten Sie die folgenden Standard Mapping wirklich löschen?",
+        "headline": "Möchten Sie das folgende Standard Mapping wirklich löschen?",
+        "headline_plural": "Möchten Sie die folgenden Standard Mappings wirklich löschen?",
         "terms": "Ich verstehe, dass diese Operation nicht rückgängig gemacht werden kann",
-        "title": "Löschen bestätigen"
+        "title": "Standard Mapping löschen"
       },
       "infoButton": {
         "moveAction": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}",
-        "notPublished": "Bis zur Veröffentlichung von. Werden mehrere Mappings als Standard gesetzt {{pagePath}}"
+        "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
       },
       "move": {
-        "confirm": "Ich verstehe, dass das Verschieben nicht rückgängig gemacht werden kann.",
+        "confirm": "Ich verstehe, dass das Verschieben nicht rückgängig gemacht werden kann",
         "content": "Bitte geben Sie den Pfad ein, wohin die URL verschoben werden soll:",
         "move": "Verschieben",
         "target": "Pfad des Ziel-Knotens",
@@ -38,24 +39,25 @@
         "title": "Veröffentlichung bestätigen"
       },
       "publishdeletion": {
-        "content": "Es ist nicht möglich einzelne Live Mappings zu löschen, bitte beachten Sie daher, dass all die folgenden Live Mappings gelöscht werden",
-        "headline": "Sie sind dabei, mehrere Live Mappings zu löschen",
+        "content": "Es ist nicht möglich, Live Mappings einzeln zu löschen. Bitte beachten Sie daher, dass alle folgenden Live Mappings gelöscht werden:",
+        "headline": "Sie sind dabei, folgendes Live Mapping zu löschen",
+        "headline_plural": "Sie sind dabei, mehrere Live Mappings zu löschen",
         "title": "Live Mappings Löschen"
       }
     },
     "errors": {
-      "DuplicateMappingError": "doppelte Zuordnungen",
-      "DuplicateMappingError_message": "doppelte Zuordnungen",
+      "DuplicateMappingError": "Doppelte Mappings.",
+      "DuplicateMappingError_message": "Doppelte Mappings.",
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
-      "GqlConstraintViolationException": "URL Mapping wird bereits verwendet",
-      "GqlConstraintViolationException_message": "URL Mapping wird bereits verwendet von {{existingNodePath}}",
-      "InvalidMappingError": "Die Vanity URL ist ungültig",
+      "GqlConstraintViolationException": "URL Mapping wird bereits verwendet.",
+      "GqlConstraintViolationException_message": "URL Mapping wird bereits für {{existingNodePath}} verwendet.",
+      "InvalidMappingError": "Die Vanity URL ist ungültig.",
       "InvalidMappingError_message": "Die Vanity URL darf nur Buchstaben, Ziffern, Punkte (.), Bindestriche (-) und nicht aufeinanderfolgende Schrägstriche (/) beinhalten.",
-      "MoveInvalidTarget_message": "Sieht so aus, als ob dieser Pfad nirgendwohin führt. Bitte überprüfen Sie ihn erneut und versuchen Sie es erneut.",
+      "MoveInvalidTarget_message": "Bitte überprüfen Sie den Pfad erneut, er ist ungültig.",
       "MoveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt.",
-      "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen",
-      "loadingVanityUrl": "Fehler beim Laden der Vanity URLs",
-      "MoveInvalidTarget": "Ungültigen Pfad"
+      "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen.",
+      "loadingVanityUrl": "Fehler beim Laden der Vanity URLs.",
+      "MoveInvalidTarget": "Ungültigen Pfad."
     },
     "filterMatch": "Treffer: {{count}} von {{totalCount}} Mappings",
     "filterMatch_plural": "Treffer: {{count}} von {{totalCount}} Mappings",
@@ -79,12 +81,12 @@
       "movedDefault": "Verschoben zu {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Löschen bestätigt",
-      "moveConfirmed": "Verschieben bestätigt",
-      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt",
+      "deletionConfirmed": "Löschen bestätigt.",
+      "moveConfirmed": "Verschieben bestätigt.",
+      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt.",
       "newMappingCreatedAndPublished": "Neue(s) Mapping(s) hinzugefügt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
-      "publicationDeletionConfirmed": "Löschen bestätigt, Veröffentlichung wurde als Hintergrundjob gestartet.",
-      "publicationStarted": "Veröffentlichung wurde als Hintergrundjob gestartet"
+      "publicationDeletionConfirmed": "Löschen bestätigt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
+      "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
     },
     "okGotIt": "OK, ich habe es verstanden.",
     "selection": {
