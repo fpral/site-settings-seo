@@ -64,6 +64,7 @@
     "filterPlaceholder": "Nach Keywords filtern",
     "importantInfo": "Wichtige Information",
     "languageSelector": {
+      "noLanguages": "Sprache auswählen",
       "allLanguages": "Alle Sprachen",
       "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} weitere Sprache",
@@ -96,7 +97,7 @@
     },
     "pagination": {
         "rowsPerPage": "Zeilen pro Seite",
-        "of": "von"    
+        "of": "von"
     },
     "title": "URL-Mappings"
   }

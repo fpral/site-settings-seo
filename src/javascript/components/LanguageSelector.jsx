@@ -13,27 +13,20 @@ function getSelectedLanguageCodes(selected) {
 class LanguageSelector extends React.Component {
 
     constructor(props) {
-
         super(props);
-        this.emptySelectionAllowed = (this.props.emptySelectionAllowed == null ? true : this.props.emptySelectionAllowed);
-
         this.onAllLanguagesChange = this.onAllLanguagesChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.getSelectedLanguagesValue = this.getSelectedLanguagesValue.bind(this);
     }
 
     onAllLanguagesChange(event, checked) {
-        if (checked || !this.emptySelectionAllowed && this.props.selectedLanguageCodes.length == 1) {
-            // The All Languages checkbox has been checked: select all languages.
+        if (checked && this.props.selectedLanguageCodes.length == 0) {
+            // Was checked while no languages were selected: select all.
             let selectedLanguageCodes = this.props.languages.map(language => language.code);
             this.props.onSelectionChange(selectedLanguageCodes);
-        } else if (!checked) {
-        	if (this.emptySelectionAllowed) {
-                this.props.onSelectionChange([]);
-            } else {
-            	// empty selection is not allowed, clear all, except the first one
-                this.props.onSelectionChange([this.props.languages.map(language => language.code)[0]]);
-            }
+        } else {
+            // Either was unchecked or was clicked while a part of languages was selected: de-select all.
+            this.props.onSelectionChange([]);
         }
     }
 
@@ -46,8 +39,9 @@ class LanguageSelector extends React.Component {
 
         let selectedLanguageCodes = _.sortBy(getSelectedLanguageCodes(selected));
 
-        if (selectedLanguageCodes.length == this.props.languages.length) {
-            // All languages selected.
+        if (selectedLanguageCodes.length == 0) {
+            return this.props.t('label.languageSelector.noLanguages');
+        } else if (selectedLanguageCodes.length == this.props.languages.length) {
             return this.props.t('label.languageSelector.allLanguages');
         } else {
 
@@ -81,13 +75,14 @@ class LanguageSelector extends React.Component {
 
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
         let allLanguagesChecked = (selectedLanguageCodes.length == this.props.languages.length);
-        let isIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
+        let allLanguagesIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
 
         return (
 
             <Select
                 multiple
                 value={selectedLanguageCodes}
+                displayEmpty={true}
                 renderValue={this.getSelectedLanguagesValue}
                 className={this.props.className}
                 classes={this.props.classes}
@@ -103,8 +98,8 @@ class LanguageSelector extends React.Component {
                 <MenuItem value={null} data-vud-role={'language-selector-item-all'}>
                     <Checkbox
                         checked={allLanguagesChecked}
-                        indeterminate={isIndeterminate}
-                        onChange={(event, checked) => this.onAllLanguagesChange(event, checked && !isIndeterminate)}
+                        indeterminate={allLanguagesIndeterminate}
+                        onChange={(event, checked) => this.onAllLanguagesChange(event, checked)}
                     />
                     <ListItemText primary={this.props.t('label.languageSelector.allLanguages')}/>
                 </MenuItem>
@@ -113,11 +108,8 @@ class LanguageSelector extends React.Component {
 
                     let checked = (selectedLanguageCodes.indexOf(language.code) >= 0);
 
-                    // Do not allow unchecking the only selected item in case empty selection is not allowed.
-                    let disabled = (!this.emptySelectionAllowed && checked && selectedLanguageCodes.length == 1);
-
                     return (
-                        <MenuItem key={language.code} value={language.code} disabled={disabled} data-vud-role={'language-selector-item'}>
+                        <MenuItem key={language.code} value={language.code} data-vud-role={'language-selector-item'}>
                             <Checkbox checked={checked}/>
                             <ListItemText primary={language.name + ' (' + language.code + ')'}/>
                         </MenuItem>

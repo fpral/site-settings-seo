@@ -64,6 +64,7 @@
     "filterPlaceholder": "Filtrer",
     "importantInfo": "Information importante",
     "languageSelector": {
+      "noLanguages": "S�lectionner une langue",
       "allLanguages": "Toutes les langues",
       "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} langue supplémentaire",
@@ -96,7 +97,7 @@
     },
     "pagination": {
         "rowsPerPage": "Lignes par page",
-        "of": "sur"    
+        "of": "sur"
     },
     "title": "URL personnalisées"
   }

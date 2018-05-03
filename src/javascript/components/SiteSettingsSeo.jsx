@@ -27,9 +27,9 @@ const styles = (theme) => ({
     languageSelector: {
         marginRight: theme.spacing.unit,
         color: 'inherit',
-		boxShadow: 'none',
-	    background: 'none',
-	    color: 'white',
+        boxShadow: 'none',
+        background: 'none',
+        color: 'white',
 
         // Disable any underlining.
         '&:before': {
@@ -385,7 +385,6 @@ class SiteSettingsSeoApp extends React.Component {
                 <LanguageSelector
                     languages={this.props.languages}
                     selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                    emptySelectionAllowed={false}
                     className={classes.languageSelector}
                     classes={{icon: classes.languageSelectorIcon}}
                     onSelectionChange={this.onSelectedLanguagesChanged}
@@ -477,14 +476,14 @@ let SiteSettingsSeo = function (props) {
             try {
                 return require('../../main/resources/javascript/locales/' + lang + '.json');
             } catch (e) {
-            	return null;
+                return null;
             }
         }
         if (ns === 'react-dxcomponents') {
             try {
                 return require('@jahia/react-dxcomponents/src/main/resources/javascript/locales/' + lang + '.json');
             } catch (e) {
-            	return null;
+                return null;
             }
         }
     } : null;

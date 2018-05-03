@@ -64,6 +64,7 @@
     "filterPlaceholder": "Filter by keywords",
     "importantInfo": "Important Info",
     "languageSelector": {
+      "noLanguages": "Select a language",
       "allLanguages": "All Languages",
       "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} more language",
@@ -96,7 +97,7 @@
     },
     "pagination": {
         "rowsPerPage": "Rows per page",
-        "of": "of"    
+        "of": "of"
     },
     "title": "Vanity URLs"
   }
