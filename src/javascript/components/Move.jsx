@@ -17,10 +17,7 @@ let styles = (theme) => ({
         overflowY: "scroll",
 		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
 		borderRadius: '0px',
-		border: '1px solid #d5d5d5',
-		'& $PickerViewMaterial': {
-		color: 'pink'
-		}
+		border: '1px solid #d5d5d5'
     },
 	dialogNote: {
 		fontSize: '0.875rem',
