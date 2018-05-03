@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {FormControl, FormHelperText, IconButton, withStyles, Input} from "material-ui";
-import {Check, Cancel} from "material-ui-icons";
+import {Check, Clear} from "material-ui-icons";
 
 let styles = (theme) => ({
     root:{
-        width:"calc(100% + 90px)",
+        width:"calc(100% + 72px)",
 		zIndex: '9'
     },
     button:{
@@ -21,12 +21,12 @@ let styles = (theme) => ({
     cancel: {
         color:'red',
         right:'10px',
-		top: '7px'
+		top: '6px'
     },
     valid: {
 		color:'green',
 		right:'32px',
-		top: '7px'
+		top: '6px'
     },
     textInput: {
         color: "inherit",
@@ -116,7 +116,7 @@ class Editable extends React.Component {
                     <Check />
                 </IconButton>
                 <IconButton className={classes.button + " " + classes.cancel} component="span" disableRipple onClick={this.cancel}>
-                    <Cancel />
+                    <Clear />
                 </IconButton>
             </FormControl> :
             <div onClick={(event) => {this.setEdit(event,true);}}><Render value={value} {...this.props} /></div>

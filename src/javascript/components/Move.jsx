@@ -42,7 +42,16 @@ let styles = (theme) => ({
 			boxShadow: 'none',
 			background: 'whitesmoke'
 		}
-	}
+	},
+	helperContainer: {
+		padding: '0',
+	    height: 'auto',
+	    top: '35px',
+	    background: 'transparent',
+	},
+	helperErrorMessage: {
+		top: '10px!important'
+	},
 });
 
 class Move extends React.Component {
@@ -125,7 +134,7 @@ class Move extends React.Component {
                                     value={this.state.targetPath} onChange={this.handleTargetPathChange}
                                     fullWidth
                                 />
-                                <FormHelperText>{error && <error><label>{t("label.errors.MoveInvalidTarget")}</label><message>{t(["label.errors.MoveInvalidTarget_message", "label.errors.MoveInvalidTarget"])}</message></error>}</FormHelperText>
+                                <FormHelperText className={classes.helperContainer}>{error && <error><label>{t("label.errors.MoveInvalidTarget")}</label><message className={classes.helperErrorMessage}>{t(["label.errors.MoveInvalidTarget_message", "label.errors.MoveInvalidTarget"])}</message></error>}</FormHelperText>
                             </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
                                 <Picker fragments={["displayName"]}

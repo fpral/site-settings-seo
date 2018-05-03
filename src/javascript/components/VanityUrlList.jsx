@@ -74,7 +74,7 @@ const styles = (theme) => ({
 		border: 'none'
 	},
     checkboxLeft: {
-        marginLeft: '-41px',
+        marginLeft: '-32px',
         marginTop: '2px',
         position: 'absolute',
         border: '0',
@@ -85,6 +85,12 @@ const styles = (theme) => ({
 	},
 	liveVanityUrl: {
 		paddingLeft: '14px!important',
+		'&:hover $vanityURLText:before': {
+			background: '#f7f7f7'
+		},
+		'&:hover $vanityURLText:after': {
+			background: '#f7f7f7'
+		},
 	},
 	liveDefaultValue: {
 		width: '30px'
@@ -123,7 +129,13 @@ const styles = (theme) => ({
 		},
 		background: '#f66',
 		'&:hover': {
-			background: '#f16060!important',
+			background: '#f66!important',
+		},
+		'&:hover $vanityURLText:before': {
+			background: '#f66'
+		},
+		'&:hover $vanityURLText:after': {
+			background: '#f66'
 		},
 		'& $vanityURLText': {
 			color: 'whitesmoke',
@@ -134,13 +146,16 @@ const styles = (theme) => ({
 				background: '#f66'
 			},
 			'&:hover:after': {
-				background: '#f66!important'
+				background: '#ff6565!important'
 			},
 			'&:hover:before': {
-				background: '#f66!important'
+				background: '#ff6565!important'
 			}
 		},
 		'& $liveLanguage': {
+			color: 'whitesmoke'
+		},
+		'& $highlightTextContainer': {
 			color: 'whitesmoke'
 		}
     },
@@ -156,12 +171,26 @@ const styles = (theme) => ({
         backgroundColor: 'yellow',
         color: '#212121',
     },
+	highlightTextContainer: {
+		color: '#00A0E3',
+	    padding: '3px 6px 1px',
+	    overflow: 'hidden',
+	    position: 'relative',
+	    fontSize: '0.8rem',
+	    maxHeight: '42px',
+	    wordBreak: 'break-all',
+	    lineHeight: '21px',
+		display: 'block',
+		'&:hover': {
+			marginRight: '78px'
+		},
+	},
     publishedCheck: {
         color: 'white',
 		display: 'none'
     },
     moveAction: {
-        color: '#00a0e3',
+        color: '#212121',
 		opacity: '0.6',
 		'&:hover': {
 			background: 'transparent',
@@ -169,7 +198,7 @@ const styles = (theme) => ({
 		}
     },
 	deleteAction: {
-        color: '#FB3F26',
+        color: '#212121',
 		opacity: '0.6',
 		'&:hover': {
 			background: 'transparent',
@@ -187,7 +216,7 @@ const styles = (theme) => ({
 		}
 	},
 	publish: {
-        color: '#FB9926',
+        color: '#212121',
 		marginRight: '10px',
 		width: '28px',
 		opacity: '0.6',
@@ -198,7 +227,7 @@ const styles = (theme) => ({
     },
     allCheckbox: {
         position: "absolute",
-        marginLeft: "-40px",
+        marginLeft: "-31px",
         marginTop: "-18px",
         '&:hover': {
             transition: ["opacity", "0.25s"],
@@ -230,7 +259,7 @@ const styles = (theme) => ({
 			lineHeight: '19px',
 		},
 		'&:hover:before': {
-			background: 'white!important'
+			background: 'white'
 		},
 		'&:after': {
 			content: '""',
@@ -242,7 +271,7 @@ const styles = (theme) => ({
 			marginTop: '1px'
 		},
 		'&:hover:after': {
-			background: 'white!important'
+			background: 'white'
 		},
 	},
 	editableText: {
@@ -250,7 +279,13 @@ const styles = (theme) => ({
 			boxShadow: 'inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7',
 			cursor: 'text',
 			background: 'white'
-		}
+		},
+		'&:hover:before': {
+			background: '#FFF!important'
+		},
+		'&:hover:after': {
+			background: '#FFF!important'
+		},
 	},
 	editableField: {
 	background: 'red'
@@ -489,7 +524,7 @@ class HighlightText extends React.Component {
         let highlightEscaped = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         let parts = this.props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
         return (
-            <span>
+            <span className={this.props.classes.highlightTextContainer}>
                 {parts.map((part, i) =>
                     <span key={i} className={part.toLowerCase() === highlight.toLowerCase() ? this.props.classes.highlightText : ''}>
                         {part}
