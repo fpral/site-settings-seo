@@ -5,12 +5,32 @@ import {IconButton, TablePagination, Table, TableRow, TableFooter, withStyles} f
 import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from 'material-ui-icons'
 
 import {PickerViewMaterial, withPickerModel} from '@jahia/react-dxcomponents';
+import {compose} from "react-apollo/index";
 
 const actionsStyles = theme => ({
     root: {
         flexShrink: 0,
         color: theme.palette.text.secondary,
         marginLeft: theme.spacing.unit * 2.5,
+    },
+	paginationButton: {
+		'&:hover': {
+			backgroundColor: 'transparent'
+		}
+	}
+});
+
+const styles = theme => ({
+	tablePaginationContainer: {
+		border: 'none'
+	},
+    tablePagination: {
+		background: '#eee',
+		'& div': {
+			boxShadow: 'none',
+			background: 'transparent',
+			color: '#6d6d6d'
+		}
     },
 });
 
@@ -39,6 +59,7 @@ class TablePaginationActions extends React.Component {
         return (
             <div className={classes.root}>
                 <IconButton
+					className={classes.paginationButton}
                     onClick={this.handleFirstPageButtonClick}
                     disabled={page === 0}
                     aria-label="First Page"
@@ -47,6 +68,7 @@ class TablePaginationActions extends React.Component {
                     <FirstPage/>
                 </IconButton>
                 <IconButton
+					className={classes.paginationButton}
                     onClick={this.handleBackButtonClick}
                     disabled={page === 0}
                     aria-label="Previous Page"
@@ -54,6 +76,7 @@ class TablePaginationActions extends React.Component {
                     <KeyboardArrowLeft/>
                 </IconButton>
                 <IconButton
+					className={classes.paginationButton}
                     onClick={this.handleNextButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Next Page"
@@ -62,6 +85,7 @@ class TablePaginationActions extends React.Component {
                     <KeyboardArrowRight/>
                 </IconButton>
                 <IconButton
+					className={classes.paginationButton}
                     onClick={this.handleLastPageButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Last Page"
@@ -86,12 +110,13 @@ class Pagination extends React.Component {
     };
 
     render() {
-        let {totalCount, pageSize, currentPage, onChangeRowsPerPage, t} = this.props;
+        let {classes, totalCount, pageSize, currentPage, onChangeRowsPerPage, t} = this.props;
         return <Table>
             <TableFooter>
-                <TableRow>
+                <TableRow className={classes.tablePaginationContainer}>
                     <TablePagination
-                        count={totalCount}
+                        className={classes.tablePagination}
+						count={totalCount}
                         rowsPerPage={pageSize}
                         page={currentPage}
                         onChangePage={this.onChangePage}
@@ -107,6 +132,9 @@ class Pagination extends React.Component {
     }
 }
 
-Pagination = translate()(Pagination);
+Pagination = compose(
+    withStyles(styles),
+    translate()
+)(Pagination);
 
 export {Pagination}

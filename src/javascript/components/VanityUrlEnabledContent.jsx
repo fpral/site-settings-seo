@@ -26,7 +26,26 @@ const styles = theme => ({
     },
 	vanityUrlListHeaderText: {
 		paddingLeft: '8px'
-	}
+	},
+	showToggle: {
+		color: '#ffffff',
+	    background: '#757575',
+	    fontSize: '10px',
+	    minHeight: 'auto',
+	    minWidth: 'auto',
+	    padding: '5px',
+	    borderRadius: '0',
+		'&:hover': {
+			backgroundColor: '#595858'
+		}
+	},
+	addVanityButton: {
+		color: '#575757',
+		'&:hover': {
+			backgroundColor: 'transparent',
+			color: '#4A4343'
+		}
+	},
 });
 
 class VanityUrlEnabledContent extends React.Component {
@@ -76,7 +95,7 @@ class VanityUrlEnabledContent extends React.Component {
                 filterSwitchButtonLabel = t('label.localFilter.switchOn');
             }
             localFilterSwitch = (
-                <Button onClick={(e) => this.handleFilterSwitchClick(e)} data-vud-role="button-filter-switch">
+                <Button className={classes.showToggle} onClick={(e) => this.handleFilterSwitchClick(e)} data-vud-role="button-filter-switch">
                     {filterSwitchButtonLabel}
                 </Button>
             );
@@ -93,7 +112,7 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText}/>
                         {filterMatchInfo}
                         {localFilterSwitch}
-                        {this.state.expanded ? <IconButton aria-label={actions.addAction.className} onClick={(event) => {
+                        {this.state.expanded ? <IconButton className={classes.addVanityButton} aria-label={actions.addAction.className} onClick={(event) => {
                             event.stopPropagation();
                             actions.addAction.call(content.path, languages);
                         }}>
