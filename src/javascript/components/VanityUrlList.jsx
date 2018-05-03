@@ -74,7 +74,7 @@ const styles = (theme) => ({
 		border: 'none'
 	},
     checkboxLeft: {
-        marginLeft: '-48px',
+        marginLeft: '-41px',
         marginTop: '2px',
         position: 'absolute',
         border: '0',
@@ -153,8 +153,8 @@ const styles = (theme) => ({
         color: theme.palette.getContrastText(theme.palette.publish.main),
     },
     highlightText: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
+        backgroundColor: 'yellow',
+        color: '#212121',
     },
     publishedCheck: {
         color: 'white',
@@ -198,7 +198,7 @@ const styles = (theme) => ({
     },
     allCheckbox: {
         position: "absolute",
-        marginLeft: "-48px",
+        marginLeft: "-40px",
         marginTop: "-18px",
         '&:hover': {
             transition: ["opacity", "0.25s"],
