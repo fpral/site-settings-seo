@@ -311,7 +311,7 @@ class VanityUrlListDefault extends React.Component {
                 <div>
                     {urlPairs.length > 0 ? (
                         <Checkbox className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox} checked={allCheckboxChecked} indeterminate={allCheckboxIndeterminate}
-                                  onChange={(event, checked) => onChangeSelection(checked, urlPairs)}
+                                  onChange={(event, checked) => onChangeSelection(checked && !allCheckboxIndeterminate, urlPairs)}
                                                   data-vud-checkbox-all={contentUuid}
                         />
                     ) : ''}
