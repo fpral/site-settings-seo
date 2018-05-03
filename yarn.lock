@@ -19,7 +19,7 @@
 
 "@jahia/react-dxcomponents@git+ssh://git@github.com:Jahia/react-dxcomponents.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#d14acf34e13db6a1ea6d679bb5681927d66fd563"
+  resolved "git+ssh://git@github.com:Jahia/react-dxcomponents.git#ba72174aad3aacae31a0f2277fcf6687d83b1d25"
   dependencies:
     "@jahia/apollo-dx" "git+ssh://git@github.com:Jahia/apollo-dx.git"
     apollo-client "^2.2.8"
