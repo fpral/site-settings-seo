@@ -64,7 +64,7 @@
     "filterPlaceholder": "Filtrer",
     "importantInfo": "Information importante",
     "languageSelector": {
-      "noLanguages": "S�lectionner une langue",
+      "noLanguages": "Sélectionnez une langue",
       "allLanguages": "Toutes les langues",
       "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} langue supplémentaire",
