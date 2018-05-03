@@ -52,6 +52,11 @@ class Editable extends React.Component {
         this.ref = this.ref.bind(this);
     }
 
+    shouldComponentUpdate =  (nextProps, nextState) => {
+        // render only if the edit state change or edit is active
+        return this.state.edit !== nextState.edit ||  this.state.edit;
+    }
+
     setEdit(event, edit) {
         let {onChange, onEdit} = this.props;
         let {value} = this.state;
