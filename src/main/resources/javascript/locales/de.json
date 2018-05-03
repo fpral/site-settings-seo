@@ -94,6 +94,10 @@
       "count": "{{count}} Mapping ausgewählt",
       "count_plural": "{{count}} Mappings ausgewählt"
     },
+    "pagination": {
+        "rowsPerPage": "Zeilen pro Seite",
+        "of": "von"    
+    },
     "title": "URL-Mappings"
   }
 }

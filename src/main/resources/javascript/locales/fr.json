@@ -94,6 +94,10 @@
       "count": "{{count}} URL sélectionnée",
       "count_plural": "{{count}} URLs sélectionnées"
     },
+    "pagination": {
+        "rowsPerPage": "Lignes par page",
+        "of": "sur"    
+    },
     "title": "URL personnalisées"
   }
 }

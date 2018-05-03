@@ -94,6 +94,10 @@
       "count": "{{count}} mapping selected",
       "count_plural": "{{count}} mappings selected"
     },
+    "pagination": {
+        "rowsPerPage": "Rows per page",
+        "of": "of"    
+    },
     "title": "Vanity URLs"
   }
 }

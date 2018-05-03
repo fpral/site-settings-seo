@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import {IconButton, TablePagination, Table, TableRow, TableFooter, withStyles} from 'material-ui';
 
 import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from 'material-ui-icons'
@@ -85,7 +86,7 @@ class Pagination extends React.Component {
     };
 
     render() {
-        let {totalCount, pageSize, currentPage, onChangeRowsPerPage} = this.props;
+        let {totalCount, pageSize, currentPage, onChangeRowsPerPage, t} = this.props;
         return <Table>
             <TableFooter>
                 <TableRow>
@@ -96,6 +97,8 @@ class Pagination extends React.Component {
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={(event) => onChangeRowsPerPage(event.target.value)}
                         Actions={TablePaginationActions}
+                        labelRowsPerPage={t('label.pagination.rowsPerPage')}
+                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} ` + t('label.pagination.of') + ` ${count}`}
                         data-vud-role="table-pagination"
                     />
                 </TableRow>
@@ -103,5 +106,7 @@ class Pagination extends React.Component {
         </Table>
     }
 }
+
+Pagination = translate()(Pagination);
 
 export {Pagination}
