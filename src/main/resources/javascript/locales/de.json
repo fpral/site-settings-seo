@@ -19,7 +19,7 @@
         "delete": "Löschen",
         "headline": "Möchten Sie das folgende Standard Mapping wirklich löschen?",
         "headline_plural": "Möchten Sie die folgenden Standard Mappings wirklich löschen?",
-        "terms": "Ich verstehe, dass diese Operation nicht rückgängig gemacht werden kann",
+        "terms": "Ich verstehe, dass diese Operation unwideruflich ist",
         "title": "Standard Mapping löschen"
       },
       "infoButton": {
@@ -27,7 +27,7 @@
         "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
       },
       "move": {
-        "confirm": "Ich verstehe, dass das Verschieben nicht rückgängig gemacht werden kann",
+        "confirm": "Ich verstehe, dass diese Operation unwideruflich ist",
         "content": "Bitte geben Sie den Pfad ein, wohin die URL verschoben werden soll:",
         "move": "Verschieben",
         "target": "Pfad des Ziel-Knotens",
