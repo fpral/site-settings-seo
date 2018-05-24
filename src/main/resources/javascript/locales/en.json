@@ -61,7 +61,7 @@
     },
     "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
     "filterMatch_plural": "Matching {{count}} of {{totalCount}} mappings",
-    "filterPlaceholder": "Filter by keywords",
+    "filterPlaceholder": "Filter by mapping",
     "importantInfo": "Important Info",
     "languageSelector": {
       "noLanguages": "Select a language",

@@ -61,7 +61,7 @@
     },
     "filterMatch": "Affichage de {{count}} élément filtré sur {{totalCount}}",
     "filterMatch_plural": "Affichage de {{count}} éléments filtrés sur {{totalCount}}",
-    "filterPlaceholder": "Filtrer",
+    "filterPlaceholder": "Filtrer par URL",
     "importantInfo": "Information importante",
     "languageSelector": {
       "noLanguages": "Sélectionner une langue",
