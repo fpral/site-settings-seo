@@ -6,7 +6,7 @@ import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withNotifications, Picker, PickerViewMaterial} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-import {Note} from 'material-ui-icons'
+import {Description,LibraryBooks,Web} from 'material-ui-icons'
 import {GetNodeQuery} from "./gqlQueries";
 import {Query} from 'react-apollo';
 
@@ -138,11 +138,11 @@ class Move extends React.Component {
                                         render={PickerViewMaterial}
                                         rootPaths={[path]}
                                         defaultOpenPaths={[path]}
-                                        openableTypes={['jnt:page', 'jnt:virtualsite']}
+                                        openableTypes={['jnt:page', 'jnt:virtualsite','jnt:navMenuText']}
                                         selectableTypes={['jnt:page']}
                                         queryVariables={{lang: lang}}
                                         textRenderer={(entry) => entry.node.displayName}
-                                        iconRenderer={(entry) => <Note/>}
+                                        iconRenderer={(entry) => entry.node.primaryNodeType.name == 'jnt:virtualsite' ? <Web/> : entry.node.primaryNodeType.name == 'jnt:page' ? <Description/> : <LibraryBooks/>}
                                         selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                         onSelectItem={(path) => {
                                             this.setState({targetPath: path});

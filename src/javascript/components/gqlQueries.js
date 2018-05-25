@@ -77,7 +77,7 @@ const GetNodeQuery = gql`
         jcr {
             nodeByPath(path:$path) {
                 ...NodeCacheRequiredFields
-                inPicker : isNodeType(type: {types:["jnt:page"]})
+                inPicker : isNodeType(type: {types:["jnt:page","jnt:navMenuText"]})
             }
         }
     }
