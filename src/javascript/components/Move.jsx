@@ -6,10 +6,12 @@ import {translate} from "react-i18next";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withNotifications, Picker, PickerViewMaterial} from '@jahia/react-dxcomponents';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-import {Description,LibraryBooks,Web} from 'material-ui-icons'
 import {GetNodeQuery} from "./gqlQueries";
 import {Query} from 'react-apollo';
 import gql from "graphql-tag";
+import PageIcon from "../icons/PageIcon"
+import MenuItemIcon from "../icons/MenuItemIcon";
+import SiteIcon from "../icons/SiteIcon";
 
 let styles = (theme) => ({
 	pickerRoot: {
@@ -146,7 +148,7 @@ class Move extends React.Component {
                                         selectableTypes={['jnt:page']}
                                         queryVariables={{lang: lang}}
                                         textRenderer={(entry) => entry.node.displayName}
-                                        iconRenderer={(entry) => entry.node.primaryNodeType.name === 'jnt:virtualsite' ? <Web/> : entry.node.primaryNodeType.name === 'jnt:page' ? <Description/> : <LibraryBooks/>}
+                                        iconRenderer={(entry) => entry.node.primaryNodeType.name === 'jnt:virtualsite' ? <SiteIcon/> : entry.node.primaryNodeType.name === 'jnt:page' ? <PageIcon/> : <MenuItemIcon/>}
                                         selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                         onSelectItem={(path) => {
                                             this.setState({targetPath: path});
