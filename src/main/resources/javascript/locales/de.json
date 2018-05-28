@@ -61,7 +61,7 @@
     },
     "filterMatch": "Treffer: {{count}} von {{totalCount}} Mappings",
     "filterMatch_plural": "Treffer: {{count}} von {{totalCount}} Mappings",
-    "filterPlaceholder": "Nach Keywords filtern",
+    "filterPlaceholder": "Nach Mapping filtern",
     "importantInfo": "Wichtige Information",
     "languageSelector": {
       "noLanguages": "Sprache auswählen",
