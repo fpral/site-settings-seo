@@ -9,6 +9,7 @@ import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {Description,LibraryBooks,Web} from 'material-ui-icons'
 import {GetNodeQuery} from "./gqlQueries";
 import {Query} from 'react-apollo';
+import gql from "graphql-tag";
 
 let styles = (theme) => ({
 	pickerRoot: {
@@ -134,7 +135,10 @@ class Move extends React.Component {
                                 <FormHelperText className={classes.helperContainer}>{error && <error><label>{t("label.errors.MoveInvalidTarget")}</label><message className={classes.helperErrorMessage}>{t(["label.errors.MoveInvalidTarget_message", "label.errors.MoveInvalidTarget"])}</message></error>}</FormHelperText>
                             </FormControl>
                             <Paper elevation={4} classes={{root:classes.pickerRoot}}>
-                                <Picker fragments={["displayName"]}
+                                <Picker fragments={["displayName", {
+                                    applyFor:"node",
+                                    gql: gql`fragment PrimaryNodeTypeName on JCRNode { primaryNodeType { name } }`
+                                }]}
                                         render={PickerViewMaterial}
                                         rootPaths={[path]}
                                         defaultOpenPaths={[path]}
@@ -142,7 +146,7 @@ class Move extends React.Component {
                                         selectableTypes={['jnt:page']}
                                         queryVariables={{lang: lang}}
                                         textRenderer={(entry) => entry.node.displayName}
-                                        iconRenderer={(entry) => entry.node.primaryNodeType.name == 'jnt:virtualsite' ? <Web/> : entry.node.primaryNodeType.name == 'jnt:page' ? <Description/> : <LibraryBooks/>}
+                                        iconRenderer={(entry) => entry.node.primaryNodeType.name === 'jnt:virtualsite' ? <Web/> : entry.node.primaryNodeType.name === 'jnt:page' ? <Description/> : <LibraryBooks/>}
                                         selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                         onSelectItem={(path) => {
                                             this.setState({targetPath: path});
