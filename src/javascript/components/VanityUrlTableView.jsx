@@ -1,7 +1,7 @@
 import React from 'react';
 import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 
-import {List} from 'material-ui';
+import {List} from '@material-ui/core';
 
 import {Pagination} from "./Pagination";
 import {translate} from 'react-i18next';

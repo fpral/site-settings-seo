@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Snackbar from 'material-ui/Snackbar';
-import IconButton from 'material-ui/IconButton';
-import CloseIcon from 'material-ui-icons/Close';
+import {withStyles, IconButton, Snackbar} from '@material-ui/core';
+import {Close} from '@material-ui/icons';
 
 const styles = theme => ({
     close: {
@@ -34,7 +32,7 @@ class ErrorSnackBar extends React.Component {
             }}
             open={this.state.open}
             onClose={this.handleClose}
-            SnackbarContentProps={{
+            ContentProps={{
                 'aria-describedby': 'message-id',
             }}
             message={<span id="message-id">{error}</span>}
@@ -46,7 +44,7 @@ class ErrorSnackBar extends React.Component {
                     className={classes.close}
                     onClick={this.handleClose}
                 >
-                    <CloseIcon />
+                    <Close />
                 </IconButton>,
             ]}
         />;

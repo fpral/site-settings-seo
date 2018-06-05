@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {FormControl, FormHelperText, IconButton, withStyles, Input} from "material-ui";
-import {Check, Clear} from "material-ui-icons";
+import {FormControl, FormHelperText, IconButton, withStyles, Input} from "@material-ui/core";
+import {Check, Clear} from "@material-ui/icons";
 
 let styles = (theme) => ({
     root:{

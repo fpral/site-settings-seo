@@ -1,7 +1,7 @@
 import React from 'react';
 import * as _ from 'lodash';
 import {translate} from 'react-i18next';
-import {Checkbox, FormControl, FormControlLabel, Input, ListItem, ListItemText, MenuItem, Select, withStyles} from 'material-ui';
+import {Checkbox, FormControl, FormControlLabel, Input, ListItem, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
 

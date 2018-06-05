@@ -1,10 +1,17 @@
 import React from 'react';
-import {withNotifications} from '@jahia/react-dxcomponents';
+import {withNotifications} from '@jahia/react-material';
 import * as _ from "lodash";
-import {Button, withStyles} from 'material-ui';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    withStyles
+} from '@material-ui/core';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 
 let styles = (theme) => ({

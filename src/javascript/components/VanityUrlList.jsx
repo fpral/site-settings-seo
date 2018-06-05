@@ -14,15 +14,14 @@ import {
     Typography,
     Input,
     withStyles, withTheme
-} from 'material-ui';
-import {Done, Star, StarBorder} from 'material-ui-icons';
+} from '@material-ui/core';
+import {Done, Star, StarBorder} from '@material-ui/icons';
 import {LanguageMenu} from "./LanguageMenu";
 import * as _ from "lodash";
-import {fade} from "material-ui/styles/colorManipulator";
 import {Editable} from "./Editable";
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {compose} from "react-apollo/index";
-import {withNotifications} from '@jahia/react-dxcomponents';
+import {withNotifications} from '@jahia/react-material';
 
 const styles = (theme) => ({
     boxTitle: {

@@ -1,11 +1,9 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel, withStyles} from 'material-ui';
+import {Button, Checkbox, FormControlLabel, withStyles, Table, TableBody, TableRow, TableCell, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import {compose, graphql} from "react-apollo/index";
 import {translate} from "react-i18next";
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
-import {Table, TableBody, TableRow, TableCell} from 'material-ui';
-import {withNotifications} from '@jahia/react-dxcomponents';
+import {withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 
 let styles = (theme) => ({

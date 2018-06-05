@@ -1,10 +1,24 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel, TextField, Paper, withStyles, FormControl, FormHelperText} from 'material-ui';
+import {
+    Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    Paper,
+    TextField,
+    withStyles
+} from '@material-ui/core';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
-import {withNotifications, Picker, PickerViewMaterial} from '@jahia/react-dxcomponents';
+import {Picker} from '@jahia/react-apollo';
+import {PickerViewMaterial, withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {GetNodeQuery} from "./gqlQueries";
 import {Query} from 'react-apollo';

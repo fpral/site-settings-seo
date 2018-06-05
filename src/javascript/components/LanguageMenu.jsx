@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button, Menu, MenuItem, withStyles} from 'material-ui';
-import {ArrowDropDown} from 'material-ui-icons';
+import {Button, Menu, MenuItem, withStyles} from '@material-ui/core';
+import {ArrowDropDown} from '@material-ui/icons';
 
 const styles = (theme) => ({
     langButton: {

@@ -1,15 +1,15 @@
 import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {
+import {
+    Button,
+    Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from 'material-ui/Dialog';
-import {withStyles} from 'material-ui';
-import {compose, graphql} from "react-apollo/index";
+    withStyles
+} from '@material-ui/core';
+import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import {MoveMutation} from "./gqlMutations";
 
 let styles = (theme) => ({
 	dialogActionsContainer: {

@@ -1,10 +1,9 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-import {IconButton, TablePagination, Table, TableRow, TableFooter, withStyles} from 'material-ui';
+import {IconButton, TablePagination, Table, TableRow, TableFooter, withStyles} from '@material-ui/core';
 
-import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from 'material-ui-icons'
+import {FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from '@material-ui/icons'
 
-import {PickerViewMaterial, withPickerModel} from '@jahia/react-dxcomponents';
 import {compose} from "react-apollo/index";
 
 const actionsStyles = theme => ({
@@ -121,7 +120,7 @@ class Pagination extends React.Component {
                         page={currentPage}
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={(event) => onChangeRowsPerPage(event.target.value)}
-                        Actions={TablePaginationActions}
+                        ActionsComponent={TablePaginationActions}
                         labelRowsPerPage={t('label.pagination.rowsPerPage')}
                         labelDisplayedRows={({ from, to, count }) => `${from}-${to} ` + t('label.pagination.of') + ` ${count}`}
                         data-vud-role="table-pagination"
