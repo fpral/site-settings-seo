@@ -69,7 +69,11 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.add = (path, vanityUrls, props) => {
 
             let invalidMappings = _.filter(vanityUrls, (mapping) => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
-            let duplicateUrls = _.chain(vanityUrls).pullAllBy(invalidMappings, "url").groupBy("url").pickBy(x => x.length > 1).keys().value();
+            let duplicateUrls = vanityUrls;
+            duplicateUrls = _.pullAllBy(duplicateUrls,invalidMappings, "url");
+            duplicateUrls = _.groupBy(duplicateUrls, "url")
+            duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1)
+            duplicateUrls = _.keys(duplicateUrls);
 
             let errors = [];
             _.each(invalidMappings, (invalidMapping) => errors.push(new InvalidMappingError(invalidMapping.url)));

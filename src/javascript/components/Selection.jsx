@@ -1,9 +1,9 @@
 import React from 'react';
-import {IconButton, Button, Paper, Typography, withStyles, Chip} from 'material-ui';
+import {Button, Paper, Typography, withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {fade, emphasize, lighten} from 'material-ui/styles/colorManipulator'
-import {Clear} from "material-ui-icons";
+import {fade} from '@material-ui/core/styles/colorManipulator'
+import {Clear} from '@material-ui/icons';
 import classNames from 'classnames';
 
 let styles = theme => ({

@@ -1,42 +1,45 @@
 import React from 'react';
 import {
-    Checkbox,
-    Input,
     Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     FormControl,
+    FormControlLabel,
     FormHelperText,
     IconButton,
+    Input,
     Paper,
     Switch,
     Table,
     TableBody,
     TableCell,
     TableRow,
-    Typography,
-    withStyles,
-} from 'material-ui';
-import {Add, Star, StarBorder, Info, Cancel} from 'material-ui-icons';
+    withStyles
+} from '@material-ui/core';
+import {Cancel, Star, StarBorder} from '@material-ui/icons';
 import {LanguageMenu} from "./LanguageMenu";
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import { FormControlLabel } from 'material-ui/Form';
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-import {withNotifications} from '@jahia/react-dxcomponents';
+import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
 
 const styles = theme => ({
-	pickerRoot: {
-		overflowY: "scroll",
-		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
-		borderRadius: '0px',
-		border: '1px solid #d5d5d5',
-		borderBottom: 'none',
-		'& $PickerViewMaterial': {
-			color: 'pink'
-		}
-	},
+    pickerRoot: {
+        overflowY: "scroll",
+        boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
+        borderRadius: '0px',
+        border: '1px solid #d5d5d5',
+        borderBottom: 'none',
+        '& $PickerViewMaterial': {
+            color: 'pink'
+        }
+    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -56,26 +59,24 @@ const styles = theme => ({
         backgroundColor: '#f5f5f5',
         color: theme.palette.getContrastText(theme.palette.background.global),
 
-		'& $editDisabled > div': {
-			boxShadow: 'none'
-		}
-    },
-	rowEnabled: {
-		backgroundColor: '#FFF!important',
-		background: 'red',
-		'&:hover': {
-			backgroundColor: '#FFF!important',
-		}
-	},
-    root:{
-        width:"100%",
-        "& error": {
-        },
-        "& message": {
-            display:"none"
-        },
-        "& label": {
+        '& $editDisabled > div': {
+            boxShadow: 'none'
         }
+    },
+    rowEnabled: {
+        backgroundColor: '#FFF!important',
+        background: 'red',
+        '&:hover': {
+            backgroundColor: '#FFF!important',
+        }
+    },
+    root: {
+        width: "100%",
+        "& error": {},
+        "& message": {
+            display: "none"
+        },
+        "& label": {}
     },
     button: {
         height: 18,
@@ -88,36 +89,35 @@ const styles = theme => ({
         }
     },
     cancel: {
-		color:'red',
-		right:'10px',
-		top: '7px'
+        color: 'red',
+        right: '10px',
+        top: '7px'
     },
-	dialogNote: {
-		fontSize: '0.875rem',
-		marginTop: '10px'
-	},
-	dialogActionsButtonContainer: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		position: 'absolute',
-		right: '20px',
-		paddingTop: '7px',
-	},
-	vanitySwitchContainer: {
-		width: '60px'
-	},
-	languageContainer: {
-		width: '70px'
-	},
-	defaultContainer: {
-		width: '50px'
-	},
-	editDisabled: {
-		background: 'red',
+    dialogNote: {
+        fontSize: '0.875rem',
+        marginTop: '10px'
+    },
+    dialogActionsButtonContainer: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        position: 'absolute',
+        right: '20px',
+        paddingTop: '7px',
+    },
+    vanitySwitchContainer: {
+        width: '60px'
+    },
+    languageContainer: {
+        width: '70px'
+    },
+    defaultContainer: {
+        width: '50px'
+    },
+    editDisabled: {
+        background: 'red',
 
-		'& input': {
-		}
-	}
+        '& input': {}
+    }
 });
 
 class AddVanityUrl extends React.Component {
@@ -129,7 +129,7 @@ class AddVanityUrl extends React.Component {
 
         this.state = {
             mappings: this._resetMap(),
-            errors:[],
+            errors: [],
             doPublish: false
         };
 
@@ -150,7 +150,7 @@ class AddVanityUrl extends React.Component {
     };
 
     handleSave = (event) => {
-        let { vanityMutationsContext, notificationContext, path, t} = this.props;
+        let {vanityMutationsContext, notificationContext, path, t} = this.props;
 
         // exit if there is no mapping to save
         if (this.state.mappings.length === 0) {
@@ -158,14 +158,13 @@ class AddVanityUrl extends React.Component {
             return;
         }
 
-        let mappings= _.map(_.filter(this.state.mappings,(entry) =>  entry.url), (entry) => {
+        let mappings = _.map(_.filter(this.state.mappings, (entry) => entry.url), (entry) => {
             delete entry.focus;
             return entry;
         });
 
         try {
-            vanityMutationsContext.add(path, mappings, this.props).then((result) =>
-            {
+            vanityMutationsContext.add(path, mappings, this.props).then((result) => {
                 if (this.state.doPublish) {
                     vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
                         this.handleClose(event);
@@ -215,7 +214,7 @@ class AddVanityUrl extends React.Component {
     handleClose = (event) => {
         this.setState({
             mappings: this._resetMap(),
-            errors:[],
+            errors: [],
             doPublish: false
         });
         this.props.onClose(event);
@@ -225,16 +224,16 @@ class AddVanityUrl extends React.Component {
         this.setState(function (previous) {
 
             if ((field === "url")) {
-                previous.errors = _.pullAllBy(previous.errors, [{ 'url': previous.mappings[index].url }], "url");
+                previous.errors = _.pullAllBy(previous.errors, [{'url': previous.mappings[index].url}], "url");
             }
 
             let mappingToDisableDefaultFlag;
             if ((field === "defaultMapping" && value === true)) {
-                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping =>  (mapping.defaultMapping && mapping.language === previous.mappings[index].language));
+                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping => (mapping.defaultMapping && mapping.language === previous.mappings[index].language));
             }
 
             if ((field === "language" && previous.mappings[index].defaultMapping)) {
-                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping =>  (mapping.defaultMapping && mapping.language === value)) ? previous.mappings[index] : undefined;
+                mappingToDisableDefaultFlag = _.find(previous.mappings, mapping => (mapping.defaultMapping && mapping.language === value)) ? previous.mappings[index] : undefined;
             }
 
             if (mappingToDisableDefaultFlag) {
@@ -243,7 +242,12 @@ class AddVanityUrl extends React.Component {
 
             previous.mappings[index][field] = value;
             if (field === "url" && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
-                previous.mappings.push({ language: this.defaultLanguage, defaultMapping: false, active: true, focus: false });
+                previous.mappings.push({
+                    language: this.defaultLanguage,
+                    defaultMapping: false,
+                    active: true,
+                    focus: false
+                });
             }
             return {mappings: previous.mappings, errors: previous.errors};
 
@@ -269,12 +273,13 @@ class AddVanityUrl extends React.Component {
     }
 
     render() {
-        let { t, open, path, onClose, availableLanguages, classes } = this.props;
-        const { errors, mappings } = this.state;
+        let {t, open, path, onClose, availableLanguages, classes} = this.props;
+        const {errors, mappings} = this.state;
 
         return (
             <div>
-                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true} onEntered={this.handleDialogEntered}>
+                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}
+                        onEntered={this.handleDialogEntered}>
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -282,11 +287,11 @@ class AddVanityUrl extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogContent>
-                        <Paper elevation={2} classes={{root:classes.pickerRoot}}>
+                        <Paper elevation={2} classes={{root: classes.pickerRoot}}>
                             <Table>
                                 <TableBody>
                                     {mappings.map((entry, index) => {
-                                        let errorForRow = _.find(errors, error =>  error.url === entry.url || error.url === ('/' + entry.url));
+                                        let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
                                         let lineEnabled = !!entry.url || entry.focus;
                                         return (
                                             <TableRow key={index} classes={{
@@ -301,19 +306,28 @@ class AddVanityUrl extends React.Component {
                                                 <TableCell padding={'none'}>
 
                                                     <FormControl className={classes.root} classes={{
-		                                                root: (lineEnabled ? '' : classes.editDisabled)
-		                                            }}>
+                                                        root: (lineEnabled ? '' : classes.editDisabled)
+                                                    }}>
                                                         <Input
                                                             ref={index}
-                                                            inputRef={(input) => {this.inputTab[index] = input; if(index === 0) {this.firstMappingInputRef = input}}}
-                                                            error={ !!errorForRow }
+                                                            inputRef={(input) => {
+                                                                this.inputTab[index] = input;
+                                                                if (index === 0) {
+                                                                    this.firstMappingInputRef = input
+                                                                }
+                                                            }}
+                                                            error={!!errorForRow}
                                                             placeholder={t("label.dialogs.add.text")}
                                                             onFocus={() => this.handleFieldChange("focus", index, true)}
                                                             onBlur={() => this.handleFieldChange("focus", index, false)}
                                                             onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
                                                             data-vud-role="url"
                                                         />
-                                                        { errorForRow && <FormHelperText><error><label>{errorForRow.label}</label><message>{errorForRow.message}</message></error></FormHelperText> }
+                                                        {errorForRow && <FormHelperText>
+                                                            <error><label>{errorForRow.label}</label>
+                                                                <message>{errorForRow.message}</message>
+                                                            </error>
+                                                        </FormHelperText>}
                                                         {entry.url &&
                                                         <IconButton className={classes.button + " " + classes.cancel}
                                                                     component="span" disableRipple onClick={() => {
@@ -333,9 +347,10 @@ class AddVanityUrl extends React.Component {
                                                               onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}
                                                               data-vud-role="default"/>
                                                 </TableCell>
-                                                <TableCell padding={'none'} data-vud-role="language" className={classes.languageContainer}>
+                                                <TableCell padding={'none'} data-vud-role="language"
+                                                           className={classes.languageContainer}>
                                                     <LanguageMenu languages={availableLanguages}
-                                                                  languageCode={ entry.language }
+                                                                  languageCode={entry.language}
                                                                   onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
                                                 </TableCell>
                                             </TableRow>
@@ -346,20 +361,23 @@ class AddVanityUrl extends React.Component {
                         </Paper>
                     </DialogContent>
                     <DialogActions>
-                        <FormControlLabel classes={{ root: classes.leftControl }}
+                        <FormControlLabel classes={{root: classes.leftControl}}
                                           control={
-                                              <Checkbox onChange={(event, checked) => this.handlePublishCheckboxChange(checked)} data-vud-role="checkbox-hint" />
+                                              <Checkbox
+                                                  onChange={(event, checked) => this.handlePublishCheckboxChange(checked)}
+                                                  data-vud-role="checkbox-hint"/>
                                           }
                                           label={t('label.dialogs.add.check')}
                         />
-						<div className={classes.dialogActionsButtonContainer}>
-	                        <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
-	                            {t('label.cancel')}
-	                        </Button>
-	                        <Button onClick={this.handleSave} color="secondary" autoFocus data-vud-role="button-primary">
-	                            {t('label.dialogs.add.save')}
-	                        </Button>
-						</div>
+                        <div className={classes.dialogActionsButtonContainer}>
+                            <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
+                                {t('label.cancel')}
+                            </Button>
+                            <Button onClick={this.handleSave} color="secondary" autoFocus
+                                    data-vud-role="button-primary">
+                                {t('label.dialogs.add.save')}
+                            </Button>
+                        </div>
                     </DialogActions>
                 </Dialog>
             </div>

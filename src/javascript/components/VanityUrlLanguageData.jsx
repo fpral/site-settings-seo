@@ -1,11 +1,7 @@
 import React from 'react';
 import {Query} from 'react-apollo';
 import * as _ from "lodash";
-import {CircularProgress} from 'material-ui/Progress';
-import ErrorSnackBar from "./ErrorSnackBar";
 import {LanguagesQuery} from "./gqlQueries";
-import {withStyles} from "material-ui";
-import {translate} from "react-i18next";
 
 class VanityUrlLanguageData extends React.Component {
 

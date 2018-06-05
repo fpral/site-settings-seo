@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {pure} from 'recompose';
-import {SvgIcon} from 'material-ui';
+import {SvgIcon} from '@material-ui/core';
 
 let MenuItemIcon = props => (
     <SvgIcon {...props} viewBox={'0 0 512 512'}>

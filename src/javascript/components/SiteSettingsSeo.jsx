@@ -1,12 +1,15 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme} from 'material-ui';
-import {DxContextProvider, SearchBar, SettingsLayout, withNotifications} from '@jahia/react-dxcomponents';
+import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
+import {client} from '@jahia/apollo-dx';
+import {getI18n} from '@jahia/i18next';
+// import {DxContextProvider} from '@jahia/context-provider';
 import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableView} from "./VanityUrlTableView";
-import {translate} from 'react-i18next';
+import {translate, I18nextProvider} from 'react-i18next';
 import {Selection} from "./Selection";
-import {compose} from 'react-apollo';
-import {Add, Delete, Info, Publish, SwapHoriz} from "material-ui-icons";
+import {compose, ApolloProvider} from 'react-apollo';
+import {Add, Delete, Info, Publish, SwapHoriz} from "@material-ui/icons";
 import * as _ from 'lodash';
 import InfoButton from "./InfoButton";
 import Publication from "./Publication";
@@ -481,7 +484,7 @@ let SiteSettingsSeo = function (props) {
         }
         if (ns === 'react-dxcomponents') {
             try {
-                return require('@jahia/react-dxcomponents/src/main/resources/javascript/locales/' + lang + '.json');
+                return require('@jahia/react-material/locales/' + lang + '.json');
             } catch (e) {
                 return null;
             }
@@ -489,15 +492,19 @@ let SiteSettingsSeo = function (props) {
     } : null;
 
     return (
-        <DxContextProvider dxContext={props.dxContext} i18n={{
-            ns: ['site-settings-seo', 'react-dxcomponents'], defaultNS: 'site-settings-seo', getData:getI18NData
-        }} apollo redux mui>
-            <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                    {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
-                </VanityUrlLanguageData>
-            </VanityMutationsProvider>
-        </DxContextProvider>
+        <MuiThemeProvider theme={theme}>
+            <NotificationProvider notificationContext={{}}>
+                <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
+                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-dxcomponents'], defaultNS: 'site-settings-seo', getData:getI18NData})}>
+                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                        <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                            {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
+                        </VanityUrlLanguageData>
+                    </VanityMutationsProvider>
+                    </I18nextProvider>
+                </ApolloProvider>
+            </NotificationProvider>
+        </MuiThemeProvider>
     );
 };
 

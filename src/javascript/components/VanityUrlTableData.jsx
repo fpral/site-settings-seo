@@ -1,10 +1,9 @@
 import React from 'react';
 import {Query} from 'react-apollo';
-import {CircularProgress} from 'material-ui/Progress';
+import {CircularProgress, withStyles} from '@material-ui/core';
 import * as _ from "lodash";
 import ErrorSnackBar from "./ErrorSnackBar";
 import {TableQuery, TableQueryVariables} from "./gqlQueries";
-import {withStyles} from "material-ui";
 import {translate} from "react-i18next";
 
 const styles = (theme) => ({

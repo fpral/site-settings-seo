@@ -1,16 +1,23 @@
 import React from 'react';
-import Snackbar from 'material-ui/Snackbar';
-import * as _ from "lodash";
-import {Button, withStyles} from 'material-ui';
-import Checkbox from 'material-ui/Checkbox';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import {Table, TableBody, TableRow, TableCell} from 'material-ui';
-import {compose, graphql} from "react-apollo/index";
+import {
+    Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControlLabel,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    withStyles
+} from '@material-ui/core';
+import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-import {PublishMutation} from "./gqlMutations";
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-import {withNotifications} from '@jahia/react-dxcomponents';
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
+import {withNotifications} from '@jahia/react-material';
 
 const styles = theme => ({
     deleteClass: {

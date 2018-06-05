@@ -4,9 +4,9 @@ import {translate} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {AddVanityUrl} from "./AddVanityUrl";
 
-import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from 'material-ui';
+import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
 
-import {KeyboardArrowDown, KeyboardArrowRight} from 'material-ui-icons';
+import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 
 const styles = theme => ({
     root: {
