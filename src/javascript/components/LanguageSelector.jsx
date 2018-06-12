@@ -111,7 +111,7 @@ class LanguageSelector extends React.Component {
                     return (
                         <MenuItem key={language.code} value={language.code} data-vud-role={'language-selector-item'}>
                             <Checkbox checked={checked}/>
-                            <ListItemText primary={language.name + ' (' + language.code + ')'}/>
+                            <ListItemText primary={language.name + ' (' + language.code + ')'} data-vud-role={'language-selector-item-label'}/>
                         </MenuItem>
                     )
                 })}

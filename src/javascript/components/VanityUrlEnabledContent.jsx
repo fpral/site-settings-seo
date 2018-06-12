@@ -109,7 +109,7 @@ class VanityUrlEnabledContent extends React.Component {
 
                         {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'} />}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText}/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
                         {filterMatchInfo}
                         {localFilterSwitch}
                         {this.state.expanded ? <IconButton className={classes.addVanityButton} aria-label={actions.addAction.className} onClick={(event) => {
