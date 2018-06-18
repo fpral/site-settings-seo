@@ -31,6 +31,14 @@
     i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
 
+"@jahia/icons@^1.0.0-beta.20180618091411", "@jahia/icons@^1.0.0-beta.20180618091940":
+  version "1.0.0-beta.20180618091940"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/icons/-/icons-1.0.0-beta.20180618091940.tgz#db327222859ea50de9ec95b1826a217ab446f874"
+  dependencies:
+    "@material-ui/core" "^1.2.0"
+    react "^16.4.1"
+    recompose "^0.27.1"
+
 "@jahia/react-apollo@^1.0.0-beta.20180605080720":
   version "1.0.0-beta.20180605094034"
   resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-apollo/-/react-apollo-1.0.0-beta.20180605094034.tgz#6bd1fadfdc0d840c91a3619ca346e8707992edce"
@@ -42,14 +50,16 @@
     react "^16.4.0"
     react-apollo "^2.1.4"
 
-"@jahia/react-material@^1.0.0-beta.20180605080716":
-  version "1.0.0-beta.20180605122233"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180605122233.tgz#09f797b6b4169d1ff748f4f3e3f8ab1d7b5d3253"
+"@jahia/react-material@^1.0.0-beta.20180618091945":
+  version "1.0.0-beta.20180618091945"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180618091945.tgz#979e13b56ae49fb019b582bf6286d1e0a32b97b9"
   dependencies:
+    "@jahia/icons" "^1.0.0-beta.20180618091411"
     "@material-ui/core" "^1.2.0"
     "@material-ui/icons" "^1.1.0"
     lodash "^4.17.10"
     prop-types "^15.6.1"
+    react-dom "^16.4.0"
     react-i18next "^7.6.1"
 
 "@material-ui/core@^1.2.0":
@@ -2489,8 +2499,8 @@ fastparse@^1.1.1:
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
 fbjs@^0.8.1, fbjs@^0.8.16:
-  version "0.8.16"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
+  version "0.8.17"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -2498,7 +2508,7 @@ fbjs@^0.8.1, fbjs@^0.8.16:
     object-assign "^4.1.0"
     promise "^7.1.1"
     setimmediate "^1.0.5"
-    ua-parser-js "^0.7.9"
+    ua-parser-js "^0.7.18"
 
 figures@^1.7.0:
   version "1.7.0"
@@ -2936,7 +2946,11 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.4.tgz#fc3b1ac05d2ae3abedec84eba846511b0d4fcc4f"
+
+hoist-non-react-statics@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
@@ -5012,6 +5026,15 @@ react@^16.2.0, react@^16.4.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react@^16.4.1:
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
 read-chunk@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/read-chunk/-/read-chunk-2.1.0.tgz#6a04c0928005ed9d42e1a6ac5600e19cbc7ff655"
@@ -5080,7 +5103,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-"recompose@^0.26.0 || ^0.27.0":
+"recompose@^0.26.0 || ^0.27.0", recompose@^0.27.1:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.27.1.tgz#1a49e931f183634516633bbb4f4edbfd3f38a7ba"
   dependencies:
@@ -5846,7 +5869,7 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-ua-parser-js@^0.7.9:
+ua-parser-js@^0.7.18:
   version "0.7.18"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.18.tgz#a7bfd92f56edfb117083b69e31d2aa8882d4b1ed"
 
