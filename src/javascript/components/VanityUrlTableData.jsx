@@ -1,21 +1,9 @@
 import React from 'react';
 import {Query} from 'react-apollo';
-import {CircularProgress, withStyles} from '@material-ui/core';
+import {withNotifications, ProgressOverlay} from '@jahia/react-material';
 import * as _ from "lodash";
-import ErrorSnackBar from "./ErrorSnackBar";
 import {TableQuery, TableQueryVariables} from "./gqlQueries";
 import {translate} from "react-i18next";
-
-const styles = (theme) => ({
-    loadingOverlay : {
-        position: "fixed",
-        left: "50%",
-        top: "50%",
-        display: "block",
-        transform: "translate( -50%, -50% )",
-        zIndex:999
-    }
-});
 
 function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
     let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -32,12 +20,13 @@ class VanityUrlTableData extends React.Component {
     }
 
     render() {
-        let { t, classes, filterText, totalCount, pageSize, poll} = this.props;
+        let { t, classes, filterText, totalCount, pageSize, poll, notificationContext} = this.props;
         return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
             { ({loading, error, data}) => {
 
                 if (error) {
                     console.log("Error when fetching data: " + error);
+                    notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton','noAutomaticClose']);
                 }
 
                 let totalCount = 0;
@@ -66,8 +55,7 @@ class VanityUrlTableData extends React.Component {
                 }
 
                 return <div>
-                    {error && <ErrorSnackBar error={t('label.errors.loadingVanityUrl')}/>}
-                    {loading && <div className={classes.loadingOverlay}><CircularProgress/></div>}
+                    {loading && <ProgressOverlay/>}
                     {this.props.children(rows, totalCount, numberOfPages)}
                 </div>;
 
@@ -76,6 +64,9 @@ class VanityUrlTableData extends React.Component {
     }
 }
 
-VanityUrlTableData = withStyles(styles)(translate()(VanityUrlTableData));
+VanityUrlTableData = _.flowRight(
+    withNotifications(),
+    translate(),
+)(VanityUrlTableData);
 
 export {VanityUrlTableData};

@@ -480,7 +480,7 @@ let SiteSettingsSeo = function (props) {
 
     return (
         <MuiThemeProvider theme={theme}>
-            <NotificationProvider notificationContext={{}}>
+            <NotificationProvider>
                 <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
                     <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
                     <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
