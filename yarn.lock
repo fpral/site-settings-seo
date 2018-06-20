@@ -23,9 +23,9 @@
     lodash "^4.17.10"
     zen-observable "^0.8.8"
 
-"@jahia/i18next@^1.0.0-beta.20180605080716":
-  version "1.0.0-beta.20180605094032"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/i18next/-/i18next-1.0.0-beta.20180605094032.tgz#90e61e8dc9199126eb0e70fe9dea0e1513ad0a68"
+"@jahia/i18next@^1.0.0-beta.20180620121338":
+  version "1.0.0-beta.20180620121338"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/i18next/-/i18next-1.0.0-beta.20180620121338.tgz#30ac6d86d0a34e3bc8e9b709a6dbea8a290f9f67"
   dependencies:
     i18next "^11.3.2"
     i18next-chained-backend "^0.1.2"
@@ -39,9 +39,9 @@
     react "^16.4.1"
     recompose "^0.27.1"
 
-"@jahia/react-apollo@^1.0.0-beta.20180605080720":
-  version "1.0.0-beta.20180605094034"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-apollo/-/react-apollo-1.0.0-beta.20180605094034.tgz#6bd1fadfdc0d840c91a3619ca346e8707992edce"
+"@jahia/react-apollo@^1.0.0-beta.20180620121341":
+  version "1.0.0-beta.20180620121341"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-apollo/-/react-apollo-1.0.0-beta.20180620121341.tgz#8458afcfc2df6336de77d0bf75c07e9a5ee1e30e"
   dependencies:
     "@jahia/apollo-dx" "^1.0.0-beta.1"
     apollo-client "^2.3.2"
@@ -50,9 +50,9 @@
     react "^16.4.0"
     react-apollo "^2.1.4"
 
-"@jahia/react-material@^1.0.0-beta.20180618091945":
-  version "1.0.0-beta.20180618091945"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180618091945.tgz#979e13b56ae49fb019b582bf6286d1e0a32b97b9"
+"@jahia/react-material@^1.0.0-beta.20180620121341":
+  version "1.0.0-beta.20180620121341"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180620121341.tgz#165e0ec902d0a4ad55548479d7e20c193afbcccc"
   dependencies:
     "@jahia/icons" "^1.0.0-beta.20180618091411"
     "@material-ui/core" "^1.2.0"

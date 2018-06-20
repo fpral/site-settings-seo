@@ -3,7 +3,7 @@ import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 
 import {List} from '@material-ui/core';
 
-import {Pagination} from "./Pagination";
+import {Pagination} from "@jahia/react-material";
 import {translate} from 'react-i18next';
 
 class VanityUrlTableView extends React.Component {

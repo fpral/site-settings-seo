@@ -474,28 +474,15 @@ SiteSettingsSeoApp = compose(
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
-    let getI18NData = __webpack_require__ ? (ns, lang) => {
-        if (ns === 'site-settings-seo') {
-            try {
-                return require('../../main/resources/javascript/locales/' + lang + '.json');
-            } catch (e) {
-                return null;
-            }
-        }
-        if (ns === 'react-dxcomponents') {
-            try {
-                return require('@jahia/react-material/locales/' + lang + '.json');
-            } catch (e) {
-                return null;
-            }
-        }
-    } : null;
+    let namespaceResolvers = {
+        'site-settings-seo': (lang) => require('../../main/resources/javascript/locales/' + lang + '.json')
+    };
 
     return (
         <MuiThemeProvider theme={theme}>
             <NotificationProvider notificationContext={{}}>
                 <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
-                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-dxcomponents'], defaultNS: 'site-settings-seo', getData:getI18NData})}>
+                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
                     <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                         <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
                             {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
