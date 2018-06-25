@@ -39,14 +39,9 @@ let config = {
                     loader: 'babel-loader',
 
                     query: {
-                        presets: ['env', 'react', 'stage-2'],
+                        presets: [['env', {modules: false}],'react', 'stage-2'],
                         plugins: [
-                            "lodash",
-                            ["direct-import", [
-                                "@material-ui/core",
-                                "@material-ui/icons",
-                                "react-i18next",
-                            ]]
+                            "lodash"
                         ]
                     }
                 }
@@ -54,11 +49,12 @@ let config = {
         },
 
         resolve: {
-            mainFields: ['main'],
-            extensions: ['.js', '.jsx', 'json']
+            mainFields: ['module','main'],
+            extensions: ['.mjs', '.js', '.jsx', 'json']
         },
 
         plugins: [
+            // new BundleAnalyzerPlugin({analyzerMode: "static"})
         ],
 
         devtool: 'source-map',
