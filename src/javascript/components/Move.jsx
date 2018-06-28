@@ -152,17 +152,17 @@ class Move extends React.Component {
                                     applyFor:"node",
                                     gql: gql`fragment PrimaryNodeTypeName on JCRNode { primaryNodeType { name } }`
                                 }]}
-                                        render={PickerViewMaterial}
                                         rootPaths={[path]}
                                         defaultOpenPaths={[path]}
                                         openableTypes={['jnt:page', 'jnt:virtualsite','jnt:navMenuText']}
                                         selectableTypes={['jnt:page']}
                                         queryVariables={{lang: lang}}
-                                        textRenderer={(entry) => entry.node.displayName}
                                         selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                         onSelectItem={(path) => {
                                             this.setState({targetPath: path});
-                                        }}/>
+                                        }}>
+                                    { ({loading, ...others}) => <PickerViewMaterial {...others} textRenderer={(entry) => entry.node.displayName} /> }
+                                </Picker>
                             </Paper>
                         </DialogContent>
                     <DialogActions>
