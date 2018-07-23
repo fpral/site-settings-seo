@@ -46,7 +46,15 @@
     i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
 
-"@jahia/icons@^1.0.0-beta.20180618091411", "@jahia/icons@^1.0.0-beta.20180622150437":
+"@jahia/icons@^1.0.0-beta.20180618091411":
+  version "1.0.0-beta.20180723150733"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/icons/-/icons-1.0.0-beta.20180723150733.tgz#fb06d702bb094eb7a852236603768bb9d978b4b5"
+  dependencies:
+    "@material-ui/core" "^1.2.0"
+    react "^16.4.1"
+    recompose "^0.27.1"
+
+"@jahia/icons@^1.0.0-beta.20180622150437":
   version "1.0.0-beta.20180723113823"
   resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/icons/-/icons-1.0.0-beta.20180723113823.tgz#fbaeb994d93ee1870d6ef69d1e8a68c01760e919"
   dependencies:
@@ -66,8 +74,8 @@
     react-apollo "^2.1.4"
 
 "@jahia/react-material@^1.0.0-beta.20180622150440":
-  version "1.0.0-beta.20180723113827"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180723113827.tgz#134564abff7b1b5a1bbff958a8e4710e47724b11"
+  version "1.0.0-beta.20180723150735"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180723150735.tgz#5e1caeade1072c77f0fbcf33af175372fabe5b3f"
   dependencies:
     "@jahia/icons" "^1.0.0-beta.20180618091411"
     "@material-ui/core" "^1.2.0"
