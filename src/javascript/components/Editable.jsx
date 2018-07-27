@@ -3,38 +3,38 @@ import React from 'react';
 import {FormControl, FormHelperText, IconButton, withStyles, Input} from "@material-ui/core";
 import {Check, Clear} from "@material-ui/icons";
 
-let styles = (theme) => ({
-    root:{
-        width:"calc(100% + 72px)",
-		zIndex: '9'
-    },
-    button:{
-        height:18,
-        width:18,
-        position:"absolute",
-        top:4,
-        transform:"scale(0.75)",
-        "&:hover": {
-            backgroundColor:"inherit"
-        }
-    },
-    cancel: {
-        color:'red',
-        right:'10px',
-		top: '6px'
-    },
-    valid: {
-		color:'green',
-		right:'32px',
-		top: '6px'
-    },
-    textInput: {
-        color: "inherit",
-        fontSize: "inherit",
-        width: "100%",
-		paddingRight: '60px'
-    }
-});
+let styles = (theme) => ({});
+//     root:{
+//         width:"calc(100% + 72px)",
+// 		zIndex: '9'
+//     },
+//     button:{
+//         height:18,
+//         width:18,
+//         position:"absolute",
+//         top:4,
+//         transform:"scale(0.75)",
+//         "&:hover": {
+//             backgroundColor:"inherit"
+//         }
+//     },
+//     cancel: {
+//         color:'red',
+//         right:'10px',
+// 		top: '6px'
+//     },
+//     valid: {
+// 		color:'green',
+// 		right:'32px',
+// 		top: '6px'
+//     },
+//     textInput: {
+//         color: "inherit",
+//         fontSize: "inherit",
+//         width: "100%",
+// 		paddingRight: '60px'
+//     }
+// });
 
 class Editable extends React.Component {
     constructor(props) {
@@ -52,10 +52,10 @@ class Editable extends React.Component {
         this.ref = this.ref.bind(this);
     }
 
-    shouldComponentUpdate =  (nextProps, nextState) => {
+    shouldComponentUpdate = (nextProps, nextState) => {
         // render only if the edit state change or edit is active
         return this.state.edit !== nextState.edit ||  this.state.edit;
-    }
+    };
 
     setEdit(event, edit) {
         let {onChange, onEdit} = this.props;

@@ -11,11 +11,11 @@ import {
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 
-let styles = (theme) => ({
-	dialogActionsContainer: {
-		justifyContent: 'flex-end'
-	},
-});
+let styles = (theme) => ({});
+// 	dialogActionsContainer: {
+// 		justifyContent: 'flex-end'
+// 	},
+// });
 
 class InfoButton extends React.Component {
 

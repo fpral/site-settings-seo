@@ -79,18 +79,15 @@ class LanguageSelector extends React.Component {
 
         return (
 
-            <Select
-                multiple
-                value={selectedLanguageCodes}
-                displayEmpty={true}
-                renderValue={this.getSelectedLanguagesValue}
-                className={this.props.className}
-                classes={this.props.classes}
-                style={this.props.style}
-                data-vud-role={'language-selector'}
-                onChange={this.onChange}
-            >
-
+            <Select multiple
+                    value={selectedLanguageCodes}
+                    displayEmpty={true}
+                    renderValue={this.getSelectedLanguagesValue}
+                    className={this.props.className}
+                    classes={this.props.classes}
+                    style={this.props.style}
+                    data-vud-role={'language-selector'}
+                    onChange={this.onChange}>
                 {
                     // Render the All Languages checkbox as a menu item so that it is displayed uniformly with individual language items.
                     // However, supply null value to it and ignore it when handling menu change events afterwards; instead handle the checkbox's change event directly.

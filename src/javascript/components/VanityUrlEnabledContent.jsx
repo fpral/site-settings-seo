@@ -4,49 +4,49 @@ import {translate} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {AddVanityUrl} from "./AddVanityUrl";
 
-import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
+import {Button, IconButton, Collapse, Grid, Card, CardHeader, CardContent, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
 
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 
-const styles = theme => ({
-    root: {
-        margin: theme.spacing.unit
-    },
-    filterMatchInfo: {
-        margin: theme.spacing.unit
-    },
-	vanityUrlLists: {
-        paddingLeft: '45px',
-		paddingTop: '12px',
-        padding: '26px',
-    },
-	vanityUrlListHeader: {
-        paddingLeft: '13px',
-        paddingRight: '10px',
-    },
-	vanityUrlListHeaderText: {
-		paddingLeft: '8px'
-	},
-	showToggle: {
-		color: '#ffffff',
-	    background: '#757575',
-	    fontSize: '10px',
-	    minHeight: 'auto',
-	    minWidth: 'auto',
-	    padding: '5px',
-	    borderRadius: '0',
-		'&:hover': {
-			backgroundColor: '#595858'
-		}
-	},
-	addVanityButton: {
-		color: '#575757',
-		'&:hover': {
-			backgroundColor: 'transparent',
-			color: '#4A4343'
-		}
-	},
-});
+const styles = (theme) => ({});
+//     root: {
+//         margin: theme.spacing.unit
+//     },
+//     filterMatchInfo: {
+//         margin: theme.spacing.unit
+//     },
+// 	vanityUrlLists: {
+//         paddingLeft: '45px',
+// 		paddingTop: '12px',
+//         padding: '26px',
+//     },
+// 	vanityUrlListHeader: {
+//         paddingLeft: '13px',
+//         paddingRight: '10px',
+//     },
+// 	vanityUrlListHeaderText: {
+// 		paddingLeft: '8px'
+// 	},
+// 	showToggle: {
+// 		color: '#ffffff',
+// 	    background: '#757575',
+// 	    fontSize: '10px',
+// 	    minHeight: 'auto',
+// 	    minWidth: 'auto',
+// 	    padding: '5px',
+// 	    borderRadius: '0',
+// 		'&:hover': {
+// 			backgroundColor: '#595858'
+// 		}
+// 	},
+// 	addVanityButton: {
+// 		color: '#575757',
+// 		'&:hover': {
+// 			backgroundColor: 'transparent',
+// 			color: '#4A4343'
+// 		}
+// 	},
+// });
 
 class VanityUrlEnabledContent extends React.Component {
 
@@ -101,28 +101,24 @@ class VanityUrlEnabledContent extends React.Component {
             );
         }
 
-        let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls
+        let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls;
+
         return (
-            <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
-                <Paper elevation={1}>
-                    <ListItem onClick={() => this.handleExpandCollapseClick()} className={classes.vanityUrlListHeader}>
-
-                        {this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'} />}
-
-                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
-                        {filterMatchInfo}
-                        {localFilterSwitch}
-                        {this.state.expanded ? <IconButton className={classes.addVanityButton} aria-label={actions.addAction.className} onClick={(event) => {
-                            event.stopPropagation();
-                            actions.addAction.call(content.path, languages);
-                        }}>
-                            {actions.addAction.body}
-                            {actions.addAction.buttonIcon}
-                        </IconButton>: ''}
-
-                    </ListItem>
-                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                        <Grid container spacing={16} className={classes.vanityUrlLists}>
+            <Card className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
+                <CardHeader onClick={() => this.handleExpandCollapseClick()} className={classes.vanityUrlListHeader}
+                            title={content.displayName} subheader={content.path}
+                            avatar={this.state.expanded ? <KeyboardArrowDown color={'secondary'} /> : <KeyboardArrowRight color={'secondary'} />}
+                            action={this.state.expanded ?
+                                <IconButton className={classes.addVanityButton} aria-label={actions.addAction.className}
+                                            onClick={(event) => {event.stopPropagation();actions.addAction.call(content.path, languages);}}>
+                                    {actions.addAction.body}
+                                    {actions.addAction.buttonIcon}</IconButton> : ''}>
+                    {filterMatchInfo}
+                    {localFilterSwitch}
+                </CardHeader>
+                <Collapse in={this.state.expanded} timeout="auto" mountOnEnter unmountOnExit>
+                    <CardContent className={classes.vanityUrlLists}>
+                        <Grid container spacing={16}>
                             <Grid item xs={6}>
                                 <VanityUrlListDefault onChangeSelection={onChangeSelection} selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid}/>
                             </Grid>
@@ -130,9 +126,9 @@ class VanityUrlEnabledContent extends React.Component {
                                 <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>
                             </Grid>
                         </Grid>
-                    </Collapse>
-                </Paper>
-            </div>
+                    </CardContent>
+                </Collapse>
+            </Card>
         );
     }
 }

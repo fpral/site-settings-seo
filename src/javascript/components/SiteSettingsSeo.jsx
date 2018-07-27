@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {CssBaseline, Toolbar, Typography, withStyles, withTheme, MuiThemeProvider, Grid} from '@material-ui/core';
 import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
 import {client} from '@jahia/apollo-dx';
 import {getI18n} from '@jahia/i18next';
@@ -21,33 +21,26 @@ import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutati
 import {VanityUrlLanguageData} from "./VanityUrlLanguageData";
 import {VanityUrlTableData} from "./VanityUrlTableData";
 
-const styles = (theme) => ({
-
-    title: {
-        width: '100%'
-    },
-
-    languageSelector: {
-        marginRight: theme.spacing.unit,
-        color: 'inherit',
-        boxShadow: 'none',
-        background: 'none',
-        color: 'white',
-
-        // Disable any underlining.
-        '&:before': {
-            background: 'transparent !important'
-        },
-        '&:after': {
-            background: 'transparent'
-        }
-    },
-
-    languageSelectorIcon: {
-        color: 'inherit'
-    }
-
-});
+const styles = (theme) => ({});
+//     languageSelector: {
+//         marginRight: theme.spacing.unit,
+//         color: 'inherit',
+//         boxShadow: 'none',
+//         background: 'none',
+//         color: 'white',
+//
+//         // Disable any underlining.
+//         '&:before': {
+//             background: 'transparent !important'
+//         },
+//         '&:after': {
+//             background: 'transparent'
+//         }
+//     },
+//     languageSelectorIcon: {
+//         color: 'inherit'
+//     }
+// });
 
 const SiteSettingsSeoConstants = {
     MAPPING_REG_EXP: new RegExp("^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$"),
@@ -397,31 +390,34 @@ class SiteSettingsSeoApp extends React.Component {
                            onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
             </Toolbar>
         }>
-
             <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection}
                        actions={this.actions}/>
 
-            <VanityUrlTableData
-                {...this.state.loadParams}
-                path={dxContext.mainResourcePath}
-                lang={dxContext.lang}
-                poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
-            >
-                {(rows, totalCount, numberOfPages) =>
-                    <VanityUrlTableView
+            <Grid container spacing={8}>
+                <Grid item xs={12}>
+                    <VanityUrlTableData
                         {...this.state.loadParams}
-                        languages={this.props.languages}
-                        rows={rows}
-                        totalCount={totalCount}
-                        numberOfPages={numberOfPages}
-                        selection={this.state.selection}
-                        actions={this.actions}
-                        onChangeSelection={this.onChangeSelection}
-                        onChangePage={this.onChangePage}
-                        onChangeRowsPerPage={this.onChangeRowsPerPage}
-                    />
-                }
-            </VanityUrlTableData>
+                        path={dxContext.mainResourcePath}
+                        lang={dxContext.lang}
+                        poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+                    >
+                        {(rows, totalCount, numberOfPages) =>
+                            <VanityUrlTableView
+                                {...this.state.loadParams}
+                                languages={this.props.languages}
+                                rows={rows}
+                                totalCount={totalCount}
+                                numberOfPages={numberOfPages}
+                                selection={this.state.selection}
+                                actions={this.actions}
+                                onChangeSelection={this.onChangeSelection}
+                                onChangePage={this.onChangePage}
+                                onChangeRowsPerPage={this.onChangeRowsPerPage}
+                            />
+                        }
+                    </VanityUrlTableData>
+                </Grid>
+            </Grid>
 
             {this.state.move.open && <Move
                 {...this.state.move}
@@ -479,19 +475,22 @@ let SiteSettingsSeo = function (props) {
     };
 
     return (
-        <MuiThemeProvider theme={theme}>
-            <NotificationProvider>
-                <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
-                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
-                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                        <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                            {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
-                        </VanityUrlLanguageData>
-                    </VanityMutationsProvider>
-                    </I18nextProvider>
-                </ApolloProvider>
-            </NotificationProvider>
-        </MuiThemeProvider>
+        <React.Fragment>
+            <CssBaseline />
+            <MuiThemeProvider theme={theme}>
+                <NotificationProvider>
+                    <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
+                        <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
+                        <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                            <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                                {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
+                            </VanityUrlLanguageData>
+                        </VanityMutationsProvider>
+                        </I18nextProvider>
+                    </ApolloProvider>
+                </NotificationProvider>
+            </MuiThemeProvider>
+        </React.Fragment>
     );
 };
 

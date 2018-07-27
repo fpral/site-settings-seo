@@ -13,6 +13,7 @@ import {
     TextField,
     Typography,
     Input,
+    Grid,
     withStyles, withTheme
 } from '@material-ui/core';
 import {Done, Star, StarBorder} from '@material-ui/icons';
@@ -23,289 +24,289 @@ import {withVanityMutationContext} from "./VanityMutationsProvider";
 import {compose} from "react-apollo/index";
 import {withNotifications} from '@jahia/react-material';
 
-const styles = (theme) => ({
-    boxTitle: {
-        padding: theme.spacing.unit
-    },
-    vanityUrl: {
-        '&:hover $hiddenOnHover': {
-            transition: ["opacity", "0.25s"],
-            opacity: 1
-        },
-		'& td': {
-			padding: '7px 0'
-		}
-    },
-	vanityUrlLive: {
-	},
-    hidden: {
-        opacity: 0
-    },
-    hiddenOnHover: {
-        opacity: 0,
-        transition: ["opacity", "0.25s"],
-    },
-    table: {
-        color: theme.palette.text.primary,
-    },
-	tableCellTextInput: {
-		background: 'transparent',
-		width: '100%',
-		'& > div': {
-		}
-	},
-	tableRow: {
-		height: '66px',
-		'&:hover $editableText': {
-			marginRight: '78px'
-		},
-		'&:hover $vanityURLText:before': {
-			background: '#f7f7f7'
-		},
-		'&:hover $vanityURLText:after': {
-			background: '#f7f7f7'
-		}
-	},
-	tableCellActionsContainer: {
-		width: '76px',
-		position: 'absolute',
-		marginLeft: '-76px',
-		border: 'none'
-	},
-    checkboxLeft: {
-        marginLeft: '-32px',
-        marginTop: '2px',
-        position: 'absolute',
-        border: '0',
-        color: theme.palette.text.primary,
-    },
-	languageContainer: {
-		paddingRight: '10px'
-	},
-	liveVanityUrl: {
-		paddingLeft: '14px!important',
-		'&:hover $vanityURLText:before': {
-			background: '#f7f7f7'
-		},
-		'&:hover $vanityURLText:after': {
-			background: '#f7f7f7'
-		},
-	},
-	liveDefaultValue: {
-		width: '30px'
-	},
-	liveLanguage: {
-		color: '#676767',
-		width: '50px'
-	},
-    inactive: {
-		'& $languageContainer': {
-			opacity: '0.5',
-			'&:hover': {
-				opacity: '1'
-			}
-		},
-		'& $liveLanguage': {
-			color: '#B2B2B2'
-		},
-		'& $vanityURLText': {
-			color: '#B2B2B2',
-		},
-    },
-    missingDefault: {
-		fontStyle: 'italic',
-		fontWeight: '100',
-        color: '#B2B2B2',
-		fontSize: '0.8125rem',
-		paddingLeft: '22px!important',
-		boxShadow: 'inset 7px 0px 0 0 #bab7b7'
-    },
-    missingDefaultCounterpart: {
-		boxShadow: 'inset 7px 0px 0 0 ' + 'red',
-		color: 'whitesmoke',
-		'& td': {
-			borderBottomColor: '#f66'
-		},
-		background: '#f66',
-		'&:hover': {
-			background: '#f66!important',
-		},
-		'&:hover $vanityURLText:before': {
-			background: '#f66'
-		},
-		'&:hover $vanityURLText:after': {
-			background: '#f66'
-		},
-		'& $vanityURLText': {
-			color: 'whitesmoke',
-			'&:before': {
-				background: '#f66'
-			},
-			'&:after': {
-				background: '#f66'
-			},
-			'&:hover:after': {
-				background: '#ff6565!important'
-			},
-			'&:hover:before': {
-				background: '#ff6565!important'
-			}
-		},
-		'& $liveLanguage': {
-			color: 'whitesmoke'
-		},
-		'& $highlightTextContainer': {
-			color: 'whitesmoke'
-		}
-    },
-	toBePublished: {
-        boxShadow: 'inset 7px 0px 0 0 ' + '#FB9926',
-        color: theme.palette.getContrastText(theme.palette.publish.main),
-    },
-	isPublished: {
-        boxShadow: 'inset 7px 0px 0 0 #08D000',
-        color: theme.palette.getContrastText(theme.palette.publish.main),
-    },
-    highlightText: {
-        backgroundColor: 'yellow',
-        color: '#212121',
-    },
-	highlightTextContainer: {
-		color: '#00A0E3',
-	    padding: '3px 6px 1px',
-	    overflow: 'hidden',
-	    position: 'relative',
-	    fontSize: '0.8rem',
-	    maxHeight: '42px',
-	    wordBreak: 'break-all',
-	    lineHeight: '21px',
-		display: 'block',
-		'&:hover': {
-			marginRight: '78px'
-		},
-	},
-    publishedCheck: {
-        color: 'white',
-		display: 'none'
-    },
-    moveAction: {
-        color: '#212121',
-		opacity: '0.6',
-		'&:hover': {
-			background: 'transparent',
-			opacity: '1'
-		}
-    },
-	deleteAction: {
-        color: '#212121',
-		opacity: '0.6',
-		'&:hover': {
-			background: 'transparent',
-			opacity: '1'
-		}
-    },
-	actionButton: {
-		width: '38px',
-		'& button': {
-			opacity: '0.9',
-			'&:hover': {
-				background: 'transparent',
-				opacity: '1'
-			}
-		}
-	},
-	publish: {
-        color: '#212121',
-		marginRight: '10px',
-		width: '28px',
-		opacity: '0.6',
-		'&:hover': {
-			background: 'transparent',
-			opacity: '1'
-		}
-    },
-    allCheckbox: {
-        position: "absolute",
-        marginLeft: "-31px",
-        marginTop: "-18px",
-        '&:hover': {
-            transition: ["opacity", "0.25s"],
-            opacity: 1
-        }
-    },
-    tableTitle: {
-        paddingBottom: "3px",
-    },
-	inactiveRow: {
-		border: '10px solid red'
-	},
-	vanityURLText: {
-		color: '#00A0E3',
-		lineHeight: '21px',
-		maxHeight: '42px',
-		overflow: 'hidden',
-		position: 'relative',
-		wordBreak: 'break-all',
-		padding: '3px 6px 1px',
-		fontSize: '0.8rem',
-		'&:before': {
-			content: '"..."',
-			position: 'absolute',
-			right: '1px',
-			bottom: '1px',
-			padding: '0 10px 0 4px',
-			background: 'white',
-			lineHeight: '19px',
-		},
-		'&:hover:before': {
-			background: 'white'
-		},
-		'&:after': {
-			content: '""',
-			width: '24px',
-			height: '19px',
-			background: 'white',
-			position: 'absolute',
-			right: '1px',
-			marginTop: '1px'
-		},
-		'&:hover:after': {
-			background: 'white'
-		},
-	},
-	editableText: {
-		'&:hover': {
-			boxShadow: 'inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7',
-			cursor: 'text',
-			background: 'white'
-		},
-		'&:hover:before': {
-			background: '#FFF!important'
-		},
-		'&:hover:after': {
-			background: '#FFF!important'
-		},
-	},
-	editableField: {
-	background: 'red'
-	},
-	publishArea: {
-	},
-	vanityGroupPaper: {
-		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
-		border: '1px solid #d5d5d5',
-		borderBottom: 'none',
-		borderRadius: '0px'
-	},
-	editLine: {
-		backgroundColor: '#F7F7F7!important',
-
-		'& $tableCellTextInput > div > div': {
-			background: 'white!important',
-			//boxShadow: 'inset 1px 1px 1px 0 rgba(38, 38, 38, 0.3)'
-		}
-	}
-});
+const styles = (theme) => ({});
+//     boxTitle: {
+//         padding: theme.spacing.unit
+//     },
+//     vanityUrl: {
+//         '&:hover $hiddenOnHover': {
+//             transition: ["opacity", "0.25s"],
+//             opacity: 1
+//         },
+// 		'& td': {
+// 			padding: '7px 0'
+// 		}
+//     },
+// 	vanityUrlLive: {
+// 	},
+//     hidden: {
+//         opacity: 0
+//     },
+//     hiddenOnHover: {
+//         opacity: 0,
+//         transition: ["opacity", "0.25s"],
+//     },
+//     table: {
+//         color: theme.palette.text.primary,
+//     },
+// 	tableCellTextInput: {
+// 		background: 'transparent',
+// 		width: '100%',
+// 		'& > div': {
+// 		}
+// 	},
+// 	tableRow: {
+// 		height: '66px',
+// 		'&:hover $editableText': {
+// 			marginRight: '78px'
+// 		},
+// 		'&:hover $vanityURLText:before': {
+// 			background: '#f7f7f7'
+// 		},
+// 		'&:hover $vanityURLText:after': {
+// 			background: '#f7f7f7'
+// 		}
+// 	},
+// 	tableCellActionsContainer: {
+// 		width: '76px',
+// 		position: 'absolute',
+// 		marginLeft: '-76px',
+// 		border: 'none'
+// 	},
+//     checkboxLeft: {
+//         marginLeft: '-32px',
+//         marginTop: '2px',
+//         position: 'absolute',
+//         border: '0',
+//         color: theme.palette.text.primary,
+//     },
+// 	languageContainer: {
+// 		paddingRight: '10px'
+// 	},
+// 	liveVanityUrl: {
+// 		paddingLeft: '14px!important',
+// 		'&:hover $vanityURLText:before': {
+// 			background: '#f7f7f7'
+// 		},
+// 		'&:hover $vanityURLText:after': {
+// 			background: '#f7f7f7'
+// 		},
+// 	},
+// 	liveDefaultValue: {
+// 		width: '30px'
+// 	},
+// 	liveLanguage: {
+// 		color: '#676767',
+// 		width: '50px'
+// 	},
+//     inactive: {
+// 		'& $languageContainer': {
+// 			opacity: '0.5',
+// 			'&:hover': {
+// 				opacity: '1'
+// 			}
+// 		},
+// 		'& $liveLanguage': {
+// 			color: '#B2B2B2'
+// 		},
+// 		'& $vanityURLText': {
+// 			color: '#B2B2B2',
+// 		},
+//     },
+//     missingDefault: {
+// 		fontStyle: 'italic',
+// 		fontWeight: '100',
+//         color: '#B2B2B2',
+// 		fontSize: '0.8125rem',
+// 		paddingLeft: '22px!important',
+// 		boxShadow: 'inset 7px 0px 0 0 #bab7b7'
+//     },
+//     missingDefaultCounterpart: {
+// 		boxShadow: 'inset 7px 0px 0 0 ' + 'red',
+// 		color: 'whitesmoke',
+// 		'& td': {
+// 			borderBottomColor: '#f66'
+// 		},
+// 		background: '#f66',
+// 		'&:hover': {
+// 			background: '#f66!important',
+// 		},
+// 		'&:hover $vanityURLText:before': {
+// 			background: '#f66'
+// 		},
+// 		'&:hover $vanityURLText:after': {
+// 			background: '#f66'
+// 		},
+// 		'& $vanityURLText': {
+// 			color: 'whitesmoke',
+// 			'&:before': {
+// 				background: '#f66'
+// 			},
+// 			'&:after': {
+// 				background: '#f66'
+// 			},
+// 			'&:hover:after': {
+// 				background: '#ff6565!important'
+// 			},
+// 			'&:hover:before': {
+// 				background: '#ff6565!important'
+// 			}
+// 		},
+// 		'& $liveLanguage': {
+// 			color: 'whitesmoke'
+// 		},
+// 		'& $highlightTextContainer': {
+// 			color: 'whitesmoke'
+// 		}
+//     },
+// 	toBePublished: {
+//         boxShadow: 'inset 7px 0px 0 0 ' + '#FB9926',
+//         color: theme.palette.getContrastText(theme.palette.publish.main),
+//     },
+// 	isPublished: {
+//         boxShadow: 'inset 7px 0px 0 0 #08D000',
+//         color: theme.palette.getContrastText(theme.palette.publish.main),
+//     },
+//     highlightText: {
+//         backgroundColor: 'yellow',
+//         color: '#212121',
+//     },
+// 	highlightTextContainer: {
+// 		color: '#00A0E3',
+// 	    padding: '3px 6px 1px',
+// 	    overflow: 'hidden',
+// 	    position: 'relative',
+// 	    fontSize: '0.8rem',
+// 	    maxHeight: '42px',
+// 	    wordBreak: 'break-all',
+// 	    lineHeight: '21px',
+// 		display: 'block',
+// 		'&:hover': {
+// 			marginRight: '78px'
+// 		},
+// 	},
+//     publishedCheck: {
+//         color: 'white',
+// 		display: 'none'
+//     },
+//     moveAction: {
+//         color: '#212121',
+// 		opacity: '0.6',
+// 		'&:hover': {
+// 			background: 'transparent',
+// 			opacity: '1'
+// 		}
+//     },
+// 	deleteAction: {
+//         color: '#212121',
+// 		opacity: '0.6',
+// 		'&:hover': {
+// 			background: 'transparent',
+// 			opacity: '1'
+// 		}
+//     },
+// 	actionButton: {
+// 		width: '38px',
+// 		'& button': {
+// 			opacity: '0.9',
+// 			'&:hover': {
+// 				background: 'transparent',
+// 				opacity: '1'
+// 			}
+// 		}
+// 	},
+// 	publish: {
+//         color: '#212121',
+// 		marginRight: '10px',
+// 		width: '28px',
+// 		opacity: '0.6',
+// 		'&:hover': {
+// 			background: 'transparent',
+// 			opacity: '1'
+// 		}
+//     },
+//     allCheckbox: {
+//         position: "absolute",
+//         marginLeft: "-31px",
+//         marginTop: "-18px",
+//         '&:hover': {
+//             transition: ["opacity", "0.25s"],
+//             opacity: 1
+//         }
+//     },
+//     tableTitle: {
+//         paddingBottom: "3px",
+//     },
+// 	inactiveRow: {
+// 		border: '10px solid red'
+// 	},
+// 	vanityURLText: {
+// 		color: '#00A0E3',
+// 		lineHeight: '21px',
+// 		maxHeight: '42px',
+// 		overflow: 'hidden',
+// 		position: 'relative',
+// 		wordBreak: 'break-all',
+// 		padding: '3px 6px 1px',
+// 		fontSize: '0.8rem',
+// 		'&:before': {
+// 			content: '"..."',
+// 			position: 'absolute',
+// 			right: '1px',
+// 			bottom: '1px',
+// 			padding: '0 10px 0 4px',
+// 			background: 'white',
+// 			lineHeight: '19px',
+// 		},
+// 		'&:hover:before': {
+// 			background: 'white'
+// 		},
+// 		'&:after': {
+// 			content: '""',
+// 			width: '24px',
+// 			height: '19px',
+// 			background: 'white',
+// 			position: 'absolute',
+// 			right: '1px',
+// 			marginTop: '1px'
+// 		},
+// 		'&:hover:after': {
+// 			background: 'white'
+// 		},
+// 	},
+// 	editableText: {
+// 		'&:hover': {
+// 			boxShadow: 'inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7',
+// 			cursor: 'text',
+// 			background: 'white'
+// 		},
+// 		'&:hover:before': {
+// 			background: '#FFF!important'
+// 		},
+// 		'&:hover:after': {
+// 			background: '#FFF!important'
+// 		},
+// 	},
+// 	editableField: {
+// 	background: 'red'
+// 	},
+// 	publishArea: {
+// 	},
+// 	vanityGroupPaper: {
+// 		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
+// 		border: '1px solid #d5d5d5',
+// 		borderBottom: 'none',
+// 		borderRadius: '0px'
+// 	},
+// 	editLine: {
+// 		backgroundColor: '#F7F7F7!important',
+//
+// 		'& $tableCellTextInput > div > div': {
+// 			background: 'white!important',
+// 			//boxShadow: 'inset 1px 1px 1px 0 rgba(38, 38, 38, 0.3)'
+// 		}
+// 	}
+// });
 
 class VanityUrlListDefault extends React.Component {
 
@@ -325,7 +326,7 @@ class VanityUrlListDefault extends React.Component {
         } else {
             this.setState({editLine:  ''});
 		}
-    }
+    };
 
     render() {
 

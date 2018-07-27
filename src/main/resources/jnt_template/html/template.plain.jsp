@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" 
-%><%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" 
-%><%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" 
-%><html lang="${renderContext.mainResourceLocale.language}">
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<html lang="${renderContext.mainResourceLocale.language}">
 
 <head>
     <meta charset="utf-8">
