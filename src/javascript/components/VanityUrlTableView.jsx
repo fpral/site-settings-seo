@@ -1,7 +1,7 @@
 import React from 'react';
 import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 
-import {Grid, List} from '@material-ui/core';
+import {Grid} from '@material-ui/core';
 
 import {Pagination} from "@jahia/react-material";
 import {translate} from 'react-i18next';

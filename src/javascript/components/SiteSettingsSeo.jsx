@@ -1,9 +1,8 @@
 import React from 'react';
 import {CssBaseline, Toolbar, Typography, withStyles, withTheme, MuiThemeProvider, Grid} from '@material-ui/core';
-import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
+import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, anthraciteTheme} from '@jahia/react-material';
 import {client} from '@jahia/apollo-dx';
 import {getI18n} from '@jahia/i18next';
-// import {DxContextProvider} from '@jahia/context-provider';
 import {LanguageSelector} from "./LanguageSelector";
 import {VanityUrlTableView} from "./VanityUrlTableView";
 import {translate, I18nextProvider} from 'react-i18next';
@@ -21,26 +20,15 @@ import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutati
 import {VanityUrlLanguageData} from "./VanityUrlLanguageData";
 import {VanityUrlTableData} from "./VanityUrlTableData";
 
-const styles = (theme) => ({});
-//     languageSelector: {
-//         marginRight: theme.spacing.unit,
-//         color: 'inherit',
-//         boxShadow: 'none',
-//         background: 'none',
-//         color: 'white',
-//
-//         // Disable any underlining.
-//         '&:before': {
-//             background: 'transparent !important'
-//         },
-//         '&:after': {
-//             background: 'transparent'
-//         }
-//     },
-//     languageSelectorIcon: {
-//         color: 'inherit'
-//     }
-// });
+const styles = (theme) => ({
+    title: {
+        flexGrow: 1
+    },
+    languageSelector: {
+        color: 'inherit',
+        marginRight: theme.spacing.unit * 3
+    }
+});
 
 const SiteSettingsSeoConstants = {
     MAPPING_REG_EXP: new RegExp("^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$"),
@@ -374,20 +362,18 @@ class SiteSettingsSeoApp extends React.Component {
 
         return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
             <Toolbar>
-                <Typography variant="title" color="inherit" className={classes.title}>
-                    {t('label.title')} - {dxContext.siteTitle}
-                </Typography>
-
-                <LanguageSelector
-                    languages={this.props.languages}
-                    selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                    className={classes.languageSelector}
-                    classes={{icon: classes.languageSelectorIcon}}
-                    onSelectionChange={this.onSelectedLanguagesChanged}
-                />
-
-                <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter}
-                           onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
+                    <Typography variant={'title'} color={'inherit'} className={classes.title}>
+                        {t('label.title')} - {dxContext.siteTitle}
+                    </Typography>
+                    <LanguageSelector color={'inherit'}
+                        languages={this.props.languages}
+                        selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
+                        className={classes.languageSelector}
+                        classes={{icon: classes.languageSelectorIcon}}
+                        onSelectionChange={this.onSelectedLanguagesChanged}
+                    />
+                    <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter}
+                               onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
             </Toolbar>
         }>
             <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection}
@@ -475,22 +461,21 @@ let SiteSettingsSeo = function (props) {
     };
 
     return (
-        <React.Fragment>
+        <MuiThemeProvider theme={anthraciteTheme}>
             <CssBaseline />
-            <MuiThemeProvider theme={theme}>
-                <NotificationProvider>
-                    <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
-                        <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
-                        <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                            <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                                {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
-                            </VanityUrlLanguageData>
-                        </VanityMutationsProvider>
-                        </I18nextProvider>
-                    </ApolloProvider>
-                </NotificationProvider>
-            </MuiThemeProvider>
-        </React.Fragment>
+            <NotificationProvider>
+                <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
+                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
+                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                        <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                            {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
+                        </VanityUrlLanguageData>
+                    </VanityMutationsProvider>
+                    </I18nextProvider>
+                </ApolloProvider>
+            </NotificationProvider>
+            ...
+        </MuiThemeProvider>
     );
 };
 

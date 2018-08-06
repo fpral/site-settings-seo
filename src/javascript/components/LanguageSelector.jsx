@@ -1,9 +1,23 @@
 import React from 'react';
 import * as _ from 'lodash';
 import {translate} from 'react-i18next';
-import {Checkbox, FormControl, FormControlLabel, Input, ListItem, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {Checkbox, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
+const styles = (theme) => ({
+    icon: {
+        color: 'inherit'
+    },
+    selectMenu: {
+        '&:focus': {
+            backgroundColor: 'rgba(0, 0, 0, 0)'
+        }
+    },
+    // I need to set important here because of a bug in Mui
+    selected: {
+        backgroundColor: 'rgba(0, 0, 0, 0) !important'
+    }
+});
 
 function getSelectedLanguageCodes(selected) {
     // Filter out the All Languages fake (null) language code when handling menu events.
@@ -20,7 +34,7 @@ class LanguageSelector extends React.Component {
     }
 
     onAllLanguagesChange(event, checked) {
-        if (checked && this.props.selectedLanguageCodes.length == 0) {
+        if (checked && this.props.selectedLanguageCodes.length === 0) {
             // Was checked while no languages were selected: select all.
             let selectedLanguageCodes = this.props.languages.map(language => language.code);
             this.props.onSelectionChange(selectedLanguageCodes);
@@ -38,10 +52,9 @@ class LanguageSelector extends React.Component {
     getSelectedLanguagesValue(selected) {
 
         let selectedLanguageCodes = _.sortBy(getSelectedLanguageCodes(selected));
-
-        if (selectedLanguageCodes.length == 0) {
+        if (selectedLanguageCodes.length === 0) {
             return this.props.t('label.languageSelector.noLanguages');
-        } else if (selectedLanguageCodes.length == this.props.languages.length) {
+        } else if (selectedLanguageCodes.length === this.props.languages.length) {
             return this.props.t('label.languageSelector.allLanguages');
         } else {
 
@@ -72,19 +85,20 @@ class LanguageSelector extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
 
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
-        let allLanguagesChecked = (selectedLanguageCodes.length == this.props.languages.length);
+        let allLanguagesChecked = (selectedLanguageCodes.length === this.props.languages.length);
         let allLanguagesIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
 
         return (
-
             <Select multiple
+                    disableUnderline={true}
                     value={selectedLanguageCodes}
                     displayEmpty={true}
                     renderValue={this.getSelectedLanguagesValue}
                     className={this.props.className}
-                    classes={this.props.classes}
+                    classes={{icon: classes.icon, selectMenu: classes.selectMenu}}
                     style={this.props.style}
                     data-vud-role={'language-selector'}
                     onChange={this.onChange}>
@@ -102,11 +116,9 @@ class LanguageSelector extends React.Component {
                 </MenuItem>
 
                 {this.props.languages.map(language => {
-
                     let checked = (selectedLanguageCodes.indexOf(language.code) >= 0);
-
                     return (
-                        <MenuItem key={language.code} value={language.code} data-vud-role={'language-selector-item'}>
+                        <MenuItem key={language.code} value={language.code} data-vud-role={'language-selector-item'} classes={{selected: classes.selected}}>
                             <Checkbox checked={checked}/>
                             <ListItemText primary={language.name + ' (' + language.code + ')'} data-vud-role={'language-selector-item-label'}/>
                         </MenuItem>
@@ -117,6 +129,6 @@ class LanguageSelector extends React.Component {
     }
 }
 
-LanguageSelector = translate()(LanguageSelector);
+LanguageSelector = withStyles(styles)(translate()(LanguageSelector));
 
 export {LanguageSelector};

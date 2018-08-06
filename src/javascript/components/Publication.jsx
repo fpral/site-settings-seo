@@ -7,18 +7,11 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    withStyles
+    DialogTitle
 } from '@material-ui/core';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-
-let styles = (theme) => ({});
-	// dialogActionsContainer: {
-	// 	justifyContent: 'flex-end'
-	// },
-// });
 
 class Publication extends React.Component {
 
@@ -34,7 +27,7 @@ class Publication extends React.Component {
     }
 
     render() {
-        const { classes, open, onClose, t } = this.props;
+        const { open, onClose, t } = this.props;
         return (
             <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description" data-vud-role="dialog">
@@ -45,7 +38,7 @@ class Publication extends React.Component {
                     </DialogContentText>
                 </DialogContent>
 
-                <DialogActions className={classes.dialogActionsContainer}>
+                <DialogActions>
                     <Button onClick={onClose} color="default" data-vud-role="button-cancel">
                         {t('label.cancel')}
                     </Button>
@@ -59,7 +52,6 @@ class Publication extends React.Component {
 }
 
 Publication = compose(
-	withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
     translate()

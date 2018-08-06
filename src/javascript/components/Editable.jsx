@@ -1,50 +1,36 @@
 import React from 'react';
-
-import {FormControl, FormHelperText, IconButton, withStyles, Input} from "@material-ui/core";
+import {FormControl, FormHelperText, IconButton, withStyles, Input, InputAdornment, Tooltip} from "@material-ui/core";
 import {Check, Clear} from "@material-ui/icons";
 
-let styles = (theme) => ({});
-//     root:{
-//         width:"calc(100% + 72px)",
-// 		zIndex: '9'
-//     },
-//     button:{
-//         height:18,
-//         width:18,
-//         position:"absolute",
-//         top:4,
-//         transform:"scale(0.75)",
-//         "&:hover": {
-//             backgroundColor:"inherit"
-//         }
-//     },
-//     cancel: {
-//         color:'red',
-//         right:'10px',
-// 		top: '6px'
-//     },
-//     valid: {
-// 		color:'green',
-// 		right:'32px',
-// 		top: '6px'
-//     },
-//     textInput: {
-//         color: "inherit",
-//         fontSize: "inherit",
-//         width: "100%",
-// 		paddingRight: '60px'
-//     }
-// });
+const styles = (theme) => ({
+    root: {
+        width: '100%'
+    },
+    button: {
+        height: 18,
+        width: 18,
+        transform: 'scale(0.75)',
+        '&:hover': {
+            backgroundColor: 'inherit'
+        }
+    },
+    cancel: {
+        color:'red'
+    },
+    valid: {
+		color:'green'
+    }
+});
 
 class Editable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit:false,
-            loading:false,
-            errorLabel:null,
-            errorMessage:null,
-            value:props.value
+            edit: false,
+            loading: false,
+            errorLabel: null,
+            errorMessage: null,
+            value: props.value
         };
         this.onValueChange = this.onValueChange.bind(this);
         this.save = this.save.bind(this);
@@ -101,12 +87,11 @@ class Editable extends React.Component {
     }
 
     render() {
-        let { render:Render,classes } = this.props;
+        let { render:Render, classes } = this.props;
         let { edit, loading, value, errorLabel, errorMessage } = this.state;
 
         return edit ?
             <FormControl className={classes.root} >
-
                 <Input value={value}
                        onChange={this.onValueChange}
                        onClick={(e)=> {e.stopPropagation()}}
@@ -114,17 +99,26 @@ class Editable extends React.Component {
                        onBlur={this.save}
                        error={!!errorLabel}
                        onKeyUp={(e)=>{if (e.key === 'Enter') { this.save(e) } else if (e.key === 'Escape') { this.cancel(e) } }}
-                       classes={{root:classes.textInput}} inputRef={this.ref}/>
-
-                { errorLabel && <FormHelperText><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
-                <IconButton className={classes.button + " " + classes.valid} component="span" disableRipple onClick={this.save}>
-                    <Check />
-                </IconButton>
-                <IconButton className={classes.button + " " + classes.cancel} component="span" disableRipple onClick={this.cancel}>
-                    <Clear />
-                </IconButton>
-            </FormControl> :
-            <div onClick={(event) => {this.setEdit(event,true);}}><Render value={value} {...this.props} /></div>
+                       inputRef={this.ref}
+                       endAdornment={
+                           <InputAdornment position={'end'}>
+                               <IconButton className={classes.button + " " + classes.valid} disableRipple onClick={this.save}>
+                                   <Check />
+                               </IconButton>
+                               <IconButton className={classes.button + " " + classes.cancel} disableRipple onClick={this.cancel}>
+                               <Clear />
+                               </IconButton>
+                           </InputAdornment>
+                       }/>
+                { (errorLabel && errorMessage) ?
+                    <Tooltip title={errorMessage}>
+                        <FormHelperText error={true}>{errorLabel}</FormHelperText>
+                    </Tooltip>
+                : null}
+            </FormControl>
+            : <div onClick={(event) => {this.setEdit(event, true);}}>
+                <Render value={value} {...this.props} />
+            </div>
     }
 
 

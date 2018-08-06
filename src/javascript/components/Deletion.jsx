@@ -1,43 +1,25 @@
 import React from 'react';
 import * as _ from "lodash";
-import {Button, Checkbox, FormControlLabel, withStyles, Table, TableBody, TableRow, TableCell, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import {compose, graphql} from "react-apollo/index";
+import {
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Typography,
+    Grid
+} from '@material-ui/core';
+import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
 import {withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from "./VanityMutationsProvider";
-
-let styles = (theme) => ({});
-// 	dialogNote: {
-// 		fontSize: '0.875rem',
-// 		marginTop: '10px'
-// 	},
-// 	vanityUrlTable: {
-// 		border: '1px solid #d5d5d5',
-// 		borderBottom: 'none',
-// 		boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)'
-// 	},
-// 	dialogActionsButtonContainer: {
-// 		display: 'inline-block',
-// 		verticalAlign: 'middle',
-// 		position: 'absolute',
-// 		right: '20px',
-// 		paddingTop: '7px',
-// 	},
-// 	vanityUrlTableCellLanguage: {
-// 		color: '#676767',
-// 		fontSize: '0.875rem',
-// 		fontWeight: '400',
-// 		width: '50px',
-// 		padding: '0 15px'
-// 	},
-// 	vanityUrlTableCellUrl: {
-// 		color: '#00A0E3',
-// 		fontSize: '0.875rem',
-// 		fontWeight: '400',
-// 		padding: '0 15px',
-// 		wordBreak: 'break-all'
-// 	},
-// });
 
 class Deletion extends React.Component {
 
@@ -69,52 +51,56 @@ class Deletion extends React.Component {
     }
 
     render() {
-        const { open, classes, onClose, t, urlPairs } = this.props;
+        const { open, onClose, t, urlPairs } = this.props;
         let mappingCount = urlPairs.length;
         return (
             <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description" data-vud-role="dialog">
                 <DialogTitle id="alert-dialog-title">{t('label.dialogs.delete.title')}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-headline">
+                    <DialogContentText id="alert-dialog-headline" gutterBottom>
                         {t('label.dialogs.delete.headline', {count: mappingCount})}
-                    </DialogContentText><br/>
-
-                </DialogContent>
-                <DialogContent>
-                    <Table className={classes.vanityUrlTable}>
+                    </DialogContentText>
+                    <Table>
                         <TableBody>
                             {urlPairs.map((url, i) =>
-                                <TableRow key={i}>
-                                    <TableCell className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
-                                    <TableCell className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>
+                                <TableRow key={i} hover>
+                                    <TableCell>
+                                        <Typography color={'secondary'}>{url.default.url}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography color={'primary'}>{url.default.language}</Typography>
+                                    </TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
                     </Table>
-                    <DialogContentText className={classes.dialogNote} id="alert-dialog-content">
+                    <br />
+                    <DialogContentText id="alert-dialog-content" gutterBottom>
                           {t('label.dialogs.delete.content')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <span>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={!this.state.deleteDisabled}
-                                          onChange={() => this.handleDeleteDisabled()}
-                                          data-vud-role="checkbox-hint" />
-                            }
-                            label={t("label.dialogs.delete.terms")}
-                        />
-                        <div className={classes.dialogActionsButtonContainer}>
+                    <Grid container direction={'row'} spacing={0} justify={'space-between'} alignItems={'center'}>
+                        <Grid item>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={!this.state.deleteDisabled}
+                                              onChange={() => this.handleDeleteDisabled()}
+                                              data-vud-role="checkbox-hint" />
+                                }
+                                label={t("label.dialogs.delete.terms")}
+                            />
+                        </Grid>
+                        <Grid item>
                             <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
                                 {t('label.cancel')}
                             </Button>
                             <Button onClick={() => {this.delete()}} color="secondary" autoFocus disabled={this.state.deleteDisabled} data-vud-role="button-primary">
                                 {t('label.dialogs.delete.delete')}
                             </Button>
-                        </div>
-                    </span>
+                        </Grid>
+                    </Grid>
                 </DialogActions>
             </Dialog>
         );
@@ -122,7 +108,6 @@ class Deletion extends React.Component {
 }
 
 Deletion = compose(
-	withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
     translate()

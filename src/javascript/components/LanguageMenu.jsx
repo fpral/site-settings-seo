@@ -1,32 +1,6 @@
 import React from 'react';
-import {Button, Menu, MenuItem, withStyles} from '@material-ui/core';
+import {Button, Menu, MenuItem} from '@material-ui/core';
 import {ArrowDropDown} from '@material-ui/icons';
-
-const styles = (theme) => ({});
-//     langButton: {
-// 		background: 'transparent',
-// 		padding: '2px 0 2px 6px',
-// 		fontSize: '0.8rem',
-// 		borderRadius: '0',
-// 		height: 'auto',
-// 		minHeight: 'auto',
-// 		minWidth: '60px',
-//         textTransform: 'none',
-// 		color: '#676767',
-//         '&:hover $rightIcon': {
-//             transition: ["opacity", "0.25s"],
-//             opacity: 1
-//         },
-//         '&:hover': {
-//             backgroundColor: 'white'
-//         }
-//     },
-//     rightIcon: {
-//         marginLeft: '0px',
-//         opacity: 0,
-// 		width: '0.8em'
-//     }
-// });
 
 class LanguageMenu extends React.Component {
 
@@ -57,20 +31,20 @@ class LanguageMenu extends React.Component {
     render() {
 
         const { anchorEl } = this.state;
-        const { languageCode, languages, classes } = this.props;
+        const { languageCode, languages } = this.props;
 
-        return (<div>
-            <Button className={classes.langButton} onClick={this.handleClick} data-vud-role="language-menu-button">
+        return (<React.Fragment>
+            <Button size={'small'} onClick={this.handleClick} data-vud-role="language-menu-button">
                 {languageCode}
-                <ArrowDropDown className={classes.rightIcon}/>
+                <ArrowDropDown/>
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} data-vud-role="language-menu">
                 {languages.map(language => <MenuItem key={language.code} onClick={(event) => this.handleSelect(language.code, event)}>{language.name} ({language.code})</MenuItem>)}
             </Menu>
-        </div>)
+        </React.Fragment>)
     }
 }
 
-LanguageMenu = withStyles(styles)(LanguageMenu);
+LanguageMenu =(LanguageMenu);
 
 export {LanguageMenu};

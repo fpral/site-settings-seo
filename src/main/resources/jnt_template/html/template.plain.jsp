@@ -6,9 +6,15 @@
 <head>
     <meta charset="utf-8">
     <title>${fn:escapeXml(renderContext.mainResource.node.displayableName)}</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
 </head>
 
 
-<body style="margin: 0px">
+<body>
     <template:area path="pagecontent"/>
 </body>

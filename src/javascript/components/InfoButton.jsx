@@ -5,17 +5,10 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    withStyles
+    DialogTitle
 } from '@material-ui/core';
 import {compose} from "react-apollo/index";
 import {translate} from "react-i18next";
-
-let styles = (theme) => ({});
-// 	dialogActionsContainer: {
-// 		justifyContent: 'flex-end'
-// 	},
-// });
 
 class InfoButton extends React.Component {
 
@@ -24,7 +17,7 @@ class InfoButton extends React.Component {
     }
 
     render() {
-        let { classes, open, message, onClose, t } = this.props;
+        let { open, message, onClose, t } = this.props;
         return (
             <Dialog
                 open={open}
@@ -38,7 +31,7 @@ class InfoButton extends React.Component {
                         {message}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions className={classes.dialogActionsContainer}>
+                <DialogActions>
                     <Button onClick={onClose} color="secondary" autoFocus>
                         {t('label.okGotIt')}
                     </Button>
@@ -48,9 +41,6 @@ class InfoButton extends React.Component {
     }
 }
 
-InfoButton = compose(
-	withStyles(styles),
-    (translate())
-)(InfoButton);
+InfoButton = compose((translate()))(InfoButton);
 
 export default InfoButton;

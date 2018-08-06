@@ -20,7 +20,7 @@ class VanityUrlTableData extends React.Component {
     }
 
     render() {
-        let { t, classes, filterText, totalCount, pageSize, poll, notificationContext} = this.props;
+        let { t, filterText, totalCount, pageSize, poll, notificationContext} = this.props;
         return <Query fetchPolicy={'network-only'} query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
             { ({loading, error, data}) => {
 
