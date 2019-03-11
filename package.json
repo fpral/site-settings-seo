@@ -15,6 +15,7 @@
     "@jahia/react-material": "<1.0.0-beta.20180813145926",
     "@material-ui/core": "^1.2.0",
     "@material-ui/icons": "^1.1.0",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "graphql-tag": "^2.9.1",
     "lodash": "^4.17.4",
@@ -24,7 +25,8 @@
     "react-i18next": "^7.3.1",
     "react-loadable": "^5.4.0",
     "react-redux": "^5.0.6",
-    "underscore": "^1.9.0"
+    "underscore": "^1.9.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

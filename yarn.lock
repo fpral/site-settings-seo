@@ -32,7 +32,7 @@
 
 "@jahia/apollo-dx@^1.0.0-beta.1", "@jahia/apollo-dx@^1.0.0-beta.20180622150437":
   version "1.0.0-beta.20180813145924"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/apollo-dx/-/apollo-dx-1.0.0-beta.20180813145924.tgz#3bcaacb345ff1ca0936d7b2848786df1b3f366db"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/apollo-dx/-/apollo-dx-1.0.0-beta.20180813145924.tgz#cd7d323833550230f47f845ba3d875c2fb432fa6"
   dependencies:
     apollo-cache-inmemory "^1.2.2"
     apollo-client "^2.3.2"
@@ -46,7 +46,7 @@
 
 "@jahia/i18next@^1.0.0-beta.20180622150437":
   version "1.0.0-beta.20180813145924"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/i18next/-/i18next-1.0.0-beta.20180813145924.tgz#75e706b6ccb1b5d8ee468a22743158fdd5a93fb1"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/i18next/-/i18next-1.0.0-beta.20180813145924.tgz#fde82cac72ae9bbd385cc53b920f6f82e1faa9f8"
   dependencies:
     i18next "^11.3.2"
     i18next-chained-backend "^0.1.2"
@@ -54,7 +54,7 @@
 
 "@jahia/icons@^1.0.0-beta.20180618091411", "@jahia/icons@^1.0.0-beta.20180622150437":
   version "1.0.0-beta.20180813145924"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/icons/-/icons-1.0.0-beta.20180813145924.tgz#f212534977c543b558a7447313b54b4c6233c16f"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/icons/-/icons-1.0.0-beta.20180813145924.tgz#26424a7ce348d681af3bbf82624d73ec82317438"
   dependencies:
     "@material-ui/core" "^1.2.0"
     react "^16.4.1"
@@ -62,7 +62,7 @@
 
 "@jahia/react-apollo@^1.0.0-beta.20180628145926":
   version "1.0.0-beta.20180813145926"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-apollo/-/react-apollo-1.0.0-beta.20180813145926.tgz#a7a0856307e0b1188ebacd1398bd43eff21f3361"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-apollo/-/react-apollo-1.0.0-beta.20180813145926.tgz#bd625a83ef0dc896939a35f96a8afaffbccae2ba"
   dependencies:
     "@jahia/apollo-dx" "^1.0.0-beta.1"
     apollo-client "^2.3.2"
@@ -73,7 +73,7 @@
 
 "@jahia/react-material@<1.0.0-beta.20180813145926":
   version "1.0.0-beta.20180803133830"
-  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180803133830.tgz#d4eeff35e4f345d5b54b526de1558bdd33fbfd00"
+  resolved "https://devtools.jahia.com/nexus3/repository/npm-internal/@jahia/react-material/-/react-material-1.0.0-beta.20180803133830.tgz#fe27e000152a3a11deadaefe478611ad183975c6"
   dependencies:
     "@jahia/icons" "^1.0.0-beta.20180618091411"
     "@material-ui/core" "^1.2.0"
@@ -1153,6 +1153,15 @@ babel-plugin-transform-strict-mode@^6.24.1:
   dependencies:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
+
+babel-polyfill@^6.26.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
+  integrity sha1-N5k3q8Z9eJWXCtxiHyhM2WbPIVM=
+  dependencies:
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
+    regenerator-runtime "^0.10.5"
 
 babel-preset-env@^1.6.1:
   version "1.7.0"
@@ -5135,6 +5144,11 @@ regenerate@^1.2.1:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
 
+regenerator-runtime@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
+  integrity sha1-M2w+/BIgrc7dosn6tntaeVWjNlg=
+
 regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
@@ -6184,6 +6198,11 @@ webpack@^4.7.0:
 whatwg-fetch@>=0.10.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
+
+whatwg-fetch@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
+  integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
 
 whet.extend@~0.9.9:
   version "0.9.9"

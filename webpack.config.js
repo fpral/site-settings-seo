@@ -8,7 +8,7 @@ let config = {
         mode: "development",
 
         entry: {
-            'siteSettingsSeo': './src/javascript/siteSettingsSeo-app.jsx'
+            'siteSettingsSeo': ['babel-polyfill', 'whatwg-fetch', './src/javascript/siteSettingsSeo-app.jsx']
         },
 
         output: {
