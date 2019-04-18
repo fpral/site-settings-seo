@@ -1,72 +1,64 @@
 let path = require('path');
-const webpack = require('webpack');
-let nodeExternals = require('webpack-node-externals');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let config = {
 
-        mode: "development",
+    mode: 'development',
 
-        entry: {
-            'siteSettingsSeo': ['babel-polyfill', 'whatwg-fetch', './src/javascript/siteSettingsSeo-app.jsx']
-        },
+    entry: {
+        siteSettingsSeo: ['babel-polyfill', 'whatwg-fetch', './src/javascript/siteSettingsSeo-app.jsx']
+    },
 
-        output: {
-            path: __dirname + '/src/main/resources/javascript/apps/',
-            // publicPath: "/modules/site-settings-seo/javascript/apps/",
-            filename: "[name].js",
-            // chunkFilename: '[name].chunk.js',
-        },
+    output: {
+        path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
+        filename: '[name].js'
+    },
 
-        module: {
-            rules: [
-                {
-                    test: /\.mjs$/,
-                    include: /node_modules/,
-                    type: "javascript/auto",
-                },
+    module: {
+        rules: [
+            {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: 'javascript/auto'
+            },
 
-                {
-                    test: /\.css$/,
-                    use: [
-                        "style-loader",
-                        {
-                            loader: "css-loader",
-                            options: {
-                                modules: true,
-                            }
-                        },
-                    ]
-                },
-
-                {
-                    test: /\.jsx?$/,
-                    include: [path.join(__dirname, "src")],
-                    loader: 'babel-loader',
-
-                    query: {
-                        presets: [['env', {modules: false}],'react', 'stage-2'],
-                        plugins: [
-                            "lodash"
-                        ]
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
                     }
+                ]
+            },
+
+            {
+                test: /\.jsx?$/,
+                include: [path.join(__dirname, 'src')],
+                loader: 'babel-loader',
+
+                query: {
+                    presets: [['env', {modules: false}], 'react', 'stage-2'],
+                    plugins: [
+                        'lodash'
+                    ]
                 }
-            ]
-        },
+            }
+        ]
+    },
 
-        resolve: {
-            mainFields: ['module','main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json']
-        },
+    resolve: {
+        mainFields: ['module', 'main'],
+        extensions: ['.mjs', '.js', '.jsx', 'json']
+    },
 
-        plugins: [
-            // new BundleAnalyzerPlugin({analyzerMode: "static"})
-        ],
+    plugins: [
+    ],
 
-        devtool: 'source-map',
-        watch: false
+    devtool: 'source-map',
+    watch: false
 
-    }
-;
-
+};
 module.exports = [config];

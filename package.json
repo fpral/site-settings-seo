@@ -2,8 +2,10 @@
   "name": "@jahia/site-settings-seo",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "yarn lint && webpack",
+    "watch": "webpack --watch",
+    "lint": "eslint --ext js,jsx .",
+    "lint:fix": "eslint --ext js,jsx --fix ."
   },
   "main": "src/javascript/index.js",
   "license": "MIT",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-direct-import": "^0.5.0",
     "babel-plugin-dynamic-import-webpack": "^1.0.2",
@@ -41,6 +44,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.8",
+    "eslint": "^5.16.0",
+    "eslint-config-xo": "^0.26.0",
+    "eslint-config-xo-react": "^0.19.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "style-loader": "^0.19.1",
     "webpack": "^4.7.0",
     "webpack-bundle-analyzer": "^2.11.1",
