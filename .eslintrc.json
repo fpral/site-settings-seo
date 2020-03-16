@@ -1,0 +1,18 @@
+{
+  "extends": "@jahia",
+  "rules": {
+    "eqeqeq": "warn",
+    "new-cap": "warn",
+    "no-class-assign": "warn",
+    "no-eq-null": "warn",
+    "no-unused-vars": "warn",
+    "no-useless-constructor": "warn",
+    "prefer-regex-literals": "warn",
+    "react/boolean-prop-naming": [1, { "rule": "^(is|has)[A-Z]([A-Za-z0-9]?)+" }],
+    "react/jsx-no-duplicate-props": "warn",
+    "react/prop-types": "warn",
+    "react/jsx-no-bind": "warn",
+    "react/no-array-index-key": "warn",
+    "react/no-unused-state": "warn"
+  }
+}

@@ -1,55 +1,87 @@
 {
   "name": "@jahia/site-settings-seo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "yarn lint && yarn webpack",
+    "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
+    "build:analyze": "yarn build --analyze",
+    "build:production": "yarn build -p",
+    "build:production-analyze": "yarn build:production --analyze",
+    "watch": "yarn webpack --watch",
+    "clean": "rimraf *.log src/main/resources/javascript/apps",
+    "clean:all": "yarn clean && rimraf node_modules node",
+    "test": "jest --coverage",
+    "tdd": "jest --watch",
+    "lint": "eslint --ext js,jsx .",
+    "lint:fix": "eslint --ext js,jsx --fix ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
+  "jahia": {
+    "apps": {
+      "jahia": "javascript/apps/register.js"
+    }
+  },
+  "repository": "git@github.com:Jahia/site-settings-seo.git",
+  "author": "Jahia Core Team <core@jahia.com>",
   "main": "src/javascript/index.js",
   "license": "MIT",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@jahia/apollo-dx": "^1.0.0-beta.20180622150437",
     "@jahia/i18next": "^1.0.0-beta.20180622150437",
     "@jahia/icons": "^1.0.0-beta.20180622150437",
     "@jahia/react-apollo": "^1.0.0-beta.20180628145926",
     "@jahia/react-material": "<1.0.0-beta.20180813145926",
+    "@jahia/ui-extender": "^0.4.3",
     "@material-ui/core": "^1.2.0",
     "@material-ui/icons": "^1.1.0",
-    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "graphql-tag": "^2.9.1",
     "lodash": "^4.17.4",
-    "react": "^16.2.0",
+    "react": "^16.8.4",
     "react-apollo": "^2.1.3",
-    "react-dom": "^16.4.0",
-    "react-i18next": "^7.3.1",
-    "react-loadable": "^5.4.0",
-    "react-redux": "^5.0.6",
+    "react-dom": "^16.8.4",
+    "react-i18next": "^11.2.7",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^5.0.7",
     "underscore": "^1.9.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-direct-import": "^0.5.0",
-    "babel-plugin-dynamic-import-webpack": "^1.0.2",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-lodash": "^3.3.2",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-imports": "^1.5.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^0.28.8",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "@jahia/eslint-config": "^1.1.0",
+    "@jahia/test-framework": "^1.1.4",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-transform-imports": "^1.5.1",
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-jest": "^23.3.0",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "file-loader": "^2.0.0",
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "rimraf": "^2.6.2",
     "style-loader": "^0.19.1",
-    "webpack": "^4.7.0",
-    "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.1.2",
+    "webpack": "^4.26.0",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2"
-  },
-  "jahia": {
-    "components": {
-      "jnt:siteSettingsSeo": "SiteSettingsSeo"
-    }
   }
 }

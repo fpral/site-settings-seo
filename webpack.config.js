@@ -1,72 +1,85 @@
-let path = require('path');
+const path = require('path');
 const webpack = require('webpack');
-let nodeExternals = require('webpack-node-externals');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-let config = {
+// Get manifest
+var normalizedPath = require('path').join(__dirname, './target/dependency');
+var manifest = '';
+require('fs').readdirSync(normalizedPath).forEach(function (file) {
+    manifest = './target/dependency/' + file;
+    console.log('use manifest ' + manifest);
+});
 
-        mode: "development",
-
+module.exports = (env, argv) => {
+    let config = {
         entry: {
-            'siteSettingsSeo': ['babel-polyfill', 'whatwg-fetch', './src/javascript/siteSettingsSeo-app.jsx']
+            main: ['whatwg-fetch', path.resolve(__dirname, 'src/javascript/publicPath'), path.resolve(__dirname, 'src/javascript/siteSettingsSeo-app')]
         },
-
         output: {
-            path: __dirname + '/src/main/resources/javascript/apps/',
-            // publicPath: "/modules/site-settings-seo/javascript/apps/",
-            filename: "[name].js",
-            // chunkFilename: '[name].chunk.js',
+            path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
+            filename: 'site-settings-seo.bundle.js',
+            chunkFilename: '[name].site-settings-seo.[chunkhash:6].js',
         },
-
+        resolve: {
+            mainFields: ['module', 'main'],
+            extensions: ['.mjs', '.js', '.jsx', 'json']
+        },
         module: {
             rules: [
                 {
                     test: /\.mjs$/,
                     include: /node_modules/,
-                    type: "javascript/auto",
+                    type: 'javascript/auto',
                 },
 
                 {
                     test: /\.css$/,
                     use: [
-                        "style-loader",
+                        'style-loader',
                         {
-                            loader: "css-loader",
+                            loader: 'css-loader',
                             options: {
                                 modules: true,
                             }
                         },
                     ]
                 },
-
                 {
                     test: /\.jsx?$/,
-                    include: [path.join(__dirname, "src")],
+                    include: [path.join(__dirname, 'src')],
                     loader: 'babel-loader',
-
                     query: {
-                        presets: [['env', {modules: false}],'react', 'stage-2'],
+                        presets: [
+                            ['@babel/preset-env', {modules: false, targets: {safari: '7', ie: '10'}}],
+                            '@babel/preset-react'
+                        ],
                         plugins: [
-                            "lodash"
+                            "@babel/plugin-proposal-class-properties",
+                            'lodash'
                         ]
                     }
                 }
             ]
         },
-
-        resolve: {
-            mainFields: ['module','main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json']
-        },
-
         plugins: [
-            // new BundleAnalyzerPlugin({analyzerMode: "static"})
+            new webpack.DllReferencePlugin({
+                manifest: require(manifest)
+            }),
+            new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
+            new CopyWebpackPlugin([{from: path.resolve(__dirname, 'src/javascript/register.js'), to: path.resolve(__dirname, 'src/main/resources/javascript/apps/')}])
         ],
+        watch: false,
+        mode: 'development'
+    };
 
-        devtool: 'source-map',
-        watch: false
+    config.devtool = (argv.mode === 'production') ? 'source-map' : 'eval-source-map';
 
+    if (argv.analyze) {
+        config.devtool = 'source-map';
+        config.plugins.push(new BundleAnalyzerPlugin());
     }
-;
 
-module.exports = [config];
+    return config;
+};
